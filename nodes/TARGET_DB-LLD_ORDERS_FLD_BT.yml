@@ -1,0 +1,207 @@
+steps:
+  LLD_ORDERS_FLD_BT-2866cfc1-fd58-4d6e-b2ec-e4b4289943e7:
+    operation:
+      config:
+        bucketBy:
+          items:
+            - buckeyByColumn:
+                columnCounter: ca797a33-81d3-4529-80d0-bb6840cf7053
+                stepCounter: 2866cfc1-fd58-4d6e-b2ec-e4b4289943e7
+        dedicatedLoadHistoryTable: true
+        groupCount: "10"
+        groupIncremental: false
+        groupingType: Range Buckets
+        incrementalLoadColumn:
+          columnCounter: 655b204c-be6d-47c1-a177-0526443af5ca
+          stepCounter: 2866cfc1-fd58-4d6e-b2ec-e4b4289943e7
+        loadHistoryTableLocation: Same as Target Table
+        loadType: Full Load
+        postSQL: select count(*) from ANANDHIS_DEV.TARGET.LLD_ORDERS_FLD_BT
+        preSQL: select count(*) from ANANDHIS_DEV.TARGET.LLD_ORDERS_FLD_BT
+        setIncrementalLoadOptions: false
+        sortBy:
+          items:
+            - sortByColumn:
+                columnCounter: f2968841-a718-45a0-8978-cd52e0ca51d1
+                stepCounter: 2866cfc1-fd58-4d6e-b2ec-e4b4289943e7
+              sortOrder: ASC
+        sortDataOnLoad: true
+        testsEnabled: true
+        utilityschema: null
+      database: ""
+      deployEnabled: true
+      description: ""
+      isMultisource: false
+      locationName: TARGET_DB
+      materializationType: table
+      metadata:
+        appliedNodeTests: []
+        columns:
+          - columnReference:
+              columnCounter: f2968841-a718-45a0-8978-cd52e0ca51d1
+              stepCounter: 2866cfc1-fd58-4d6e-b2ec-e4b4289943e7
+            dataType: NUMBER(38,0)
+            description: ""
+            hashDetails: null
+            name: O_ORDERKEY
+            nullable: true
+            sourceColumnReferences:
+              - columnReferences:
+                  - columnCounter: 78600ef5-2095-4b76-bded-c3e2d5aa4b3a
+                    stepCounter: 52f22891-db54-4757-8575-9f66228b21cb
+                transform: ""
+          - columnReference:
+              columnCounter: d83d05d5-043b-4f8e-a584-bf3cea0dc7fc
+              stepCounter: 2866cfc1-fd58-4d6e-b2ec-e4b4289943e7
+            dataType: NUMBER(38,0)
+            description: ""
+            hashDetails: null
+            name: O_CUSTKEY
+            nullable: true
+            sourceColumnReferences:
+              - columnReferences:
+                  - columnCounter: bfc5e8e2-d0aa-4116-a03a-d728c60cd6bd
+                    stepCounter: 52f22891-db54-4757-8575-9f66228b21cb
+                transform: ""
+          - columnReference:
+              columnCounter: ca797a33-81d3-4529-80d0-bb6840cf7053
+              stepCounter: 2866cfc1-fd58-4d6e-b2ec-e4b4289943e7
+            dataType: VARCHAR(1)
+            description: ""
+            hashDetails: null
+            name: O_ORDERSTATUS
+            nullable: true
+            sourceColumnReferences:
+              - columnReferences:
+                  - columnCounter: 6be45031-e56e-4a76-9bb7-f7e527191c7e
+                    stepCounter: 52f22891-db54-4757-8575-9f66228b21cb
+                transform: ""
+          - columnReference:
+              columnCounter: aa9468aa-ef95-4d50-90c2-be03621139a0
+              stepCounter: 2866cfc1-fd58-4d6e-b2ec-e4b4289943e7
+            dataType: NUMBER(12,2)
+            description: ""
+            hashDetails: null
+            name: O_TOTALPRICE
+            nullable: true
+            sourceColumnReferences:
+              - columnReferences:
+                  - columnCounter: b8d71a84-83b4-4914-b7ee-c2ad6881abac
+                    stepCounter: 52f22891-db54-4757-8575-9f66228b21cb
+                transform: ""
+          - columnReference:
+              columnCounter: 655b204c-be6d-47c1-a177-0526443af5ca
+              stepCounter: 2866cfc1-fd58-4d6e-b2ec-e4b4289943e7
+            dataType: DATE
+            description: ""
+            hashDetails: null
+            name: O_ORDERDATE
+            nullable: true
+            sourceColumnReferences:
+              - columnReferences:
+                  - columnCounter: e1275129-6447-4306-a6ac-8e9f85aa62a9
+                    stepCounter: 52f22891-db54-4757-8575-9f66228b21cb
+                transform: ""
+          - columnReference:
+              columnCounter: 79ebfd40-c630-4a02-81cb-36a51c5f6229
+              stepCounter: 2866cfc1-fd58-4d6e-b2ec-e4b4289943e7
+            dataType: VARCHAR(15)
+            description: ""
+            hashDetails: null
+            name: O_ORDERPRIORITY
+            nullable: true
+            sourceColumnReferences:
+              - columnReferences:
+                  - columnCounter: 4db7d560-65b3-4492-8961-148d849ee78a
+                    stepCounter: 52f22891-db54-4757-8575-9f66228b21cb
+                transform: ""
+          - columnReference:
+              columnCounter: f3753f55-05eb-49f1-83cd-18b603f0260a
+              stepCounter: 2866cfc1-fd58-4d6e-b2ec-e4b4289943e7
+            dataType: VARCHAR(15)
+            description: ""
+            hashDetails: null
+            name: O_CLERK
+            nullable: true
+            sourceColumnReferences:
+              - columnReferences:
+                  - columnCounter: 8564d642-c25b-44ab-aca0-4295b7132b79
+                    stepCounter: 52f22891-db54-4757-8575-9f66228b21cb
+                transform: ""
+          - columnReference:
+              columnCounter: c1379985-005e-4213-8caa-20135f0e6870
+              stepCounter: 2866cfc1-fd58-4d6e-b2ec-e4b4289943e7
+            dataType: NUMBER(38,0)
+            description: ""
+            hashDetails: null
+            name: O_SHIPPRIORITY
+            nullable: true
+            sourceColumnReferences:
+              - columnReferences:
+                  - columnCounter: 3b0b2ebf-9fba-4025-8ac2-253c5d072c4b
+                    stepCounter: 52f22891-db54-4757-8575-9f66228b21cb
+                transform: ""
+          - columnReference:
+              columnCounter: 24b738dc-abed-4077-ad25-3f55c7bb0f75
+              stepCounter: 2866cfc1-fd58-4d6e-b2ec-e4b4289943e7
+            dataType: VARCHAR(79)
+            description: ""
+            hashDetails: null
+            name: O_COMMENT
+            nullable: true
+            sourceColumnReferences:
+              - columnReferences:
+                  - columnCounter: df16bb30-5452-4ec0-9ee1-d458ca75d770
+                    stepCounter: 52f22891-db54-4757-8575-9f66228b21cb
+                transform: ""
+          - columnReference:
+              columnCounter: 98e1cf81-625f-4a16-ae88-82c7fe650952
+              stepCounter: 2866cfc1-fd58-4d6e-b2ec-e4b4289943e7
+            dataType: TIMESTAMP_LTZ(9)
+            description: ""
+            hashDetails: null
+            name: O_LOAD_TIMESTAMP
+            nullable: true
+            sourceColumnReferences:
+              - columnReferences:
+                  - columnCounter: eb1031e2-d8af-4e39-8008-70295f7dc87b
+                    stepCounter: 52f22891-db54-4757-8575-9f66228b21cb
+                transform: ""
+          - acceptedValues:
+              strictMatch: true
+              values: []
+            appliedColumnTests: {}
+            columnReference:
+              columnCounter: 5a0cc311-56c7-424f-8f75-d67c01c8d34e
+              stepCounter: 2866cfc1-fd58-4d6e-b2ec-e4b4289943e7
+            config: {}
+            dataType: TIMESTAMP_NTZ(9)
+            defaultValue: ""
+            description: ""
+            loadCurrentTimestamp: true
+            name: LOAD_CURRENT_TIMESTAMP
+            nullable: true
+            sourceColumnReferences:
+              - columnReferences: []
+                transform: CURRENT_TIMESTAMP::TIMESTAMP_NTZ(9)
+        cteString: ""
+        enabledColumnTestIDs: []
+        sourceMapping:
+          - aliases:
+              ORDERS: 52f22891-db54-4757-8575-9f66228b21cb
+            customSQL:
+              customSQL: ""
+            dependencies:
+              - locationName: SOURCE_DATA
+                nodeName: ORDERS
+            join:
+              joinCondition: |
+                FROM {{ ref('SOURCE_DATA', 'ORDERS') }} "ORDERS"
+            name: LLD_ORDERS_FLD_BT
+            noLinkRefs: []
+      name: LLD_ORDERS_FLD_BT
+      overrideSQL: false
+      schema: ""
+      sqlType: "278"
+      type: sql
+    stepCounter: 2866cfc1-fd58-4d6e-b2ec-e4b4289943e7
