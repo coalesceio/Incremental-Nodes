@@ -1,0 +1,168 @@
+fileVersion: 1
+id: "278"
+isDisabled: false
+metadata:
+  defaultStorageLocation: null
+  error: null
+  nodeMetadataSpec: |+
+    capitalized: Looped Load
+    short: LLD
+    plural: node
+    tagColor: '#2EB67D'
+
+    config:
+    - groupName: Options
+      items:
+      - displayName: Enable Tests
+        attributeName: testsEnabled
+        type: toggleButton
+        default: true
+        
+      - displayName: Pre-SQL
+        attributeName: preSQL
+        type: textBox
+        syntax: sql
+        isRequired: false
+
+      - displayName: Post-SQL
+        attributeName: postSQL
+        type: textBox
+        syntax: sql
+        isRequired: false
+
+    - groupName: Load Options
+      items:
+
+      - displayName: In case the load type is not set via parameters,then the node refers to load type in Load options
+        attributeName: displaylabel
+        type: label
+
+      - displayName: Load Type
+        type: dropdownSelector
+        attributeName: loadType
+        default: "Full Load"
+        options:
+        - Full Load
+        - Full Reload
+        - Incremental Load
+        - Reprocess Full Load
+        - Reprocess Incremental Load
+        isRequired: false
+
+    - groupName: Incremental Load Options
+      items:
+
+      - displayName: Incremental coulmns are required for incremental load operation or to reprocess load as an incremental load operation
+        type: label
+
+      - displayName: Set Incremental Load Options
+        attributeName: setIncrementalLoadOptions
+        type: toggleButton
+        default: false
+        # enableIf: "{% if (parameters.loadType == 'Incremental Load') or (parameters.loadType == 'Reprocess Load') %} true {% else %} false {% endif %}" #
+
+      - type: columnDropdownSelector
+        displayName: Incremental Load Column(date)
+        attributeName: incrementalLoadColumn
+        isRequired: false
+        enableIf: "{% if config.setIncrementalLoadOptions %} true {% else %} false {% endif %}"
+          
+      - displayName: Group Incremental
+        attributeName: groupIncremental
+        type: toggleButton
+        default: false
+        enableIf: "{% if config.setIncrementalLoadOptions %} true {% else %} false {% endif %}"
+
+    - groupName: Record Selection Options
+      items:
+      - displayName: Grouping Type
+        type: dropdownSelector
+        attributeName: groupingType
+        default: "Key Based"
+        options:
+        - Key Based
+        - Range Buckets
+        isRequired: true
+
+      - type: textBox
+        displayName: Number of Groups
+        attributeName: groupCount
+        default: "10"
+        isRequired: true
+        enableIf: "{% if config.groupingType == 'Range Buckets' %} true {% else %} false {% endif %}"
+
+      - type: tabular
+        displayName: 'Bucket Column(s)'
+        attributeName: bucketBy
+        columns:
+      
+        -  type: columnDropdownSelector
+           displayName: Column Name
+           attributeName: buckeyByColumn
+           isRequired: true
+            
+        isRequired: true
+
+      - displayName: Sort Group Data on Load
+        attributeName: sortDataOnLoad
+        type: toggleButton
+        default: false
+
+      - type: tabular
+        displayName: 'Sort Column(s)'
+        attributeName: sortBy
+        columns:
+      
+        -  type: columnDropdownSelector
+           displayName: Column Name
+           attributeName: sortByColumn
+           isRequired: false
+            
+        - displayName: Sort
+          type: dropdownSelector
+          attributeName: sortOrder
+          default: "ASC"
+          options:
+          - ASC
+          - DESC
+          isRequired: false
+
+        isRequired: false
+        enableIf: "{% if config.sortDataOnLoad %} true {% else %} false {% endif %}"
+        
+    - groupName: Group Table Options
+      items:
+      - displayName: Dedicated Load History Table
+        attributeName: dedicatedLoadHistoryTable
+        type: toggleButton
+        default: true
+
+      - displayName: Load History Table Location
+        attributeName: loadHistoryTableLocation
+        type: dropdownSelector
+        default: "Same as Target Table"
+        options:
+        - Same as Target Table
+        - Utility Schema
+        isRequired: false
+
+    - groupName: Hidden Config
+      enableIf: "false"
+      items:
+      - displayName: Type
+        type: materializationSelector
+        default: table
+        options:
+        - table
+        isRequired: false
+
+    systemColumns:
+    - displayName: LOAD_CURRENT_TIMESTAMP
+      transform: 'CURRENT_TIMESTAMP::TIMESTAMP_NTZ(9)'
+      dataType: TIMESTAMP_NTZ(9)
+      placement: end
+      attributeName: loadCurrentTimestamp
+
+
+name: Looped Load
+type: NodeType

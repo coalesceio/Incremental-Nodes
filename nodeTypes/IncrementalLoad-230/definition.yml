@@ -1,0 +1,83 @@
+fileVersion: 1
+id: "230"
+isDisabled: false
+metadata:
+  defaultStorageLocation: null
+  error: null
+  nodeMetadataSpec: |+
+    capitalized: INCREMENTAL LOAD
+    short: INC
+    plural: Incremental
+    tagColor: green
+
+    config:
+    - groupName: Options
+      items:
+
+      - type: materializationSelector
+        default: view
+        options:
+        - view
+        - table
+        isRequired: true
+
+      - displayName: Filter data based on Persistent Table
+        attributeName: refTable
+        type: toggleButton
+        default: false
+        isRequired: false    
+
+      - displayName: Persistent table can be a Persistent stage,Dimension or  Fact node
+        type: label
+        enableIf: "{{config.refTable}}"
+
+      - displayName: Persistent Table location(Storage location in Coalesce)
+        attributeName: persistTableLocation
+        type: textBox
+        default: "ex: TARGET"
+        isRequired: false
+        enableIf: "{{config.refTable}}"
+
+      - displayName: Persistent Table name
+        attributeName: persistTableName
+        type: textBox
+        default: "ex: DIM_ORDERS"
+        isRequired: false
+        enableIf: "{{config.refTable}}"
+
+      - displayName: "Incremental Load Column (date)"
+        attributeName: incColumn
+        type: columnDropdownSelector
+        isRequired: false
+        enableIf: "{{config.refTable}}"
+
+
+    joinTemplate: |
+
+
+      {%- set src = namespace() -%}
+      {%- for dep in sources[0].dependencies -%}
+        FROM
+        {{- ref_raw(dep.node.location.name, dep.node.name) }} "{{ dep.node.name }}"
+        {%- set src.name = dep.node.name -%}
+      {%endfor%}
+      {%- if config.persistTableName | length > 0 -%}
+          {%- set persist = config.persistTableName -%}
+      {%- else -%}
+          {%- if  config.persistTable | length > 0 %}
+            {%- set persist = node.name | replace("INC", config.persistTable) -%}
+          {%- else -%}
+            {%- set persist = node.name | replace("INC_", config.persistTable) -%}
+          {%- endif -%}
+      {%- endif -%}
+      {%- if config.refTable and persist | length > 0 %}
+        WHERE "{{src.name}}"."{{config.incColumn.name}}" > 
+        (SELECT COALESCE(MAX("{{config.incColumn.name}}"), '1900-01-01') 
+                  FROM {{ref_no_link_raw(config.persistTableLocation, persist)}} )
+      {%endif%}
+
+
+
+
+name: Incremental Load
+type: NodeType

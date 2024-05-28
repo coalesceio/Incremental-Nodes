@@ -1,0 +1,38 @@
+{#
+    Copyright (c) 2023 Coalesce. All rights reserved.
+This script and its associated documentation are confidential and proprietary to Coalesce.
+Unauthorized reproduction, distribution, or disclosure of this material is strictly prohibited.
+Coalesce permits you to copy and modify this script for the purposes of using with Coalsce but
+does not permit copying or modification for any other purpose.  
+#}
+{# == Node Type Version        : 1  == #}
+{# == Node Type Name           : Incremental Load  == #}
+{# == Node Type Description    :  This node loads full data into stage table the first time and incremental data in subsequent loads  == #}
+
+{% if node.materializationType == 'table'   %}
+
+  {% set source = sources[0] %}
+
+     {%if config.refTable %}
+  			{{ stage('Truncate Stage Table') }}
+			TRUNCATE IF EXISTS {{ ref_no_link(node.location.name, node.name) }}
+     {%endif%}
+
+ {{ stage('Insert Data') }}
+
+			INSERT INTO {{ ref_no_link(node.location.name, node.name) }}
+				(
+    {% for col in columns if col.name != "_SEQUENCE" %}
+        "{{ col.name }}"
+        {%- if col.description | length > 0 %} COMMENT '{{ col.description | escape }}'{% endif %}
+        {% if not loop.last %}, {% endif %}
+    {% endfor %}
+				)
+		SELECT 
+		  {% for col in source.columns  %}
+    {{ get_source_transform(col) }} AS  "{{ col.name }}" 
+    {%- if not loop.last -%}, {% endif %} 
+   {% endfor %}
+
+   {{ source.join }}
+{% endif %}

@@ -1,0 +1,69 @@
+{#
+    Copyright (c) 2023 Coalesce. All rights reserved.
+This script and its associated documentation are confidential and proprietary to Coalesce.
+Unauthorized reproduction, distribution, or disclosure of this material is strictly prohibited.
+Coalesce permits you to copy and modify this script for the purposes of using with Coalsce but
+does not permit copying or modification for any other purpose.  
+#}
+{# == Node Type Version        : 1  == #}
+{# == Node Type Name           : Run View  == #}
+{# == Node Type Description    : This node creates a view and also runs override create sql for view in the RUN tab.Also uses a parameter to select the sources to load the target view  == #}
+
+{% for test in node.tests if config.testsEnabled %}
+    {% if test.runOrder == 'Before' %}
+        {{ stage('Node tests before not allowed') }}
+        select 1 = 0
+    {% endif %}
+{% endfor %}
+
+    
+{% if node.override.create.enabled %}
+    
+    {{ node.override.create.script }}
+
+{% else %}
+    {{ stage('Create View-Runtime') }}
+    CREATE OR REPLACE VIEW {{ ref_no_link(node.location.name, node.name) }}
+    (
+        {% for col in columns %}
+            "{{ col.name }}"
+            {%- if col.description | length > 0 %} COMMENT '{{ col.description | escape }}'{% endif %}
+            {%- if not loop.last -%}, {% endif %}
+        {% endfor %}
+    )
+    {%- if node.description | length > 0 %} COMMENT = '{{ node.description | escape }}'{% endif %}
+    AS
+    {% for source in sources %}
+        SELECT {% if config.selectDistinct %} DISTINCT {% endif %}
+        {% for col in source.columns %}
+            {{ get_source_transform(col) }} AS "{{ col.name }}"
+            {%- if not loop.last -%}, {% endif %}
+        {% endfor %}
+
+        {{ source.join }}
+
+        {% if not loop.last %}
+            {% if config.insertStrategy in ['UNION', 'UNION ALL'] %}
+                {{ config.insertStrategy }}
+            {% else %}
+                UNION
+            {% endif %}
+        {% endif %}
+    {% endfor %}
+{% endif %}
+
+{% if config.testsEnabled %}
+	{% for test in node.tests %}
+		{% if test.runOrder == 'After' %}
+			{{ test_stage(test.name, test.continueOnFailure) }}
+			{{ test.templateString }}
+        {% endif %}
+	{% endfor %}
+
+	{% for column in columns %}
+		{% for test in column.tests %}
+			{{ test_stage(column.name + ": " + test.name) }}
+			{{ test.templateString }}
+		{% endfor %}
+	{% endfor %}
+{% endif %}

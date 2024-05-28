@@ -1,0 +1,153 @@
+fileVersion: 1
+id: "281"
+isDisabled: false
+metadata:
+  defaultStorageLocation: null
+  error: null
+  nodeMetadataSpec: |
+    capitalized: Run View
+    short: RV
+    plural: Stages
+    tagColor: '#2EB67D'
+
+    deployStrategy: advanced
+
+    config:
+    - groupName: Options
+      items:
+      - type: multisourceToggle
+
+      - type: overrideSQLToggle
+        
+      - displayName: Multi Source Strategy
+        attributeName: insertStrategy
+        type: dropdownSelector
+        default: UNION ALL
+        options:
+        - "UNION ALL"
+        - "UNION"
+        isRequired: true
+        enableIf: "{% if node.isMultisource %} true {% else %} false {% endif %}"
+
+      - displayName: Enable Tests
+        attributeName: testsEnabled
+        type: toggleButton
+        default: true
+      
+      - displayName: Filter data based on Source
+        attributeName: srcTable
+        type: toggleButton
+        default: false
+        isRequired: false  
+      
+      - displayName: Length of suffix of source table
+        attributeName: suffixlength
+        type: textBox
+        default: "ex:1"
+        isRequired: false
+        enableIf: "{{config.srcTable}}"
+
+    - groupName: Increment Options
+      items:
+
+      - displayName: Incremental load based on Persistent Table
+        attributeName: refTable
+        type: toggleButton
+        default: false
+        isRequired: false   
+
+      - displayName: Persistent table can be a Persistent stage,Dimension or  Fact node
+        type: label
+        enableIf: "{{config.refTable}}"
+
+      - displayName: Persistent Table location(Storage location in Coalesce)
+        attributeName: persistTableLocation
+        type: textBox
+        default: "ex: TARGET"
+        isRequired: false
+        enableIf: "{{config.refTable}}"
+
+      - displayName: Persistent Table name
+        attributeName: persistTableName
+        type: textBox
+        default: "ex: DIM_ORDERS"
+        isRequired: false
+        enableIf: "{{config.refTable}}"
+
+      - displayName: "Incremental Load Column (date)"
+        attributeName: incColumn
+        type: columnDropdownSelector
+        isRequired: false
+        enableIf: "{{config.refTable}}"
+
+    - groupName: Hidden Config
+      enableIf: "false"
+      items:
+      - displayName: Type
+        type: materializationSelector
+        default: run view
+        options:
+        - run view
+        isRequired: false
+
+
+
+    joinTemplate: |
+
+      {%- set src = namespace() -%}
+      {%- for dep in sources[0].dependencies -%}
+        FROM
+          {{- ref_raw(dep.node.location.name, dep.node.name) }} "{{ dep.node.name }}"
+        {%- set src.name = dep.node.name -%}
+       {%- endfor -%}
+
+        {%- if config.persistTableName | length > 0 -%}
+          {%- set persist = config.persistTableName -%}
+        {%- else -%}
+          {%- if  config.persistTable | length > 0 -%}
+            {%- set persist = node.name | replace("INC", config.persistTable) -%}
+          {%- else -%}
+            {%- set persist = node.name | replace("INC_", config.persistTable) -%}
+          {%- endif -%}
+        {%- endif -%}
+
+      {%- if config.srcTable -%}
+
+        {%- set suffix = config.suffixlength | int -%}        
+
+        {%raw%}
+        {%- if 'DEPLOY' in parameters.sourcesuffix -%}
+        WHERE 1=0
+        {%- elif 'ALL' not in parameters.sourcesuffix -%} {%endraw %}
+        WHERE '{{src.name[-suffix:]}}' {%raw%} in {{ parameters.sourcesuffix }} 
+        {%endraw%}
+          {% if config.refTable  %}
+            AND  "{{src.name}}"."{{config.incColumn.name}}" > 
+           (SELECT COALESCE(MAX("{{config.incColumn.name}}"), '1900-01-01') 
+                  FROM {{ref_no_link_raw(config.persistTableLocation, persist)}} )
+           
+         {%raw%}
+         {%else%}
+         {%endraw%}
+                 WHERE  "{{src.name}}"."{{config.incColumn.name}}" > 
+           (SELECT COALESCE(MAX("{{config.incColumn.name}}"), '1900-01-01') 
+                  FROM {{ref_no_link_raw(config.persistTableLocation, persist)}} )
+         {%raw%}
+         {%endif%}
+         {%endraw%}
+          {%-else-%}
+                {%raw%}
+              {%endif%}
+              {%endraw%}
+          {%endif%}
+       {%- endif -%}
+       
+        {%-if config.refTable and not config.srcTable -%}
+
+            WHERE  "{{src.name}}"."{{config.incColumn.name}}" > 
+           (SELECT COALESCE(MAX("{{config.incColumn.name}}"), '1900-01-01') 
+                  FROM {{ref_no_link_raw(config.persistTableLocation, persist)}} )
+       {%- endif -%}
+      
+name: Run View
+type: NodeType

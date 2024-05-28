@@ -1,0 +1,99 @@
+fileVersion: 1
+id: 8da25ba2-234b-4892-8e12-54dd514f28b3
+name: RV_COURSES_IT
+operation:
+  config:
+    insertStrategy: UNION ALL
+    refTable: false
+    srcTable: false
+    testsEnabled: true
+  database: ""
+  deployEnabled: true
+  description: ""
+  isMultisource: false
+  locationName: TARGET_DB
+  materializationType: run view
+  metadata:
+    appliedNodeTests: []
+    columns:
+      - appliedColumnTests: {}
+        columnReference:
+          columnCounter: 22459902-cc4e-4d8c-b22c-8812816ff612
+          stepCounter: 8da25ba2-234b-4892-8e12-54dd514f28b3
+        config: {}
+        dataType: NUMBER(38,0)
+        description: ""
+        hashDetails: null
+        name: COURSE_ID
+        nullable: true
+        sourceColumnReferences:
+          - columnReferences:
+              - columnCounter: 027ebf97-05e2-417c-af9d-0ee36d560fc8
+                stepCounter: eb62bc2d-e926-459f-954f-1a3dd956596a
+            transform: ""
+      - appliedColumnTests: {}
+        columnReference:
+          columnCounter: 0bbe63a6-32a3-4929-9790-3c73d906f0a9
+          stepCounter: 8da25ba2-234b-4892-8e12-54dd514f28b3
+        config: {}
+        dataType: VARCHAR(16777216)
+        description: ""
+        hashDetails: null
+        name: COURSE_NAME
+        nullable: true
+        sourceColumnReferences:
+          - columnReferences:
+              - columnCounter: e67ee897-c364-4f7c-85d2-3414e5834aa8
+                stepCounter: eb62bc2d-e926-459f-954f-1a3dd956596a
+            transform: ""
+      - appliedColumnTests: {}
+        columnReference:
+          columnCounter: 849dccde-61d4-4d4d-a77f-c18ab70fb40e
+          stepCounter: 8da25ba2-234b-4892-8e12-54dd514f28b3
+        config: {}
+        dataType: VARCHAR(16777216)
+        description: ""
+        hashDetails: null
+        name: INSTRUCTOR
+        nullable: true
+        sourceColumnReferences:
+          - columnReferences:
+              - columnCounter: 5ea2a767-5d17-4e02-9e89-5c5e12976a38
+                stepCounter: eb62bc2d-e926-459f-954f-1a3dd956596a
+            transform: ""
+      - appliedColumnTests: {}
+        columnReference:
+          columnCounter: 2762a073-f9d9-4615-8bfd-dfc7c23253c7
+          stepCounter: 8da25ba2-234b-4892-8e12-54dd514f28b3
+        config: {}
+        dataType: date
+        description: ""
+        hashDetails: null
+        name: load_date
+        nullable: true
+        sourceColumnReferences:
+          - columnReferences:
+              - columnCounter: 5ea2a767-5d17-4e02-9e89-5c5e12976a38
+                stepCounter: eb62bc2d-e926-459f-954f-1a3dd956596a
+            transform: CURRENT_DATE()
+    cteString: ""
+    enabledColumnTestIDs: []
+    sourceMapping:
+      - aliases:
+          COURSES_IT: eb62bc2d-e926-459f-954f-1a3dd956596a
+        customSQL:
+          customSQL: ""
+        dependencies:
+          - locationName: SOURCE_DATA
+            nodeName: COURSES_IT
+        join:
+          joinCondition: FROM {{ ref('SOURCE_DATA', 'COURSES_IT') }} "COURSES_IT"
+        name: RV_COURSES_IT
+        noLinkRefs: []
+  name: RV_COURSES_IT
+  overrideSQL: false
+  schema: ""
+  sqlType: "281"
+  type: sql
+  version: 1
+type: Node
