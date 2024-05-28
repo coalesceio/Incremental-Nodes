@@ -1,0 +1,74 @@
+{#
+    Copyright (c) 2023 Coalesce. All rights reserved.
+This script and its associated documentation are confidential and proprietary to Coalesce.
+Unauthorized reproduction, distribution, or disclosure of this material is strictly prohibited.
+Coalesce permits you to copy and modify this script for the purposes of using with Coalsce but
+does not permit copying or modification for any other purpose.  
+#}
+{# == Node Type Version        : 1  == #}
+{# == Node Type Name           : Looped Load  == #}
+{# == Node Type Description    : This node creates a target table and group load table == #}
+
+{# Source Object Location and Name #}
+
+{% set sourceStorageLocation = sources[0].dependencies[0].node.location.name %}
+{% set sourceDatabaseName = storageLocations | selectattr('name', 'equalto', sourceStorageLocation) | map(attribute='database') | first %}
+{% set sourceSchemaName = storageLocations | selectattr('name', 'equalto', sourceStorageLocation) | map(attribute='schema') | first %}
+{% set sourceTableName = sources[0].dependencies[0].node.name %}
+{% set fullyQualifiedSourceTableName = '"' + sourceDatabaseName + '"."' + sourceSchemaName + '"."' + sourceTableName + '"' %}
+
+{# Target Load Group Table Name #}
+
+{% if config.dedicatedLoadHistoryTable  %}
+      {% set tableGroupLoadName = node.name + '_TABLE_GROUP_LOAD' %}
+{% else %}
+      {% set tableGroupLoadName = 'TABLE_GROUP_LOAD' %}
+{% endif %}
+
+{# Target Load Group Table Location #}
+
+{% if config.loadHistoryTableLocation == 'Same as Target Table'  %}
+      {% set tableGroupLoadTargetLocationName = node.location.name %}
+{% else %}
+      {% set tableGroupLoadTargetLocationName = parameters.utilitySchema %}
+{% endif %}
+
+{% set tableGroupLoadTargetDatabaseName = storageLocations | selectattr('name', 'equalto', tableGroupLoadTargetLocationName) | map(attribute='database') | first %}
+{% set tableGroupLoadTargetSchemaName = storageLocations | selectattr('name', 'equalto', tableGroupLoadTargetLocationName) | map(attribute='schema') | first %}
+{% set fullyQualifiedtableGroupLoadName = '"' + tableGroupLoadTargetDatabaseName + '"."' + tableGroupLoadTargetSchemaName + '"."' + tableGroupLoadName + '"' %}
+
+{# Target table load #}
+
+{% set fullyQualifiedTargetTableName = ref_no_link(node.location.name, node.name) %}
+
+{{ stage('Create Load Group Table') }}
+CREATE TABLE IF NOT EXISTS {{ fullyQualifiedtableGroupLoadName }}
+      (load_uuid string,
+       group_uuid string,
+       source_table string,
+       target_table string,
+       load_type string,
+       bucket_type string,
+       bucket number,
+       bucket_definition variant,
+       bucket_rows number,
+       process_status number,
+       process_status_description string,
+       record_creation_time timestamp,
+       record_process_time timestamp)
+
+{{ stage('Create Stage Table') }}
+
+CREATE OR REPLACE TABLE {{ ref_no_link(node.location.name, node.name) }}
+(
+      {% for col in columns %}
+            "{{ col.name }}" {{ col.dataType }}
+            {%- if not col.nullable %} NOT NULL
+                  {%- if col.defaultValue | length > 0 %} DEFAULT {{ col.defaultValue }}{% endif %}
+            {% endif %}
+            {%- if col.description | length > 0 %} COMMENT '{{ col.description | escape }}'{% endif %}
+            {%- if not loop.last -%}, {% endif %}
+      {% endfor %}
+)
+{%- if node.description | length > 0 %} COMMENT = '{{ node.description | escape }}'{% endif %}
+
