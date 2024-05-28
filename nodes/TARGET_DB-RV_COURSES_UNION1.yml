@@ -130,7 +130,7 @@ operation:
             nodeName: RV_COURSES_SC
         join:
           joinCondition: |
-
+            
             FROM{{ ref('TARGET_DB', 'RV_COURSES_SC') }} "RV_COURSES_SC"
               {%- if 'DEPLOY' in parameters.sourcesuffix -%}
               WHERE 1=0
