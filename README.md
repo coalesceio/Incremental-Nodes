@@ -429,3 +429,5 @@ This is executed in the below stage:
 
 ## Macros
 [Macros](https://github.com/coalesceio/Incremental-Nodes/blob/main/macros/macro-1.yml)
+
+[<img src="https://github.com/coalesceio/Incremental-Nodes/assets/7216836/140f6d7f-c0fc-4c28-b983-638787488391" alt="Git Logo" height="40">](https://github.com/coalesceio/Incremental-Nodes)
