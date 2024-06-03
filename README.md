@@ -5,7 +5,9 @@ The Coalesce Base Node Types Package includes:
 * [Incremental load](#incremental-load)
 * [Looped Load](#looped-load)
 * [Run view](#run-view)
-* [Code](#code)
+* [Incremental load Code](#incremental-load-code)
+* [Looped Load Code](#looped-load-code)
+* [Run view code](#run-view-code)
 
 ## Incremental Load
 
