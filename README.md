@@ -154,7 +154,6 @@ There are four configs within the **Node Properties** group.
   * Key Based: The incoming source data is grouped based on the bucket column as the key.
   * Range Buckets: The incoming source data is grouped based on the bucket column into different  groups mentioned in 'Number of Buckets' textbox.
   * Number of Buckets: The number of groups based on which data will be divided.
-* **Number of Groups**: [Missing]
 * **Bucket Columns**: Add bucket columns.
 * **Sort Group Data on Load**: True/False toggle that determines whether to add GROUP BY ALL to SQL Query.
 * **Sort Colums**: The Column name and sort order are prompted.
