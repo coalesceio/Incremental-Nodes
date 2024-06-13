@@ -5,13 +5,17 @@ The Coalesce Base Node Types Package includes:
 * [Incremental load](#incremental-load)
 * [Looped Load](#loop-load)
 * [Run view](#run-view)
-* [Code](#code)
+* [Incremental load Code](#incremental-load-code)
+* [Looped Load Code](#looped-load-code)
+* [Run view code](#run-view-code)
 
 <h2 id="incremental-load"> Incremental Load</h2>
 
 The Coalesce Incremental load node is a versatile node that allows you to develop and deploy a Stage table/view in Snowflake where we can perform incremental load in comparison with a persistent table added on top of it.
 
+
 ### Incremental Load Node Configuration
+
 
 The Incremental node type has two configuration groups:
 
@@ -33,8 +37,10 @@ There are four configs within the **Node Properties** group.
 
 <h4 id="incremental-load-options">Incremental Load Options</h4>
 
+
 * **Create As**: Provides option to choose materialization type as `table` or `view`.
 * **Filter data based on Persistent table**: True / False toggle that helps to load incremental load
+
   * True - provides option to perform incremnetal load.
   * False - a normal initial load of data from source is done.
 * **Persistent table location(required)**: The Coalesce storage location.
@@ -107,7 +113,9 @@ The stage executed:
 
 * **Delete View**: Drops the existing stage view from target environment.
 
+
 <h2 id="loop-load"> Loop Load</h2>
+
 
 The Coalesce node Looped Load dynamically groups incoming source data, incrementally if configured, and loads into target data by looping through those groups.
 It creates “load buckets” dynamically based on a selection of table keys and then use those buckets to loop through source data and load into a target.
@@ -167,19 +175,21 @@ There are four configs within the **Node Properties** group.
   * False: Incremental processing is not done
 * **Incremental Load Column(date)**: A date column based on which incremental data is loaded
 * **Group Incremental**: True/False toggle that determines whether to group data into single group or groups specified in the 'number of buckets' textbox.
-  * True:The data is grouped on the number of buckets inputed
-  * False:The data is grouped into a single group
+  * True: The data is grouped on the number of buckets inputed
+  * False: The data is grouped into a single group
 
 ### Looped Load Group Table Options
 
 ![LL-Group table options](https://github.com/coalesceio/Incremental-Nodes/assets/7216836/9f5a1a25-a8f8-44ec-a408-9be5f9c01ee7)
 
 * **Dedicated Load History Table**:
+
   * True: A history table specific to this target table is created by prefixing target table name to `TABLE_GROUP_LOAD`.
   * False: A history table with common name `TABLE_GROUP_LOAD` is created.
 * **Load History Table Location**:
   * Same as Target: The history table is created in the same location as Target table.
   * Utility Schema: The history table is created in the location specified in   `UtilitySchema` parameter.
+
 
 ## Looped Load Parameters
 
@@ -215,7 +225,9 @@ Also a parameter `utilitySchema` can be used to set a target table in a location
 
 ### Looped Load Initial Deployment
 
+
 When deployed for the first time into an environment the Looped load node will execute the following stages:
+
 
 * **Create Load Group Table**: This will execute a CREATE OR REPLACE statement and create a load group table in the target environment.
 * **Create Stage Table**: This will execute a CREATE OR REPLACE statement and create a table in the target environment.
@@ -259,7 +271,9 @@ The parameters are used for selecting which sources to load into the target tabl
 
 The Run View node type has two configuration groups:
 
+
 * [Node Properties](#run-view-properties)
+
 * [Options](#run-view-options)
 
 Go to the node and select the config tab to see the Node Properties and Options.
@@ -414,17 +428,14 @@ This is executed in the below stage:
 * [Run Template](https://github.com/coalesceio/Incremental-Nodes/blob/main/nodeTypes/IncrementalLoad-230/run.sql.j2)
 
 ## Looped Load Code
-
 * [Node definition](https://github.com/coalesceio/Incremental-Nodes/blob/main/nodeTypes/LoopedLoad-278/definition.yml)
 * [Create Template](https://github.com/coalesceio/Incremental-Nodes/blob/main/nodeTypes/LoopedLoad-278/create.sql.j2)
 * [Run Template](https://github.com/coalesceio/Incremental-Nodes/blob/main/nodeTypes/LoopedLoad-278/run.sql.j2)
 
 ## Run View Code
-
 * [Node definition](https://github.com/coalesceio/Incremental-Nodes/blob/main/nodeTypes/RunView-281/definition.yml)
 * [Create Template](https://github.com/coalesceio/Incremental-Nodes/blob/main/nodeTypes/RunView-281/create.sql.j2)
 * [Run Template](https://github.com/coalesceio/Incremental-Nodes/blob/main/nodeTypes/RunView-281/run.sql.j2)
 
 ## Run View Macros
-
 * [Macros](https://github.com/coalesceio/Incremental-Nodes/blob/main/macros/macro-1.yml)
