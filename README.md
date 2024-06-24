@@ -1,6 +1,6 @@
 # Incremental Package
 
-The Coalesce Base Node Types Package includes:
+The Coalesce Incremental Package includes:
 
 * [Incremental load](#incremental-load)
 * [Looped Load](#loop-load)
@@ -41,7 +41,7 @@ There are four configs within the **Node Properties** group.
 * **Create As**: Provides option to choose materialization type as `table` or `view`.
 * **Filter data based on Persistent table**: True / False toggle that helps to load incremental load
 
-  * True - provides option to perform incremnetal load.
+  * True - provides option to perform incremental load.
   * False - a normal initial load of data from source is done.
 * **Persistent table location(required)**: The Coalesce storage location.
 * **Persistent table name(required)**: The table name of the persistent table.
@@ -51,7 +51,7 @@ There are four configs within the **Node Properties** group.
 
 1. Add a source node.
 2. Add the Incremental UDN.
-3. Leave the 'Filter data based on Persistent Table' option set too false.
+3. Leave the 'Filter data based on Persistent Table' option set to False.
 4. Create the node.
 5. Add the Persistent table to the view.
 6. Create and Run the node.
