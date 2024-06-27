@@ -24,7 +24,6 @@ does not permit copying or modification for any other purpose.
 				(
     {% for col in columns if col.name != "_SEQUENCE" %}
         "{{ col.name }}"
-        {%- if col.description | length > 0 %} COMMENT '{{ col.description | escape }}'{% endif %}
         {% if not loop.last %}, {% endif %}
     {% endfor %}
 				)
