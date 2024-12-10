@@ -25,14 +25,14 @@ The Coalesce Incremental load node is a versatile node that allows you to develo
 | **Storage Location** | Storage Location where the WORK will be created. |
 | **Node Type** | Name of template used to create node objects. |
 | **Description** | A description of the node's purpose. |
-| **Deploy Enabled** | - If TRUE the node will be deployed / redeployed when changes are detected.<br>- If FALSE the node will not be deployed or will be dropped during redeployment. |
+| **Deploy Enabled** | - If TRUE the node will be deployed / redeployed when changes are detected.<br/>- If FALSE the node will not be deployed or will be dropped during redeployment. |
 
 #### Incremental Load Options
 
 | **Options** | **Description** |
 |-----------|-----------------|
 | **Create As** | Provides option to choose materialization type as `table` or `view`. |
-| **Filter data based on Persistent table** | - True - provides option to perform incremental load.<br>- False - a normal initial load of data from source is done. |
+| **Filter data based on Persistent table** | - True - provides option to perform incremental load.<br/>- False - a normal initial load of data from source is done. |
 | **Persistent table location(required)** | The Coalesce storage location. |
 | **Persistent table name(required)** | The table name of the persistent table. |
 | **Incremental load column(date)** | A date column based on which incremental data is loaded. |
@@ -133,7 +133,7 @@ It creates "load buckets" dynamically based on a selection of table keys and the
 | **Storage Location** | Storage Location where the WORK will be created. |
 | **Node Type** | Name of template used to create node objects. |
 | **Description** | A description of the node's purpose. |
-| **Deploy Enabled** | - If TRUE the node will be deployed / redeployed when changes are detected.<br>- If FALSE the node will not be deployed or will be dropped during redeployment. |
+| **Deploy Enabled** | - If TRUE the node will be deployed / redeployed when changes are detected.<br/>- If FALSE the node will not be deployed or will be dropped during redeployment. |
 
 #### Looped Load Options
 
@@ -148,16 +148,16 @@ It creates "load buckets" dynamically based on a selection of table keys and the
 
 | **Option** | **Description** |
 |----------|-----------------|
-| **Set Incremental Load Options** | - **True**: Prompts for load column based on which incremental data is loaded<br>- **False**: Incremental processing is not done |
+| **Set Incremental Load Options** | - **True**: Prompts for load column based on which incremental data is loaded<br/>- **False**: Incremental processing is not done |
 | **Incremental Load Column(date)** | A date column based on which incremental data is loaded |
-| **Group Incremental** | - **True**: The data is grouped based on the number of buckets input<br>- **False**: The data is grouped into a single group |
+| **Group Incremental** | - **True**: The data is grouped based on the number of buckets input<br/>- **False**: The data is grouped into a single group |
 
 #### Looped Load Group Table Options
 
 | **Option** | **Description** |
 |----------|-----------------|
-| **Dedicated Load History Table** | - **True**: A history table specific to this target table is created by prefixing target table name to `TABLE_GROUP_LOAD`<br>- **False**: A history table with common name `TABLE_GROUP_LOAD` is created |
-| **Load History Table Location** | - Same as Target: The history table is created in the same location as Target table<br>- Utility Schema: The history table is created in the location specified in `UtilitySchema` parameter |
+| **Dedicated Load History Table** | - **True**: A history table specific to this target table is created by prefixing target table name to `TABLE_GROUP_LOAD`<br/>- **False**: A history table with common name `TABLE_GROUP_LOAD` is created |
+| **Load History Table Location** | - Same as Target: The history table is created in the same location as Target table<br/>- Utility Schema: The history table is created in the location specified in `UtilitySchema` parameter |
 
 ### Looped Load Parameters
 
@@ -258,7 +258,7 @@ The Coalesce Run View is a variant of the basic View node type. In contrast to t
 | **Storage Location** | Storage Location where the WORK will be created. |
 | **Node Type** | Name of template used to create node objects. |
 | **Description** | A description of the node's purpose. |
-| **Deploy Enabled** | - If TRUE the node will be deployed / redeployed when changes are detected.<br>- If FALSE the node will not be deployed or will be dropped during redeployment. |
+| **Deploy Enabled** | - If TRUE the node will be deployed / redeployed when changes are detected.<br/>- If FALSE the node will not be deployed or will be dropped during redeployment. |
 
 #### Run View Options
 
