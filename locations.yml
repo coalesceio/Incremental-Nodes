@@ -1,0 +1,7 @@
+defaultStorageMapping: SOURCE
+fileVersion: 1
+locations:
+  - "1000"
+  - "2000"
+  - SOURCE
+  - TARGET

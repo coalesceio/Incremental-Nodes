@@ -1,0 +1,118 @@
+fileVersion: 1
+id: "394"
+isDisabled: false
+metadata:
+  defaultStorageLocation: null
+  error: null
+  nodeMetadataSpec: |-
+    capitalized: LOOP_CONFIG
+    short: LC
+    plural: Stages
+    tagColor: '#2EB67D'
+
+    deployStrategy: advanced
+
+    config:
+    - groupName: Options
+      items:
+      - type: materializationSelector
+        default: table
+        options:
+        - table
+        - transient table
+        isRequired: true
+
+      - displayName: Storage Mapping ID
+        attributeName: mappingID
+        type: textBox
+        default: 1000,2000
+        isRequired: true
+
+
+
+      - displayName: Batch Load
+        attributeName: batchLoad
+        type: toggleButton
+        default: false
+        isRequired: false  
+
+      - displayName: Batch Size
+        attributeName: batchSize
+        type: textBox
+        default: ""
+        isRequired: false
+        enableIf: "{{config.batchLoad}}"
+        
+
+      - displayName: Persistent table can be a Persistent stage,Dimension or  Fact node
+        type: label
+
+
+      - displayName: Persistent Table location(Storage location in Coalesce)
+        attributeName: persistTableLocation
+        type: textBox
+        default: "TARGET"
+        isRequired: false
+
+
+      - displayName: Persistent Table name
+        attributeName: persistTableName
+        type: textBox
+        default: "PSTG_SITE1"
+        isRequired: false
+
+      - displayName: Persistent Table Column Name
+        attributeName: persistColumnName
+        type: textBox
+        default: "SITEID"
+        isRequired: false
+
+      - displayName: "Incremental Load Column (date)"
+        attributeName: incColumn
+        type: columnDropdownSelector
+        isRequired: false
+
+
+      - displayName: Enable Tests
+        attributeName: testsEnabled
+        type: toggleButton
+        default: true
+          
+      - displayName: Pre-SQL
+        attributeName: preSQL
+        type: textBox
+        syntax: sql
+        isRequired: false
+
+      - displayName: Post-SQL
+        attributeName: postSQL
+        type: textBox
+        syntax: sql
+        isRequired: false
+
+    joinTemplate: |
+      {%- set src = namespace() -%}
+      {%- for dep in sources[0].dependencies -%}
+        FROM
+        {{- ref_raw(dep.node.location.name, dep.node.name) }} "{{ dep.node.name }}"
+        {%- set src.name = dep.node.name -%}
+      {%endfor%}
+      {%- if config.persistTableName | length > 0 -%}
+          {%- set persist = config.persistTableName -%}
+      {%- else -%}
+          {%- if  config.persistTable | length > 0 %}
+            {%- set persist = node.name | replace("INC", config.persistTable) -%}
+          {%- else -%}
+            {%- set persist = node.name | replace("INC_", config.persistTable) -%}
+          {%- endif -%}
+       {%- endif -%}
+        {%- if config.refTable and persist | length > 0 %}
+        INNER JOIN {{- ref_raw('TARGET', 'SITE_MAPPING') }} "SITE_MAPPING"
+        ON <SITEID> = "SITE_MAPPING"."SITEID"
+        WHERE "{{src.name}}"."{{config.incColumn.name}}" > 
+        (SELECT COALESCE(MAX("{{config.incColumn.name}}"), '1900-01-01') 
+        FROM {{ref_no_link_raw(config.persistTableLocation, persist)}}
+        WHERE config.persistColumnName  = <SITEID>)
+        {%endif%}
+name: Loop Config
+type: NodeType
