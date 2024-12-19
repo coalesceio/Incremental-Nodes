@@ -14,13 +14,13 @@ operation:
           values: []
         appliedColumnTests: {}
         columnReference:
-          columnCounter: f8a787a4-3a41-40d7-8e16-f22d77440f3b
+          columnCounter: 67565321-5ddf-4f8f-a7c3-9374852f2e14
           stepCounter: 2ae80d32-f0fe-42f6-a33a-f2f445a31484
         config: {}
-        dataType: NUMBER(4,0)
+        dataType: VARCHAR(2)
         defaultValue: ""
         description: ""
-        name: SITEID
+        name: SITE_NAME
         nullable: true
         primaryKey: false
         sourceColumnReferences:
@@ -33,13 +33,13 @@ operation:
           values: []
         appliedColumnTests: {}
         columnReference:
-          columnCounter: 67565321-5ddf-4f8f-a7c3-9374852f2e14
+          columnCounter: f8a787a4-3a41-40d7-8e16-f22d77440f3b
           stepCounter: 2ae80d32-f0fe-42f6-a33a-f2f445a31484
         config: {}
-        dataType: VARCHAR(2)
+        dataType: VARCHAR(25)
         defaultValue: ""
         description: ""
-        name: SITE_NAME
+        name: SITEID
         nullable: true
         primaryKey: false
         sourceColumnReferences:

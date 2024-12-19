@@ -3,5 +3,7 @@ fileVersion: 1
 locations:
   - "1000"
   - "2000"
+  - "3000"
+  - "4000"
   - SOURCE
   - TARGET

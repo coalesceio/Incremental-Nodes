@@ -5,10 +5,10 @@ metadata:
   defaultStorageLocation: null
   error: null
   nodeMetadataSpec: |-
-    capitalized: LOOP_CONFIG
-    short: LC
-    plural: Stages
-    tagColor: '#2EB67D'
+    capitalized:  Grouped Incremental Load
+    short: GIL
+    plural: Grouped Incremental Load
+    tagColor: '#00ff00'
 
     deployStrategy: advanced
 
@@ -22,13 +22,10 @@ metadata:
         - transient table
         isRequired: true
 
-      - displayName: Storage Mapping ID
+      - displayName: Storage Mapping ID (E.g EDW_DEV, EDW_PROD etc)
         attributeName: mappingID
         type: textBox
-        default: 1000,2000
         isRequired: true
-
-
 
       - displayName: Batch Load
         attributeName: batchLoad
@@ -39,7 +36,7 @@ metadata:
       - displayName: Batch Size
         attributeName: batchSize
         type: textBox
-        default: ""
+        default: 0
         isRequired: false
         enableIf: "{{config.batchLoad}}"
         
@@ -51,51 +48,42 @@ metadata:
       - displayName: Persistent Table location(Storage location in Coalesce)
         attributeName: persistTableLocation
         type: textBox
-        default: "TARGET"
-        isRequired: false
+        isRequired: true
 
 
-      - displayName: Persistent Table name
+      - displayName: Persistent Table name 
         attributeName: persistTableName
         type: textBox
-        default: "PSTG_SITE1"
-        isRequired: false
+        isRequired: true
 
       - displayName: Persistent Table Column Name
         attributeName: persistColumnName
         type: textBox
-        default: "SITEID"
+        isRequired: true
+
+      - displayName: Joining Table Column Name
+        attributeName: joinKeyColumnName
+        type: textBox
         isRequired: false
 
       - displayName: "Incremental Load Column (date)"
         attributeName: incColumn
         type: columnDropdownSelector
-        isRequired: false
-
-
-      - displayName: Enable Tests
-        attributeName: testsEnabled
-        type: toggleButton
-        default: true
-          
-      - displayName: Pre-SQL
-        attributeName: preSQL
-        type: textBox
-        syntax: sql
-        isRequired: false
-
-      - displayName: Post-SQL
-        attributeName: postSQL
-        type: textBox
-        syntax: sql
-        isRequired: false
+        isRequired: true
 
     joinTemplate: |
       {%- set src = namespace() -%}
       {%- for dep in sources[0].dependencies -%}
+        {%- if loop.index == 1 -%}
         FROM
+          {{- ref_raw(dep.node.location.name, dep.node.name) }} "{{ dep.node.name }}"
+          {%- set src.name = dep.node.name -%}
+        {%- else %}
+        INNER JOIN 
         {{- ref_raw(dep.node.location.name, dep.node.name) }} "{{ dep.node.name }}"
-        {%- set src.name = dep.node.name -%}
+        ON {{ dep.node.name }}.{{config.joinKeyColumnName}} = <SITEID> 
+        {%- endif -%}
+
       {%endfor%}
       {%- if config.persistTableName | length > 0 -%}
           {%- set persist = config.persistTableName -%}
@@ -105,14 +93,10 @@ metadata:
           {%- else -%}
             {%- set persist = node.name | replace("INC_", config.persistTable) -%}
           {%- endif -%}
-       {%- endif -%}
-        {%- if config.refTable and persist | length > 0 %}
-        INNER JOIN {{- ref_raw('TARGET', 'SITE_MAPPING') }} "SITE_MAPPING"
-        ON <SITEID> = "SITE_MAPPING"."SITEID"
-        WHERE "{{src.name}}"."{{config.incColumn.name}}" > 
+       {%- endif %}
+          WHERE "{{src.name}}"."{{config.incColumn.name}}" > 
         (SELECT COALESCE(MAX("{{config.incColumn.name}}"), '1900-01-01') 
         FROM {{ref_no_link_raw(config.persistTableLocation, persist)}}
-        WHERE config.persistColumnName  = <SITEID>)
-        {%endif%}
-name: Loop Config
+        WHERE {{config.persistColumnName}}  = <SITEID>)
+name: Grouped Incremental Load
 type: NodeType
