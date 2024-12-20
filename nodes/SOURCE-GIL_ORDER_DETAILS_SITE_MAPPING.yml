@@ -3,8 +3,8 @@ id: 9578a7dd-baee-4e37-a2b0-b28cf14170ec
 name: GIL_ORDER_DETAILS_SITE_MAPPING
 operation:
   config:
-    batchLoad: false
-    batchSize: 0
+    batchLoad: true
+    batchSize: "3"
     incColumn:
       columnCounter: 29d341d7-8404-46e2-8d8c-bed105e1e091
       stepCounter: 9578a7dd-baee-4e37-a2b0-b28cf14170ec
@@ -15,7 +15,7 @@ operation:
     persistTableName: PSTG_SITE1
   database: ""
   deployEnabled: true
-  description: ""
+  description: This is grouped incremental load table
   isMultisource: false
   locationName: SOURCE
   materializationType: table
@@ -289,7 +289,7 @@ operation:
             nodeName: SITE_MAPPING
         join:
           joinCondition: |-
-            FROM {{ ref('TARGET', 'ORDER_DETAILS') }} "ORDER_DETAILS"
+            FROM{{ ref('TARGET', 'ORDER_DETAILS') }} "ORDER_DETAILS"
               INNER JOIN{{ ref('TARGET', 'SITE_MAPPING') }} "SITE_MAPPING"
               ON SITE_MAPPING.SITEID = <SITEID>
                 WHERE "ORDER_DETAILS"."L_LOAD_TIMESTAMP" > 
