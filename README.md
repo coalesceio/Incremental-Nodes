@@ -9,6 +9,7 @@ The Coalesce Incremental Package includes:
 * [Looped Load Code](#looped-load-code)
 * [Run view code](#run-view-code)
 * [Grouped Incremental load](#grouped-incremental-load)
+* [Code](#code)
 
 ## Incremental Load
 
@@ -525,6 +526,6 @@ If a Grouped Incremental load node of materialization type view is deleted from 
 
 #### Grouped Incremental Load Code
 
-* [Node definition](https://github.com/coalesceio/Incremental-Nodes/blob/main/nodeTypes/IncrementalLoad-230/definition.yml)
-* [Create Template](https://github.com/coalesceio/Incremental-Nodes/blob/main/nodeTypes/IncrementalLoad-230/create.sql.j2)
-* [Run Template](https://github.com/coalesceio/Incremental-Nodes/blob/main/nodeTypes/IncrementalLoad-230/run.sql.j2)
+* [Node definition](https://github.com/coalesceio/Incremental-Nodes/tree/main/nodeTypes/GroupedIncrementalLoad-394/definition.yml)
+* [Create Template](https://github.com/coalesceio/Incremental-Nodes/tree/main/nodeTypes/GroupedIncrementalLoad-394/create.sql.j2)
+* [Run Template](https://github.com/coalesceio/Incremental-Nodes/tree/main/nodeTypes/GroupedIncrementalLoad-394/run.sql.j2)
