@@ -178,20 +178,6 @@ operation:
             transform: ""
       - appliedColumnTests: {}
         columnReference:
-          columnCounter: 50366e0d-2712-4dfd-a266-20b30ce1c738
-          stepCounter: c4c33297-b3e2-44ff-ad89-bc31465d1e5e
-        config: {}
-        dataType: DATE
-        description: ""
-        name: L_SHIPDATE
-        nullable: true
-        sourceColumnReferences:
-          - columnReferences:
-              - columnCounter: 4cbd079f-8aa1-4750-8c0f-f514014b1a0e
-                stepCounter: 069a1a62-acb9-4041-8d35-b20415c2059f
-            transform: ""
-      - appliedColumnTests: {}
-        columnReference:
           columnCounter: cbc2a8ef-70c6-4832-ad4e-509617eb3fbe
           stepCounter: c4c33297-b3e2-44ff-ad89-bc31465d1e5e
         config: {}
