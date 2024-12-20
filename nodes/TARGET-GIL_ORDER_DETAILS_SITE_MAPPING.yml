@@ -1,59 +1,31 @@
 fileVersion: 1
-id: 5ebfc59e-f3f7-4fa9-a200-836cade9669b
-name: GIL_SITE_MAPPING_ORDER_DETAILS_RENAME
+id: 0cf2fc22-f97a-4249-a722-950793341166
+name: GIL_ORDER_DETAILS_SITE_MAPPING
 operation:
   config:
-    batchLoad: false
-    batchSize: 0
+    batchLoad: true
+    batchSize: "2"
     incColumn:
-      columnCounter: e167d704-b8b9-4028-b7f8-0a089cbc0c9e
-      stepCounter: 5ebfc59e-f3f7-4fa9-a200-836cade9669b
+      columnCounter: 1f911c65-f711-436d-87d7-ee00b9ac9e77
+      stepCounter: 0cf2fc22-f97a-4249-a722-950793341166
     joinKeyColumnName: SITEID
-    mappingID: 1000,2000
+    mappingID: 1000,2000,3000,4000,TARGET
     persistColumnName: SITEID
     persistTableLocation: TARGET
-    persistTableName: PSTG_SITE1
+    persistTableName: PSTG_ORDER_DETAILS_SITE_MAPPING
   database: ""
-  deployEnabled: false
-  description: This is column description
+  deployEnabled: true
+  description: ""
   isMultisource: false
-  locationName: SOURCE
+  locationName: TARGET
   materializationType: table
   metadata:
     appliedNodeTests: []
     columns:
       - appliedColumnTests: {}
         columnReference:
-          columnCounter: c484c315-1021-4595-b228-bcef27905a8f
-          stepCounter: 5ebfc59e-f3f7-4fa9-a200-836cade9669b
-        config: {}
-        dataType: VARCHAR(2)
-        description: ""
-        name: SITE_NAME
-        nullable: true
-        sourceColumnReferences:
-          - columnReferences:
-              - columnCounter: 67565321-5ddf-4f8f-a7c3-9374852f2e14
-                stepCounter: 2ae80d32-f0fe-42f6-a33a-f2f445a31484
-            transform: ""
-      - appliedColumnTests: {}
-        columnReference:
-          columnCounter: 2e496923-403d-4799-ba51-64aa8ac95576
-          stepCounter: 5ebfc59e-f3f7-4fa9-a200-836cade9669b
-        config: {}
-        dataType: VARCHAR(25)
-        description: ""
-        name: SITEID
-        nullable: true
-        sourceColumnReferences:
-          - columnReferences:
-              - columnCounter: f8a787a4-3a41-40d7-8e16-f22d77440f3b
-                stepCounter: 2ae80d32-f0fe-42f6-a33a-f2f445a31484
-            transform: ""
-      - appliedColumnTests: {}
-        columnReference:
-          columnCounter: daf98143-5faa-4114-9dce-18806affc8c6
-          stepCounter: 5ebfc59e-f3f7-4fa9-a200-836cade9669b
+          columnCounter: a6b3ba90-d91a-4581-a08a-5cad2c714717
+          stepCounter: 0cf2fc22-f97a-4249-a722-950793341166
         config: {}
         dataType: NUMBER(38,0)
         description: ""
@@ -66,8 +38,8 @@ operation:
             transform: ""
       - appliedColumnTests: {}
         columnReference:
-          columnCounter: 522eabe0-1172-4666-a8a6-0a74c800ffbc
-          stepCounter: 5ebfc59e-f3f7-4fa9-a200-836cade9669b
+          columnCounter: 1c40251e-7cc7-4e1b-aa06-b56fe2c8d6dc
+          stepCounter: 0cf2fc22-f97a-4249-a722-950793341166
         config: {}
         dataType: NUMBER(38,0)
         description: ""
@@ -80,8 +52,8 @@ operation:
             transform: ""
       - appliedColumnTests: {}
         columnReference:
-          columnCounter: 8e528fd6-48b5-4179-ba37-6ff3da9ba772
-          stepCounter: 5ebfc59e-f3f7-4fa9-a200-836cade9669b
+          columnCounter: 9bb16ab5-7ff0-4f69-9661-4036cb3dd0eb
+          stepCounter: 0cf2fc22-f97a-4249-a722-950793341166
         config: {}
         dataType: NUMBER(38,0)
         description: ""
@@ -94,12 +66,12 @@ operation:
             transform: ""
       - appliedColumnTests: {}
         columnReference:
-          columnCounter: 26548cf7-0891-4e1d-884e-97828b91dbea
-          stepCounter: 5ebfc59e-f3f7-4fa9-a200-836cade9669b
+          columnCounter: f70b9d9c-05d7-42b1-957d-91f05c47790b
+          stepCounter: 0cf2fc22-f97a-4249-a722-950793341166
         config: {}
-        dataType: NUMBER(10,2)
+        dataType: NUMBER(12,2)
         description: ""
-        name: L_QUANTITY_NEW
+        name: L_QUANTITY
         nullable: true
         sourceColumnReferences:
           - columnReferences:
@@ -108,8 +80,8 @@ operation:
             transform: ""
       - appliedColumnTests: {}
         columnReference:
-          columnCounter: 340834e8-e4f9-4bf5-acb1-2debd51d321e
-          stepCounter: 5ebfc59e-f3f7-4fa9-a200-836cade9669b
+          columnCounter: a11f315e-5a78-4ed8-8d7c-b5d055e8ace6
+          stepCounter: 0cf2fc22-f97a-4249-a722-950793341166
         config: {}
         dataType: NUMBER(12,2)
         description: ""
@@ -122,8 +94,8 @@ operation:
             transform: ""
       - appliedColumnTests: {}
         columnReference:
-          columnCounter: 57b08426-2355-43e6-b265-d42c387c7415
-          stepCounter: 5ebfc59e-f3f7-4fa9-a200-836cade9669b
+          columnCounter: 8c2db096-0381-4d0e-9d89-af4b8b2a75a5
+          stepCounter: 0cf2fc22-f97a-4249-a722-950793341166
         config: {}
         dataType: NUMBER(12,2)
         description: ""
@@ -136,8 +108,8 @@ operation:
             transform: ""
       - appliedColumnTests: {}
         columnReference:
-          columnCounter: e3303ff0-38b9-4aed-abae-6f3f2fb116bc
-          stepCounter: 5ebfc59e-f3f7-4fa9-a200-836cade9669b
+          columnCounter: 5f7097b3-d4eb-4266-9219-621f4c913575
+          stepCounter: 0cf2fc22-f97a-4249-a722-950793341166
         config: {}
         dataType: NUMBER(12,2)
         description: ""
@@ -150,8 +122,8 @@ operation:
             transform: ""
       - appliedColumnTests: {}
         columnReference:
-          columnCounter: 73889290-28eb-4a93-a9a2-b943a3445e75
-          stepCounter: 5ebfc59e-f3f7-4fa9-a200-836cade9669b
+          columnCounter: 31dfce50-d9b7-49d4-9ceb-539c60928e84
+          stepCounter: 0cf2fc22-f97a-4249-a722-950793341166
         config: {}
         dataType: VARCHAR(1)
         description: ""
@@ -164,8 +136,8 @@ operation:
             transform: ""
       - appliedColumnTests: {}
         columnReference:
-          columnCounter: cb32b415-33d9-43dc-a782-90b2f8de4ea3
-          stepCounter: 5ebfc59e-f3f7-4fa9-a200-836cade9669b
+          columnCounter: 3f282200-9ea8-468a-8a27-30a1cc687522
+          stepCounter: 0cf2fc22-f97a-4249-a722-950793341166
         config: {}
         dataType: VARCHAR(1)
         description: ""
@@ -178,8 +150,8 @@ operation:
             transform: ""
       - appliedColumnTests: {}
         columnReference:
-          columnCounter: 2a3a7a6a-9d2c-42b8-b653-2ac2ff6b788b
-          stepCounter: 5ebfc59e-f3f7-4fa9-a200-836cade9669b
+          columnCounter: 58f72109-fe6f-4873-bc95-ec4dc079f0c3
+          stepCounter: 0cf2fc22-f97a-4249-a722-950793341166
         config: {}
         dataType: DATE
         description: ""
@@ -192,13 +164,13 @@ operation:
             transform: ""
       - appliedColumnTests: {}
         columnReference:
-          columnCounter: 48263f69-a647-4c04-b68c-89ad98089e2f
-          stepCounter: 5ebfc59e-f3f7-4fa9-a200-836cade9669b
+          columnCounter: 5615de99-b1fb-4824-b399-04689f8e9ad4
+          stepCounter: 0cf2fc22-f97a-4249-a722-950793341166
         config: {}
         dataType: DATE
         description: ""
         name: L_COMMITDATE
-        nullable: false
+        nullable: true
         sourceColumnReferences:
           - columnReferences:
               - columnCounter: 01a9d573-aab9-4333-8807-e4f153f1f465
@@ -206,11 +178,11 @@ operation:
             transform: ""
       - appliedColumnTests: {}
         columnReference:
-          columnCounter: 76ca0132-0451-47e4-8550-6c0440ae8f6b
-          stepCounter: 5ebfc59e-f3f7-4fa9-a200-836cade9669b
+          columnCounter: 31cb6129-f438-4a6d-beca-73f3ea883016
+          stepCounter: 0cf2fc22-f97a-4249-a722-950793341166
         config: {}
         dataType: DATE
-        description: This is column description
+        description: ""
         name: L_RECEIPTDATE
         nullable: true
         sourceColumnReferences:
@@ -220,8 +192,8 @@ operation:
             transform: ""
       - appliedColumnTests: {}
         columnReference:
-          columnCounter: 36c5faf7-530b-4308-bfc6-682fa353e5bb
-          stepCounter: 5ebfc59e-f3f7-4fa9-a200-836cade9669b
+          columnCounter: c5d80598-8637-4a49-8d4b-885f046b7c0b
+          stepCounter: 0cf2fc22-f97a-4249-a722-950793341166
         config: {}
         dataType: VARCHAR(25)
         description: ""
@@ -234,22 +206,8 @@ operation:
             transform: ""
       - appliedColumnTests: {}
         columnReference:
-          columnCounter: 27db4a62-2af5-49ea-814d-40b990a0adc9
-          stepCounter: 5ebfc59e-f3f7-4fa9-a200-836cade9669b
-        config: {}
-        dataType: VARCHAR(44)
-        description: ""
-        name: L_COMMENT
-        nullable: true
-        sourceColumnReferences:
-          - columnReferences:
-              - columnCounter: 1c643143-a035-4c71-84ae-a0e244ed1e87
-                stepCounter: 069a1a62-acb9-4041-8d35-b20415c2059f
-            transform: ""
-      - appliedColumnTests: {}
-        columnReference:
-          columnCounter: 3e96e25c-cec4-476d-b822-3987f6af7244
-          stepCounter: 5ebfc59e-f3f7-4fa9-a200-836cade9669b
+          columnCounter: 4422dbda-0aef-4741-afa0-107a4f153447
+          stepCounter: 0cf2fc22-f97a-4249-a722-950793341166
         config: {}
         dataType: VARCHAR(10)
         description: ""
@@ -262,8 +220,22 @@ operation:
             transform: ""
       - appliedColumnTests: {}
         columnReference:
-          columnCounter: e167d704-b8b9-4028-b7f8-0a089cbc0c9e
-          stepCounter: 5ebfc59e-f3f7-4fa9-a200-836cade9669b
+          columnCounter: b57b60b8-564c-471a-8bd1-02d43dca5952
+          stepCounter: 0cf2fc22-f97a-4249-a722-950793341166
+        config: {}
+        dataType: VARCHAR(44)
+        description: ""
+        name: L_COMMENT
+        nullable: true
+        sourceColumnReferences:
+          - columnReferences:
+              - columnCounter: 1c643143-a035-4c71-84ae-a0e244ed1e87
+                stepCounter: 069a1a62-acb9-4041-8d35-b20415c2059f
+            transform: ""
+      - appliedColumnTests: {}
+        columnReference:
+          columnCounter: 1f911c65-f711-436d-87d7-ee00b9ac9e77
+          stepCounter: 0cf2fc22-f97a-4249-a722-950793341166
         config: {}
         dataType: TIMESTAMP_LTZ(9)
         description: ""
@@ -273,6 +245,34 @@ operation:
           - columnReferences:
               - columnCounter: 3da25604-fdfb-40b9-b6db-4bcab3055285
                 stepCounter: 069a1a62-acb9-4041-8d35-b20415c2059f
+            transform: ""
+      - appliedColumnTests: {}
+        columnReference:
+          columnCounter: 01da2745-0c9b-4dde-90ec-a92aa7cbadf4
+          stepCounter: 0cf2fc22-f97a-4249-a722-950793341166
+        config: {}
+        dataType: VARCHAR(2)
+        description: ""
+        name: SITE_NAME
+        nullable: true
+        sourceColumnReferences:
+          - columnReferences:
+              - columnCounter: 67565321-5ddf-4f8f-a7c3-9374852f2e14
+                stepCounter: 2ae80d32-f0fe-42f6-a33a-f2f445a31484
+            transform: ""
+      - appliedColumnTests: {}
+        columnReference:
+          columnCounter: c2cadff1-7f18-4821-bf08-59be3dfbea91
+          stepCounter: 0cf2fc22-f97a-4249-a722-950793341166
+        config: {}
+        dataType: VARCHAR(25)
+        description: ""
+        name: SITEID
+        nullable: true
+        sourceColumnReferences:
+          - columnReferences:
+              - columnCounter: f8a787a4-3a41-40d7-8e16-f22d77440f3b
+                stepCounter: 2ae80d32-f0fe-42f6-a33a-f2f445a31484
             transform: ""
     cteString: ""
     enabledColumnTestIDs: []
@@ -294,13 +294,13 @@ operation:
               ON SITE_MAPPING.SITEID = <SITEID>
                 WHERE "ORDER_DETAILS"."L_LOAD_TIMESTAMP" > 
               (SELECT COALESCE(MAX("L_LOAD_TIMESTAMP"), '1900-01-01') 
-              FROM {{ ref_no_link('TARGET', 'PSTG_SITE1') }}
+              FROM {{ ref_no_link('TARGET', 'PSTG_ORDER_DETAILS_SITE_MAPPING') }}
               WHERE SITEID  = <SITEID>)
-        name: GIL_SITE_MAPPING_ORDER_DETAILS_RENAME
+        name: GIL_ORDER_DETAILS_SITE_MAPPING
         noLinkRefs:
           - locationName: TARGET
-            nodeName: PSTG_SITE1
-  name: GIL_SITE_MAPPING_ORDER_DETAILS_RENAME
+            nodeName: PSTG_ORDER_DETAILS_SITE_MAPPING
+  name: GIL_ORDER_DETAILS_SITE_MAPPING
   overrideSQL: false
   schema: ""
   sqlType: "394"
