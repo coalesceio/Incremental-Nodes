@@ -388,7 +388,7 @@ operation:
   name: PSTG_SITE1
   overrideSQL: false
   schema: ""
-  sqlType: persistentStage
+  sqlType: "403"
   type: sql
   version: 1
 type: Node
