@@ -71,7 +71,7 @@ operation:
         config: {}
         dataType: NUMBER(12,2)
         description: ""
-        name: L_QUANTITY
+        name: L_QUANTITY_NEW
         nullable: true
         sourceColumnReferences:
           - columnReferences:
