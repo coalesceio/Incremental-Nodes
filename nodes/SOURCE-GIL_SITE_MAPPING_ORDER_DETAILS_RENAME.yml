@@ -15,7 +15,7 @@ operation:
     persistTableName: PSTG_SITE1
   database: ""
   deployEnabled: true
-  description: ""
+  description: This is column description
   isMultisource: false
   locationName: SOURCE
   materializationType: table
@@ -97,7 +97,7 @@ operation:
           columnCounter: 26548cf7-0891-4e1d-884e-97828b91dbea
           stepCounter: 5ebfc59e-f3f7-4fa9-a200-836cade9669b
         config: {}
-        dataType: NUMBER(12,2)
+        dataType: NUMBER(10,2)
         description: ""
         name: L_QUANTITY_NEW
         nullable: true
@@ -198,7 +198,7 @@ operation:
         dataType: DATE
         description: ""
         name: L_COMMITDATE
-        nullable: true
+        nullable: false
         sourceColumnReferences:
           - columnReferences:
               - columnCounter: 01a9d573-aab9-4333-8807-e4f153f1f465
@@ -210,7 +210,7 @@ operation:
           stepCounter: 5ebfc59e-f3f7-4fa9-a200-836cade9669b
         config: {}
         dataType: DATE
-        description: ""
+        description: This is column description
         name: L_RECEIPTDATE
         nullable: true
         sourceColumnReferences:
@@ -223,27 +223,13 @@ operation:
           columnCounter: 36c5faf7-530b-4308-bfc6-682fa353e5bb
           stepCounter: 5ebfc59e-f3f7-4fa9-a200-836cade9669b
         config: {}
-        dataType: VARCHAR(125)
+        dataType: VARCHAR(25)
         description: ""
         name: L_SHIPINSTRUCT
         nullable: true
         sourceColumnReferences:
           - columnReferences:
               - columnCounter: 23a6ab19-b518-4c7f-befb-f47e457cf52c
-                stepCounter: 069a1a62-acb9-4041-8d35-b20415c2059f
-            transform: ""
-      - appliedColumnTests: {}
-        columnReference:
-          columnCounter: 3e96e25c-cec4-476d-b822-3987f6af7244
-          stepCounter: 5ebfc59e-f3f7-4fa9-a200-836cade9669b
-        config: {}
-        dataType: VARCHAR(10)
-        description: ""
-        name: L_SHIPMODE
-        nullable: true
-        sourceColumnReferences:
-          - columnReferences:
-              - columnCounter: d6341267-24b4-48d9-a743-47937601959a
                 stepCounter: 069a1a62-acb9-4041-8d35-b20415c2059f
             transform: ""
       - appliedColumnTests: {}
@@ -258,6 +244,20 @@ operation:
         sourceColumnReferences:
           - columnReferences:
               - columnCounter: 1c643143-a035-4c71-84ae-a0e244ed1e87
+                stepCounter: 069a1a62-acb9-4041-8d35-b20415c2059f
+            transform: ""
+      - appliedColumnTests: {}
+        columnReference:
+          columnCounter: 3e96e25c-cec4-476d-b822-3987f6af7244
+          stepCounter: 5ebfc59e-f3f7-4fa9-a200-836cade9669b
+        config: {}
+        dataType: VARCHAR(10)
+        description: ""
+        name: L_SHIPMODE
+        nullable: true
+        sourceColumnReferences:
+          - columnReferences:
+              - columnCounter: d6341267-24b4-48d9-a743-47937601959a
                 stepCounter: 069a1a62-acb9-4041-8d35-b20415c2059f
             transform: ""
       - appliedColumnTests: {}
