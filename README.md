@@ -8,6 +8,7 @@ The Coalesce Incremental Package includes:
 * [Incremental load Code](#incremental-load-code)
 * [Looped Load Code](#looped-load-code)
 * [Run view code](#run-view-code)
+* [Grouped Incremental load](#grouped-incremental-load)
 
 ## Incremental Load
 
@@ -386,6 +387,117 @@ This is executed in the below stage:
 
 * **Delete View**
 
+## Grouped Incremental Load
+
+The Coalesce Grouped Incremental load node is a versatile node that allows you to develop and deploy a Stage table/Transient Table in Snowflake where we can perform Grouped Incremental load from different storage locations with a persistent table added on top of it.
+
+### Grouped Incremental Load Node Configuration
+
+* [Node Properties](#grouped-incremental-load-node-properties)
+* [Options](#grouped-incremental-load-options)
+
+#### Grouped Incremental Load Node Properties
+
+| **Property** | **Description** |
+|-------------|-----------------|
+| **Storage Location** | Storage Location where the WORK will be created. |
+| **Node Type** | Name of template used to create node objects. |
+| **Description** | A description of the node's purpose. |
+| **Deploy Enabled** | - If TRUE the node will be deployed / redeployed when changes are detected.<br/>- If FALSE the node will not be deployed or will be dropped during redeployment. |
+
+#### Grouped Incremental Load Options
+
+| **Options** | **Description** |
+|-----------|-----------------|
+| **Create As** | Provides option to choose materialization type as `table` or `transient table`. |
+| **Storage Mapping ID** | Provides option enter storage locations defined in Coalesce separated by comma(E.g EDW_RAW,EDW_PA). |
+| **Batch Load** | - True - provides option to perform data loading in batches.<br/>- False - a normal load of data from each storage location is done. |
+| **Persistent table location(required)** | The Coalesce storage location of Persistent table. |
+| **Persistent table name(required)** | The table name of the persistent table. |
+| **Persistent table Column Name(required)** | The column name of the persistent table which represents the storage location id. |
+| **Joining Table Column Name(optional)** | The column name of the table which will be joined with main table. |
+| **Grouped Incremental load column(date)** | A date column based on which grouped incremental data is loaded. |
+
+## Grouped Incremental Load Example Workflow
+
+1. Add a source node.
+2. Add the Grouped Incremental UDN.
+3. Add Storage Mapping ID seprated by comma.
+3. Leave the 'Batch Load' option set to False.
+4. Enter Persistent Table location
+5. Enter Persistent Table name 
+6. Enter Persistent Table Column Name 
+7. Enter Joining Table Column Name if join is present
+8. Select Incremental Load Column
+9. Generate join, use the 'Copy To Editor' to add the new join, including sub-select..
+10.Create and Run the node.
+
+
+### Grouped Incremental Load Deployment
+
+#### Grouped Incremental Load Initial Deployment
+
+When deployed for the first time into an environment the Grouped Incremental load node of materialization type table will execute the Create State Table.
+
+| **Stage** | **Description** |
+|----------|-----------------|
+| **Create Stage Table** | This will execute a CREATE OR REPLACE statement and create a table in the target environment. When deployed for the first time into an environment the Work node of materialization type view will execute the Create Stage View. |
+| **Create Stage View** | This will execute a CREATE OR REPLACE statement and create a view in the target environment. |
+
+#### Grouped Incremental Load Redeployment
+
+After the Grouped Incremental Load  has been deployed for the first time into a target environment, subsequent deployments with column level changes or table level changes may result in altering the target Table.
+
+#### Grouped Incremental Load Altering the Stage Tables
+
+There are few column or table changes if made in isolation or all-together will result in an ALTER statement to modify the Work Table in the target environment.
+
+* Changing the table name
+* Dropping an existing column
+* Altering Column data type
+* Adding a new column
+
+The following stages are executed:
+
+| **Stage** | **Description** |
+|----------|-----------------|
+| **Clone Table** | Creates an internal table. |
+| **Rename Table \| Alter Column \| Delete Column \| Add Column \| Edit table description** | Alter table statement is executed to perform the alter operation. |
+| **Swap cloned Table** | Upon successful completion of all updates, the clone replaces the main table ensuring that no data is lost. |
+| **Delete Table** | Drops the internal table. |
+
+#### Grouped Incremental Load Altering the Transient Tables
+
+There are few column or table changes if made in isolation or all-together will result in an ALTER statement to modify the table in the target environment.
+
+* Changing the table name
+* Dropping an existing column
+* Altering Column data type
+* Adding a new column
+
+The following stages are executed:
+
+| **Stage** | **Description** |
+|----------|-----------------|
+| **Clone Table** | Creates an internal table. |
+| **Rename Table \| Alter Column \| Delete Column \| Add Column \| Edit table description** | Alter table statement is executed to perform the alter operation. |
+| **Swap cloned Table** | Upon successful completion of all updates, the clone replaces the main table ensuring that no data is lost. |
+| **Delete Table** | Drops the internal table. |
+
+
+### Grouped Incremental Load Undeployment
+
+If a Grouped Incremental load node of materialization type table is deleted from a Workspace, that Workspace is committed to Git and that commit deployed to a higher level environment then the stage table in the target environment will be dropped.
+
+This is executed in two stages:
+
+| **Stage** | **Description** |
+|----------|-----------------|
+| **Delete Table** | Coalesce Internal table is dropped. |
+| **Delete Table** | Target table in Snowflake is dropped. |
+
+If a Grouped Incremental load node of materialization type view is deleted from a Workspace, that Workspace is committed to Git and that commit deployed to a higher level environment then the StageView in the target environment will be dropped.
+
 
 ### Code
 
@@ -410,3 +522,9 @@ This is executed in the below stage:
 #### Run View Macros
 
 * [Macros](https://github.com/coalesceio/Incremental-Nodes/blob/main/macros/macro-1.yml)
+
+#### Grouped Incremental Load Code
+
+* [Node definition](https://github.com/coalesceio/Incremental-Nodes/blob/main/nodeTypes/IncrementalLoad-230/definition.yml)
+* [Create Template](https://github.com/coalesceio/Incremental-Nodes/blob/main/nodeTypes/IncrementalLoad-230/create.sql.j2)
+* [Run Template](https://github.com/coalesceio/Incremental-Nodes/blob/main/nodeTypes/IncrementalLoad-230/run.sql.j2)
