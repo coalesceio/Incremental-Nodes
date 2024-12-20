@@ -1,0 +1,23 @@
+fileVersion: 1
+id: "339"
+mappingDefinitions:
+  "1000":
+    database: POONAMM_DEV
+    schema: EDW_QA_3
+  "2000":
+    database: POONAMM_DEV
+    schema: EDW_QA_3
+  "3000":
+    database: POONAMM_DEV
+    schema: EDW_QA_3
+  "4000":
+    database: POONAMM_DEV
+    schema: EDW_QA_3
+  SOURCE:
+    database: POONAMM_DEV
+    schema: EDW_QA_3
+  TARGET:
+    database: POONAMM_DEV
+    schema: EDW_QA_3
+name: EDW_QA_3
+type: Environment
