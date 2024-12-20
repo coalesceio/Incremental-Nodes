@@ -1,6 +1,6 @@
 fileVersion: 1
 id: c4c33297-b3e2-44ff-ad89-bc31465d1e5e
-name: GIL_SITE_MAPPING_ORDER_DETAILS_TRANSIENT
+name: GIL_SITE_MAPPING_ORDER_DETAILS_TRANSIENT_R
 operation:
   config:
     batchLoad: false
@@ -282,11 +282,11 @@ operation:
               (SELECT COALESCE(MAX("L_LOAD_TIMESTAMP"), '1900-01-01') 
               FROM {{ ref_no_link('TARGET', 'PSTG_SITE1') }}
               WHERE SITEID  = <SITEID>)
-        name: GIL_SITE_MAPPING_ORDER_DETAILS_TRANSIENT
+        name: GIL_SITE_MAPPING_ORDER_DETAILS_TRANSIENT_R
         noLinkRefs:
           - locationName: TARGET
             nodeName: PSTG_SITE1
-  name: GIL_SITE_MAPPING_ORDER_DETAILS_TRANSIENT
+  name: GIL_SITE_MAPPING_ORDER_DETAILS_TRANSIENT_R
   overrideSQL: false
   schema: ""
   sqlType: "394"
