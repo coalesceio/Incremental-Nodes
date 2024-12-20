@@ -15,7 +15,7 @@ operation:
     persistTableName: PSTG_SITE1
   database: ""
   deployEnabled: true
-  description: ""
+  description: This is table description
   isMultisource: false
   locationName: SOURCE
   materializationType: transient table
@@ -99,7 +99,7 @@ operation:
         config: {}
         dataType: NUMBER(12,2)
         description: ""
-        name: L_QUANTITY
+        name: L_QUANTITY_NEW
         nullable: true
         sourceColumnReferences:
           - columnReferences:
@@ -128,7 +128,7 @@ operation:
         dataType: NUMBER(12,2)
         description: ""
         name: L_DISCOUNT
-        nullable: true
+        nullable: false
         sourceColumnReferences:
           - columnReferences:
               - columnCounter: bbbfb538-1d6f-496a-b4ca-8f24871b3d65
@@ -139,7 +139,7 @@ operation:
           columnCounter: 0933c4d2-0109-4a07-ad90-ecbee357fe51
           stepCounter: c4c33297-b3e2-44ff-ad89-bc31465d1e5e
         config: {}
-        dataType: NUMBER(12,2)
+        dataType: NUMBER(38,2)
         description: ""
         name: L_TAX
         nullable: true
@@ -168,7 +168,7 @@ operation:
           stepCounter: c4c33297-b3e2-44ff-ad89-bc31465d1e5e
         config: {}
         dataType: VARCHAR(1)
-        description: ""
+        description: This is column description
         name: L_LINESTATUS
         nullable: true
         sourceColumnReferences:
