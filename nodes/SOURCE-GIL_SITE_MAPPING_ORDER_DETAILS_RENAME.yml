@@ -99,7 +99,7 @@ operation:
         config: {}
         dataType: NUMBER(12,2)
         description: ""
-        name: L_QUANTITY
+        name: L_QUANTITY_NEW
         nullable: true
         sourceColumnReferences:
           - columnReferences:
@@ -223,7 +223,7 @@ operation:
           columnCounter: 36c5faf7-530b-4308-bfc6-682fa353e5bb
           stepCounter: 5ebfc59e-f3f7-4fa9-a200-836cade9669b
         config: {}
-        dataType: VARCHAR(25)
+        dataType: VARCHAR(125)
         description: ""
         name: L_SHIPINSTRUCT
         nullable: true
