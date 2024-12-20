@@ -14,7 +14,7 @@ operation:
     persistTableLocation: TARGET
     persistTableName: PSTG_SITE1
   database: ""
-  deployEnabled: true
+  deployEnabled: false
   description: This is column description
   isMultisource: false
   locationName: SOURCE
