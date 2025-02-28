@@ -485,6 +485,9 @@ The following stages are executed:
 | **Swap cloned Table** | Upon successful completion of all updates, the clone replaces the main table ensuring that no data is lost. |
 | **Delete Table** | Drops the internal table. |
 
+### Redeployment with no changes 
+
+If the nodes are redeployed with no changes compared to previous deployment,then no stages are executed
 
 ### Grouped Incremental Load Undeployment
 
