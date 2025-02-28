@@ -395,15 +395,15 @@ operation:
           customSQL: ""
         dependencies:
           - locationName: TARGET_DB
-            nodeName: GIL_ORDER_DETAILS_SITE_MAPPING
+            nodeName: GIL_ORDER_DETAILS_SITE_MAPPING123
         join:
-          joinCondition: FROM {{ ref('TARGET_DB', 'GIL_ORDER_DETAILS_SITE_MAPPING') }} "GIL_ORDER_DETAILS_SITE_MAPPING"
+          joinCondition: FROM {{ ref('TARGET_DB', 'GIL_ORDER_DETAILS_SITE_MAPPING123') }} "GIL_ORDER_DETAILS_SITE_MAPPING"
         name: PSTG_ORDER_DETAILS_SITE_MAPPING
         noLinkRefs: []
   name: PSTG_ORDER_DETAILS_SITE_MAPPING
   overrideSQL: false
   schema: ""
-  sqlType: persistentStage
+  sqlType: BN:::173
   type: sql
   version: 1
 type: Node
