@@ -10,7 +10,7 @@ operation:
   deployEnabled: false
   description: ""
   isMultisource: false
-  locationName: TARGET
+  locationName: TARGET_DB
   materializationType: table
   metadata:
     appliedNodeTests: []
@@ -375,14 +375,15 @@ operation:
     cteString: ""
     enabledColumnTestIDs: []
     sourceMapping:
-      - aliases: {}
+      - aliases:
+          SITE1: e5b61980-a8c7-4804-847e-8ad678987d84
         customSQL:
           customSQL: ""
         dependencies:
-          - locationName: TARGET
+          - locationName: SOURCE2
             nodeName: SITE1
         join:
-          joinCondition: FROM {{ ref('TARGET', 'SITE1') }} "SITE1"
+          joinCondition: FROM {{ ref('SOURCE2', 'SITE1') }} "SITE1"
         name: PSTG_SITE1
         noLinkRefs: []
   name: PSTG_SITE1

@@ -17,7 +17,7 @@ operation:
   deployEnabled: true
   description: ""
   isMultisource: false
-  locationName: TARGET
+  locationName: TARGET_DB
   materializationType: table
   metadata:
     appliedNodeTests: []
@@ -277,28 +277,26 @@ operation:
     cteString: ""
     enabledColumnTestIDs: []
     sourceMapping:
-      - aliases:
-          ORDER_DETAILS: 069a1a62-acb9-4041-8d35-b20415c2059f
-          SITE_MAPPING: 2ae80d32-f0fe-42f6-a33a-f2f445a31484
+      - aliases: {}
         customSQL:
           customSQL: ""
         dependencies:
-          - locationName: TARGET
+          - locationName: SOURCE2
             nodeName: ORDER_DETAILS
-          - locationName: TARGET
+          - locationName: SOURCE2
             nodeName: SITE_MAPPING
         join:
           joinCondition: |-
-            FROM{{ ref('TARGET', 'ORDER_DETAILS') }} "ORDER_DETAILS"
-              INNER JOIN{{ ref('TARGET', 'SITE_MAPPING') }} "SITE_MAPPING"
+            FROM{{ ref('SOURCE2', 'ORDER_DETAILS') }} "ORDER_DETAILS"
+              INNER JOIN{{ ref('SOURCE2', 'SITE_MAPPING') }} "SITE_MAPPING"
               ON SITE_MAPPING.SITEID = <SITEID>
                 WHERE "ORDER_DETAILS"."L_LOAD_TIMESTAMP" > 
               (SELECT COALESCE(MAX("L_LOAD_TIMESTAMP"), '1900-01-01') 
-              FROM {{ ref_no_link('TARGET', 'PSTG_ORDER_DETAILS_SITE_MAPPING') }}
+              FROM {{ ref_no_link('TARGET_DB', 'PSTG_ORDER_DETAILS_SITE_MAPPING') }}
               WHERE SITEID  = <SITEID>)
         name: GIL_ORDER_DETAILS_SITE_MAPPING
         noLinkRefs:
-          - locationName: TARGET
+          - locationName: TARGET_DB
             nodeName: PSTG_ORDER_DETAILS_SITE_MAPPING
   name: GIL_ORDER_DETAILS_SITE_MAPPING
   overrideSQL: false
