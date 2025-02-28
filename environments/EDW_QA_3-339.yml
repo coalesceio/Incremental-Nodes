@@ -1,6 +1,9 @@
 fileVersion: 1
 id: "339"
 mappingDefinitions:
+  SOURCE2:
+    database: POONAMM_DEV
+    schema: EDW_QA
   SOURCE_DATA:
     database: ANANDHIS_DEV
     schema: SOURCE_DATA

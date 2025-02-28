@@ -1,6 +1,6 @@
 fileVersion: 1
 id: 0cf2fc22-f97a-4249-a722-950793341166
-name: GIL_ORDER_DETAILS_SITE_MAPPING
+name: GIL_ORDER_DETAILS_SITE_MAPPING123
 operation:
   config:
     batchLoad: true
@@ -281,24 +281,24 @@ operation:
         customSQL:
           customSQL: ""
         dependencies:
-          - locationName: TARGET_DB
+          - locationName: SOURCE2
             nodeName: ORDER_DETAILS
-          - locationName: TARGET_DB
+          - locationName: SOURCE2
             nodeName: SITE_MAPPING
         join:
           joinCondition: |-
-            FROM{{ ref('TARGET_DB', 'ORDER_DETAILS') }} "ORDER_DETAILS"
-              INNER JOIN{{ ref('TARGET_DB', 'SITE_MAPPING') }} "SITE_MAPPING"
+            FROM{{ ref('SOURCE2', 'ORDER_DETAILS') }} "ORDER_DETAILS"
+              INNER JOIN{{ ref('SOURCE2', 'SITE_MAPPING') }} "SITE_MAPPING"
               ON SITE_MAPPING.SITEID = <SITEID>
                 WHERE "ORDER_DETAILS"."L_LOAD_TIMESTAMP" > 
               (SELECT COALESCE(MAX("L_LOAD_TIMESTAMP"), '1900-01-01') 
               FROM {{ ref_no_link('TARGET_DB', 'PSTG_ORDER_DETAILS_SITE_MAPPING') }}
               WHERE SITEID  = <SITEID>)
-        name: GIL_ORDER_DETAILS_SITE_MAPPING
+        name: GIL_ORDER_DETAILS_SITE_MAPPING123
         noLinkRefs:
           - locationName: TARGET_DB
             nodeName: PSTG_ORDER_DETAILS_SITE_MAPPING
-  name: GIL_ORDER_DETAILS_SITE_MAPPING
+  name: GIL_ORDER_DETAILS_SITE_MAPPING123
   overrideSQL: false
   schema: ""
   sqlType: "394"
