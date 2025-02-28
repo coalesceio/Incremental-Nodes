@@ -9,12 +9,8 @@ does not permit copying or modification for any other purpose.
 {# == Node Type Name           : Grouped Incremental Load  == #}
 {# == Node Type Description    : This node creates a table and transient table  == #}
 
-{% if desiredState == currentState %}
 
-{{ stage('Nothing to do.') }}
-select 1 = 0
-
-{% elif desiredState %}
+{% if desiredState %}
 
 {# CreateSQL for table #}
 
@@ -211,7 +207,7 @@ select 1 = 0
                         {%- if not addDesCol.nullable %} NOT NULL
                             {%- if addDesCol.defaultValue | length > 0 %} DEFAULT {{ addDesCol.defaultValue }}{% endif %}
                         {% endif %}
-                        {%- if addDesCol.description | length > 0 %} COMMENT '{{ addDescol.description | escape }}'{% endif %}
+                        {%- if addDesCol.description | length > 0 %} COMMENT '{{ addDesCol.description | escape }}'{% endif %}
                 {% endif %}
             {% endfor %}
 
@@ -369,11 +365,6 @@ select 1 = 0
        DROP TABLE IF EXISTS {{ fullyQualifiedTargetObjectName }}
 
     {% endif %}
-
-{%- else -%}
-
-{{ stage('Nothing to do.') }}
-select 1 = 0
 
 {% endif %}
 

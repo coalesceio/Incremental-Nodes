@@ -10,7 +10,7 @@ operation:
   deployEnabled: true
   description: ""
   isMultisource: false
-  locationName: TARGET
+  locationName: TARGET_DB
   materializationType: table
   metadata:
     appliedNodeTests: []
@@ -394,10 +394,10 @@ operation:
         customSQL:
           customSQL: ""
         dependencies:
-          - locationName: TARGET
+          - locationName: TARGET_DB
             nodeName: GIL_ORDER_DETAILS_SITE_MAPPING
         join:
-          joinCondition: FROM {{ ref('TARGET', 'GIL_ORDER_DETAILS_SITE_MAPPING') }} "GIL_ORDER_DETAILS_SITE_MAPPING"
+          joinCondition: FROM {{ ref('TARGET_DB', 'GIL_ORDER_DETAILS_SITE_MAPPING') }} "GIL_ORDER_DETAILS_SITE_MAPPING"
         name: PSTG_ORDER_DETAILS_SITE_MAPPING
         noLinkRefs: []
   name: PSTG_ORDER_DETAILS_SITE_MAPPING
