@@ -5,9 +5,6 @@ The Coalesce Incremental Package includes:
 * [Incremental load](#incremental-load)
 * [Looped Load](#loop-load)
 * [Run view](#run-view)
-* [Incremental load Code](#incremental-load-code)
-* [Looped Load Code](#looped-load-code)
-* [Run view code](#run-view-code)
 * [Grouped Incremental load](#grouped-incremental-load)
 * [Code](#code)
 
