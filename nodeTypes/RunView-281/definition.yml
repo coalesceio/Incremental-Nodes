@@ -39,7 +39,18 @@ metadata:
         type: toggleButton
         default: false
         isRequired: false  
-      
+
+      - type: label
+        attributeName: note2
+        displayName: 
+                       "NOTE:
+                       \n
+                       Ensure the parameter sourcesuffix is added in Workspace and 
+                       deployment environment  for selecting which sources to load into the target table
+                       For more information, refer to the documentation."
+        enableIf: "{%- if (parameters == {} or 'sourcesuffix' in parameters or parameters.sourcesuffix == '' )and config.srcTable == true -%} true {%- else -%} false {%- endif -%}"
+        
+
       - displayName: Length of suffix of source table
         attributeName: suffixlength
         type: textBox
