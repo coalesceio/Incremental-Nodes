@@ -1,6 +1,6 @@
 fileVersion: 1
 id: "1"
-macroString: |-
+macroString: |+
 
   {%- macro ref_raw(location_name, node_name) -%}
       {%- raw -%}{{ ref('{% endraw %}{{- location_name }}{% raw %}', '{% endraw %}{{ node_name }}{% raw %}') }}{% endraw %}
@@ -11,32 +11,5 @@ macroString: |-
       {% raw %}{{ ref_no_link('{% endraw %}{{ location_name }}{% raw %}', '{% endraw %}{{ node_name }}{% raw %}') }}{% endraw %}
   {%- endmacro -%}
 
-  {%- macro hash(columns, algo='MD5', delimiter='||', datatype='CHAR(32)') -%}
-      {% for col in columns %}
-          {# set algo function #}
-          {% set algo_start = algo + '(' %}
-          {% set algo_end = ')' %}
-          {% if algo | upper == 'SHA256' %}
-              {% set algo_start = 'SHA2(' %}
-              {% set algo_end = ', 256)' %}
-          {% endif %}  
-          {# end set algo function #}
-
-          {%- if loop.first %}CAST( {{ algo_start }}{% endif -%}
-              NVL(CAST(
-                  {%  if col is string %} 
-                      {{ col }}
-                  {% elif col.transform | trim != '' %}
-                      {{ col.transform }}
-                  {% elif col.sourceColumns[0] %} 
-                      "{{ col.sourceColumns[0].node.name }}"."{{ col.sourceColumns[0].column.name }}"
-                  {% else %}
-                      null
-                  {%  endif %} 
-              AS VARCHAR), 'null')
-          {%- if not loop.last %} || {% if delimiter != '' %} '{{ delimiter }}' || {% endif -%} {% endif -%}
-          {%- if loop.last %}{{ algo_end }} AS {{ datatype }} ){% endif -%}
-      {% endfor %}
-  {%- endmacro -%}
 name: macro
 type: Macro
