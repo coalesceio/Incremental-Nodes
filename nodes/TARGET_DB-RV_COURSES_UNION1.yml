@@ -1,0 +1,157 @@
+fileVersion: 1
+id: 81d7a959-5b89-4308-ac48-a078db35443e
+name: RV_COURSES_UNION1
+operation:
+  config:
+    incColumn:
+      columnCounter: 6925bef5-aae6-4160-8c54-737d94ca63f2
+      stepCounter: 81d7a959-5b89-4308-ac48-a078db35443e
+    insertStrategy: UNION ALL
+    persistTableLocation: TARGET_DB
+    persistTableName: DIM_COURSES_UNION1
+    refTable: true
+    srcTable: true
+    suffixlength: "2"
+    testsEnabled: true
+  database: ""
+  deployEnabled: true
+  description: ""
+  isMultisource: true
+  locationName: TARGET_DB
+  materializationType: run view
+  metadata:
+    appliedNodeTests: []
+    columns:
+      - appliedColumnTests: {}
+        columnReference:
+          columnCounter: 3c962011-101e-49c8-bec0-4c85894baf01
+          stepCounter: 81d7a959-5b89-4308-ac48-a078db35443e
+        config: {}
+        dataType: NUMBER(38,0)
+        description: ""
+        hashDetails: null
+        name: COURSE_ID
+        nullable: true
+        sourceColumnReferences:
+          - columnReferences:
+              - columnCounter: 22459902-cc4e-4d8c-b22c-8812816ff612
+                stepCounter: 8da25ba2-234b-4892-8e12-54dd514f28b3
+            transform: ""
+          - columnReferences:
+              - columnCounter: d0e33cc4-0ce4-4f3c-bd2b-794677052536
+                stepCounter: 7328c012-69e4-4657-9b47-dd820ca58bf6
+            transform: ""
+      - appliedColumnTests: {}
+        columnReference:
+          columnCounter: f632d6ec-5f0c-4ff2-b546-c980684ba61f
+          stepCounter: 81d7a959-5b89-4308-ac48-a078db35443e
+        config: {}
+        dataType: VARCHAR(16777216)
+        description: ""
+        hashDetails: null
+        name: COURSE_NAME
+        nullable: true
+        sourceColumnReferences:
+          - columnReferences:
+              - columnCounter: 0bbe63a6-32a3-4929-9790-3c73d906f0a9
+                stepCounter: 8da25ba2-234b-4892-8e12-54dd514f28b3
+            transform: ""
+          - columnReferences:
+              - columnCounter: 02980516-3eff-4e7b-bc72-2f8456f4fa1c
+                stepCounter: 7328c012-69e4-4657-9b47-dd820ca58bf6
+            transform: ""
+      - appliedColumnTests: {}
+        columnReference:
+          columnCounter: 21304456-9126-4509-96c1-5e699786ca71
+          stepCounter: 81d7a959-5b89-4308-ac48-a078db35443e
+        config: {}
+        dataType: VARCHAR(16777216)
+        description: ""
+        hashDetails: null
+        name: INSTRUCTOR
+        nullable: true
+        sourceColumnReferences:
+          - columnReferences:
+              - columnCounter: 849dccde-61d4-4d4d-a77f-c18ab70fb40e
+                stepCounter: 8da25ba2-234b-4892-8e12-54dd514f28b3
+            transform: ""
+          - columnReferences:
+              - columnCounter: 2210e50b-0f8d-4efb-b178-3ed82f419d97
+                stepCounter: 7328c012-69e4-4657-9b47-dd820ca58bf6
+            transform: ""
+      - appliedColumnTests: {}
+        columnReference:
+          columnCounter: 6925bef5-aae6-4160-8c54-737d94ca63f2
+          stepCounter: 81d7a959-5b89-4308-ac48-a078db35443e
+        config: {}
+        dataType: date
+        description: ""
+        name: load_date
+        nullable: true
+        sourceColumnReferences:
+          - columnReferences:
+              - columnCounter: 2762a073-f9d9-4615-8bfd-dfc7c23253c7
+                stepCounter: 8da25ba2-234b-4892-8e12-54dd514f28b3
+            transform: CURRENT_DATE()
+          - columnReferences: []
+            transform: CURRENT_DATE()
+    enabledColumnTestIDs: []
+    sourceMapping:
+      - aliases: {}
+        customSQL:
+          customSQL: ""
+        dependencies:
+          - locationName: TARGET_DB
+            nodeName: RV_COURSES_IT
+        join:
+          joinCondition: |
+            FROM{{ ref('TARGET_DB', 'RV_COURSES_IT') }} "RV_COURSES_IT"
+              {%- if 'DEPLOY' in parameters.sourcesuffix -%}
+              WHERE 1=0
+              {%- elif 'ALL' not in parameters.sourcesuffix -%} 
+              WHERE 'IT'  in {{ parameters.sourcesuffix }} 
+                  AND  "RV_COURSES_IT"."load_date" > 
+                 (SELECT COALESCE(MAX("load_date"), '1900-01-01') 
+                        FROM {{ ref_no_link('TARGET_DB', 'DIM_COURSES_UNION1') }} )
+               {%else%}
+                       WHERE  "RV_COURSES_IT"."load_date" > 
+                 (SELECT COALESCE(MAX("load_date"), '1900-01-01') 
+                        FROM {{ ref_no_link('TARGET_DB', 'DIM_COURSES_UNION1') }} )  
+               {%endif%}
+        name: RV_COURSES_IT
+        noLinkRefs:
+          - locationName: TARGET_DB
+            nodeName: DIM_COURSES_UNION1
+      - aliases: {}
+        customSQL:
+          customSQL: ""
+        dependencies:
+          - locationName: TARGET_DB
+            nodeName: RV_COURSES_SC
+        join:
+          joinCondition: |
+
+            FROM{{ ref('TARGET_DB', 'RV_COURSES_SC') }} "RV_COURSES_SC"
+              {%- if 'DEPLOY' in parameters.sourcesuffix -%}
+              WHERE 1=0
+              {%- elif 'ALL' not in parameters.sourcesuffix -%} 
+              WHERE 'SC'  in {{ parameters.sourcesuffix }}   
+                  AND  "RV_COURSES_SC"."load_date" > 
+                 (SELECT COALESCE(MAX("load_date"), '1900-01-01') 
+                        FROM {{ ref_no_link('TARGET_DB', 'DIM_COURSES_UNION1') }} )
+               {%else%} 
+                       WHERE  "RV_COURSES_SC"."load_date" > 
+                 (SELECT COALESCE(MAX("load_date"), '1900-01-01') 
+                        FROM {{ ref_no_link('TARGET_DB', 'DIM_COURSES_UNION1') }} )
+               {%endif%}
+        name: RV_COURSES_SC
+        noLinkRefs:
+          - locationName: TARGET_DB
+            nodeName: DIM_COURSES_UNION1
+  name: RV_COURSES_UNION1
+  overrideSQL: false
+  schema: ""
+  sqlType: "281"
+  type: sql
+  version: 1
+type: Node

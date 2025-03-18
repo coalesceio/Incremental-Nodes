@@ -9,13 +9,19 @@ does not permit copying or modification for any other purpose.
 {# == Node Type Name           : Run View  == #}
 {# == Node Type Description    : This node creates a view and also runs override create sql for view.Also uses a parameter to select the sources to load the target view  == #}
 
+ {#Parameter check for deployment#}
+ {%if desiredState and currentState != desiredState%}
+     {%if desiredState.parameters == {} or 'sourcesuffix' not in desiredState.parameters or  desiredState.parameters.sourcesuffix == ''%}
 
-{% if desiredState == currentState %}
+         {{stage('WARNING')}}
+         
+         /*Add parameter sourcesuffix in workspace settings and deployment environment for successful for selecting which sources to load into the target table.
+          For more information, refer to the documentation. */
 
-{{ stage('No Changes') }}
-select 1 = 0
+      {%endif%}
+  {%endif%}
 
-{% elif desiredState %}
+{% if desiredState %}
 
 {# Override CreateSQL for view #}
 
@@ -23,9 +29,9 @@ select 1 = 0
             
         {{ desiredState.node.override.create.script }}
 
-    {% else %}
+    {% elif currentState == undefined or currentState != desiredState  %}
 
-{# CreateSQL for view #}
+        {# CreateSQL for view #}
 
         {{ stage('Create View') }}
         CREATE OR REPLACE VIEW {{ ref_no_link(desiredState.node.location.name, desiredState.node.name) }}
@@ -67,11 +73,5 @@ select 1 = 0
 
     {{ stage('Drop View', true, "sql", "drop") }}
     DROP VIEW IF EXISTS {{ fullyQualifiedTargetViewName }}
-
-
-{%- else -%}
-
-{{ stage('Unknown State') }}
-select 1 = 0
 
 {% endif %}
