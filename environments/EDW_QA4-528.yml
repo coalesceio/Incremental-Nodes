@@ -3,7 +3,7 @@ id: "528"
 mappingDefinitions:
   SOURCE_DATA:
     database: RUHULAMINS_DEV
-    schema: TARGET5
+    schema: SOURCE_DATA
   TARGET_DB:
     database: RUHULAMIN_QA
     schema: TARGE4
