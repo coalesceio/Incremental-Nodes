@@ -3,9 +3,12 @@ id: fad509cd-0a0b-4f72-bd50-abe4af3e56f1
 name: INC_LINEITEM_12
 operation:
   config:
-    persistTableLocation: "ex: TARGET"
-    persistTableName: "ex: DIM_ORDERS"
-    refTable: false
+    incColumn:
+      columnCounter: 763bbbd1-d040-4687-b02f-cf06b758056a
+      stepCounter: fad509cd-0a0b-4f72-bd50-abe4af3e56f1
+    persistTableLocation: TARGET_DB
+    persistTableName: PSTG_LINEITEM_12
+    refTable: true
   database: ""
   deployEnabled: true
   description: ""
@@ -256,16 +259,25 @@ operation:
     cteString: ""
     enabledColumnTestIDs: []
     sourceMapping:
-      - aliases: {}
+      - aliases:
+          STG_LINEITEM: e7c750ea-ac25-4fe3-97b1-112252b0ae68
         customSQL:
           customSQL: ""
         dependencies:
           - locationName: TARGET_DB
             nodeName: STG_LINEITEM
         join:
-          joinCondition: FROM{{ ref('TARGET_DB', 'STG_LINEITEM') }} "STG_LINEITEM"
+          joinCondition: |
+            
+            FROM 
+              {{ ref('TARGET_DB', 'STG_LINEITEM') }} "STG_LINEITEM"
+              WHERE "STG_LINEITEM"."L_LOAD_TIMESTAMP" > 
+              (SELECT COALESCE(MAX("L_LOAD_TIMESTAMP"), '1900-01-01') 
+                        FROM {{ ref_no_link('TARGET_DB', 'PSTG_LINEITEM_12') }} )
         name: INC_LINEITEM_12
-        noLinkRefs: []
+        noLinkRefs:
+          - locationName: TARGET_DB
+            nodeName: PSTG_LINEITEM_12
   name: INC_LINEITEM_12
   overrideSQL: false
   schema: ""
