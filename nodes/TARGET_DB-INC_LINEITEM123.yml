@@ -3,9 +3,12 @@ id: 3f7317d2-4fbf-44d8-b9f9-4b2eb9558d34
 name: INC_LINEITEM123
 operation:
   config:
-    persistTableLocation: "ex: TARGET"
-    persistTableName: "ex: DIM_ORDERS"
-    refTable: false
+    incColumn:
+      columnCounter: c37cccb1-1e39-4799-a867-dbceb979fae8
+      stepCounter: 3f7317d2-4fbf-44d8-b9f9-4b2eb9558d34
+    persistTableLocation: TARGET_DB
+    persistTableName: PSTG_LINEITEM23
+    refTable: true
   database: ""
   deployEnabled: true
   description: ""
