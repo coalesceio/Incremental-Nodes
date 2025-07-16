@@ -29,6 +29,35 @@ does not permit copying or modification for any other purpose.
             
         {{ desiredState.node.override.create.script }}
 
+         {%elif desiredState.node.materializationType == 'view' %}          
+
+        {% if currentState != undefined %}
+            {%if currentState.storageLocations|length == 0%}          
+              {% set currentDatabase = currentState.storageLocations | selectattr('name', 'equalto', currentState.node.location.name) | map(attribute='database') | string %}
+              {% set currentSchema = currentState.storageLocations | selectattr('name', 'equalto', currentState.node.location.name) | map(attribute='schema') | string %}
+               {% set currentDatabaseSchema = currentDatabase + '.' + currentSchema %}
+               
+            {%else %}  
+            {# Current target node mappings #}
+            {% set currentDatabase = currentState.storageLocations | selectattr('name', 'equalto', currentState.node.location.name) | map(attribute='database') | first %}
+            {% set currentSchema = currentState.storageLocations | selectattr('name', 'equalto', currentState.node.location.name) | map(attribute='schema') | first %}
+            {% set currentDatabaseSchema = currentDatabase + '.' + currentSchema %}  
+            {% endif %}      
+       
+            {# Desired target node mappings #}
+            {% set desiredDatabase = desiredState.storageLocations | selectattr('name', 'equalto', desiredState.node.location.name) | map(attribute='database') | first %}
+            {% set desiredSchema = desiredState.storageLocations | selectattr('name', 'equalto', desiredState.node.location.name) | map(attribute='schema') | first %}
+            {% set desiredDatabaseSchema = desiredDatabase + '.' + desiredSchema %}  		
+            {% if currentState.node.materializationType != 'view' %}
+                {{ stage('Drop ' + currentState.node.materializationType + ' ' + ref_no_link(currentState.node.location.name, currentState.node.name)) }}
+                DROP TABLE IF EXISTS {{ ref_no_link(currentState.node.location.name, currentState.node.name) }}
+            {% elif  desiredState.node.name != currentState.node.name or desiredDatabaseSchema != currentDatabaseSchema  %}
+                {{ stage('Drop ' + currentState.node.materializationType + ' ' + ref_no_link(currentState.node.location.name, currentState.node.name)) }}
+                DROP VIEW IF EXISTS {{ ref_no_link(currentState.node.location.name, currentState.node.name) }}                    
+            {% endif %}
+        {% endif %}
+
+
     {% elif currentState == undefined or currentState != desiredState  %}
 
         {# CreateSQL for view #}
@@ -71,7 +100,7 @@ does not permit copying or modification for any other purpose.
     {% set targetViewSchema = ref_no_link(currentState.node.location.name, currentState.node.name).split('.')[1] %} 
     {% set fullyQualifiedTargetViewName = ref_no_link(currentState.node.location.name, currentState.node.name) %}
 
-    {{ stage('Drop View', true, "sql", "drop") }}
+    {{ stage('Drop View') }}
     DROP VIEW IF EXISTS {{ fullyQualifiedTargetViewName }}
 
 {% endif %}

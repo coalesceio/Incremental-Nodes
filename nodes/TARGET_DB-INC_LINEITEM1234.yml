@@ -6,9 +6,9 @@ operation:
     incColumn:
       columnCounter: 1e362490-b77b-475b-9a71-cad34ca9b777
       stepCounter: ce1bdafe-db25-4431-90e3-a98c56430c23
-    persistTableLocation: PSTG_LINEITEM1234
-    persistTableName: TARGET_DB
-    refTable: true
+    persistTableLocation: TARGET_DB
+    persistTableName: PSTG_LINEITEM1234
+    refTable: false
   database: ""
   deployEnabled: true
   description: ""
