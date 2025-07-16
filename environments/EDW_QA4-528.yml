@@ -7,5 +7,8 @@ mappingDefinitions:
   TARGET_DB:
     database: RUHULAMIN_QA
     schema: TARGE4
+  TARGET_DB1:
+    database: RUHULAMIN_QA
+    schema: TARGET2
 name: EDW_QA4
 type: Environment
