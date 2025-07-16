@@ -1,6 +1,6 @@
 fileVersion: 1
 id: 581efd59-5270-4880-bcee-12f36ad07e20
-name: RV_COURSES_IT
+name: RV_COURSES_IT123
 operation:
   config:
     insertStrategy: UNION ALL
@@ -72,9 +72,9 @@ operation:
             nodeName: COURSES_IT
         join:
           joinCondition: FROM{{ ref('SOURCE_DATA', 'COURSES_IT') }} "COURSES_IT"
-        name: RV_COURSES_IT
+        name: RV_COURSES_IT123
         noLinkRefs: []
-  name: RV_COURSES_IT
+  name: RV_COURSES_IT123
   overrideSQL: false
   schema: ""
   sqlType: "281"
