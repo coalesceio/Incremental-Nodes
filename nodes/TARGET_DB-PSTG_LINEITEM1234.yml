@@ -1,6 +1,6 @@
 fileVersion: 1
 id: 9790e3b7-7275-41a3-838e-f9fb69f41125
-name: PSTG_LINEITEM123
+name: PSTG_LINEITEM1234
 operation:
   config:
     postSQL: ""
@@ -383,9 +383,9 @@ operation:
             nodeName: INC_LINEITEM123
         join:
           joinCondition: FROM {{ ref('TARGET_DB', 'INC_LINEITEM123') }} "INC_LINEITEM123"
-        name: PSTG_LINEITEM123
+        name: PSTG_LINEITEM1234
         noLinkRefs: []
-  name: PSTG_LINEITEM123
+  name: PSTG_LINEITEM1234
   overrideSQL: false
   schema: ""
   sqlType: persistentStage
