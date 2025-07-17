@@ -269,7 +269,7 @@ operation:
         join:
           joinCondition: |
             
-
+            
             FROM {{ ref('TARGET_DB', 'STG_LINEITEM') }} "STG_LINEITEM"
               WHERE "STG_LINEITEM"."L_LOAD_TIMESTAMP" > 
               (SELECT COALESCE(MAX("L_LOAD_TIMESTAMP"), '1900-01-01') 

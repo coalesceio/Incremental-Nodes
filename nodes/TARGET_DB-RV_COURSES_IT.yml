@@ -1,6 +1,6 @@
 fileVersion: 1
-id: d91aa76c-7c7e-49ae-a41d-aa0ddc595bdf
-name: RV_COURSES_SCRD
+id: 033e44c0-077f-42ec-821f-ccde9e1bed84
+name: RV_COURSES_IT
 operation:
   config:
     insertStrategy: UNION ALL
@@ -13,7 +13,7 @@ operation:
   database: ""
   deployEnabled: true
   description: ""
-  isMultisource: true
+  isMultisource: false
   locationName: TARGET_DB
   materializationType: run view
   metadata:
@@ -21,8 +21,8 @@ operation:
     columns:
       - appliedColumnTests: {}
         columnReference:
-          columnCounter: c5a5596d-2dc9-43b9-9959-76fead37c8cf
-          stepCounter: d91aa76c-7c7e-49ae-a41d-aa0ddc595bdf
+          columnCounter: e875e486-c071-4e40-bff7-da2dd2fba928
+          stepCounter: 033e44c0-077f-42ec-821f-ccde9e1bed84
         config: {}
         dataType: NUMBER(38,0)
         description: ""
@@ -30,17 +30,13 @@ operation:
         nullable: true
         sourceColumnReferences:
           - columnReferences:
-              - columnCounter: 588a1ecb-54eb-47b1-97b8-650e0d133642
-                stepCounter: 389a0772-e6ea-4cdb-9e14-f58492031871
-            transform: ""
-          - columnReferences:
               - columnCounter: e5387e4f-60a4-4184-aa07-8cc1ef306984
                 stepCounter: 3a90f53c-bb04-4554-aa80-f20c472ae05b
             transform: ""
       - appliedColumnTests: {}
         columnReference:
-          columnCounter: 331e95ca-1303-4d7d-8ecc-a2b4c7992147
-          stepCounter: d91aa76c-7c7e-49ae-a41d-aa0ddc595bdf
+          columnCounter: eefbd276-eb2b-46d0-a483-876b9879b2f3
+          stepCounter: 033e44c0-077f-42ec-821f-ccde9e1bed84
         config: {}
         dataType: VARCHAR(16777216)
         description: ""
@@ -48,27 +44,19 @@ operation:
         nullable: true
         sourceColumnReferences:
           - columnReferences:
-              - columnCounter: 2915c16c-923b-4a9a-a911-6c5ec5f525fe
-                stepCounter: 389a0772-e6ea-4cdb-9e14-f58492031871
-            transform: ""
-          - columnReferences:
               - columnCounter: 3169f5a5-2f1a-41ad-b102-74e6428f8812
                 stepCounter: 3a90f53c-bb04-4554-aa80-f20c472ae05b
             transform: ""
       - appliedColumnTests: {}
         columnReference:
-          columnCounter: 7865d047-209d-4dd0-b061-9ee18f7cab36
-          stepCounter: d91aa76c-7c7e-49ae-a41d-aa0ddc595bdf
+          columnCounter: 5ba4480d-c15c-4afd-b249-5a46543498bd
+          stepCounter: 033e44c0-077f-42ec-821f-ccde9e1bed84
         config: {}
         dataType: VARCHAR(16777216)
         description: ""
         name: INSTRUCTOR
         nullable: true
         sourceColumnReferences:
-          - columnReferences:
-              - columnCounter: d65adb0c-369c-4ca2-8e7b-ca5505bb2edc
-                stepCounter: 389a0772-e6ea-4cdb-9e14-f58492031871
-            transform: ""
           - columnReferences:
               - columnCounter: 2bdde7d7-3c88-4f71-9a59-6a1a43b07ee8
                 stepCounter: 3a90f53c-bb04-4554-aa80-f20c472ae05b
@@ -81,23 +69,12 @@ operation:
           customSQL: ""
         dependencies:
           - locationName: SOURCE_DATA
-            nodeName: COURSES_SC
-        join:
-          joinCondition: FROM{{ ref('SOURCE_DATA', 'COURSES_SC') }} "COURSES_SC"
-        name: RV_COURSES_SCRD
-        noLinkRefs: []
-      - aliases:
-          COURSES_IT: 3a90f53c-bb04-4554-aa80-f20c472ae05b
-        customSQL:
-          customSQL: ""
-        dependencies:
-          - locationName: SOURCE_DATA
             nodeName: COURSES_IT
         join:
           joinCondition: FROM{{ ref('SOURCE_DATA', 'COURSES_IT') }} "COURSES_IT"
-        name: NEW_SOURCE
+        name: RV_COURSES_IT
         noLinkRefs: []
-  name: RV_COURSES_SCRD
+  name: RV_COURSES_IT
   overrideSQL: false
   schema: ""
   sqlType: "281"
