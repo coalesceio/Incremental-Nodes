@@ -1,6 +1,6 @@
 fileVersion: 1
 id: 4b565074-0d3f-42d8-a70c-da40c675b197
-name: RV_COURSES_SC_test
+name: RV_COURSES_SC_test2
 operation:
   config:
     insertStrategy: UNION ALL
@@ -72,9 +72,9 @@ operation:
             nodeName: COURSES_SC
         join:
           joinCondition: FROM{{ ref('SOURCE_DATA', 'COURSES_SC') }} "COURSES_SC"
-        name: RV_COURSES_SC_test
+        name: RV_COURSES_SC_test2
         noLinkRefs: []
-  name: RV_COURSES_SC_test
+  name: RV_COURSES_SC_test2
   overrideSQL: false
   schema: ""
   sqlType: "281"
