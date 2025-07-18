@@ -3,7 +3,6 @@ id: 069a1a62-acb9-4041-8d35-b20415c2059f
 name: ORDER_DETAILS
 operation:
   database: ""
-  dataset: ""
   deployEnabled: true
   description: ""
   locationName: SOURCE2
@@ -313,12 +312,9 @@ operation:
             transform: ""
         transform: ""
         uniqueKey: false
-    join:
-      joinCondition: FROM {{ ref('TARGET', 'ORDER_DETAILS') }}
   name: ORDER_DETAILS
   schema: ""
   sqlType: Source
-  table: ORDER_DETAILS
   type: sourceInput
   version: 1
 type: Node

@@ -3,7 +3,6 @@ id: 2ae80d32-f0fe-42f6-a33a-f2f445a31484
 name: SITE_MAPPING
 operation:
   database: ""
-  dataset: ""
   deployEnabled: true
   description: ""
   locationName: SOURCE2
@@ -47,12 +46,9 @@ operation:
             transform: ""
         transform: ""
         uniqueKey: false
-    join:
-      joinCondition: FROM {{ ref('TARGET', 'SITE_MAPPING') }}
   name: SITE_MAPPING
   schema: ""
   sqlType: Source
-  table: SITE_MAPPING
   type: sourceInput
   version: 1
 type: Node

@@ -259,14 +259,19 @@ operation:
     cteString: ""
     enabledColumnTestIDs: []
     sourceMapping:
-      - aliases: {}
+      - aliases:
+          LINEITEM: 4e7e2126-bb6e-45ca-adee-4dc346004716
         customSQL:
           customSQL: ""
         dependencies:
           - locationName: SOURCE_DATA
             nodeName: LINEITEM
         join:
-          joinCondition: FROM{{ ref('SOURCE_DATA', 'LINEITEM') }} "LINEITEM"
+          joinCondition: |
+            FROM{{ ref('SOURCE_DATA', 'LINEITEM') }} "LINEITEM"
+              WHERE "LINEITEM"."L_LOAD_TIMESTAMP" > 
+              (SELECT COALESCE(MAX("L_LOAD_TIMESTAMP"), '1900-01-01') 
+                        FROM {{ ref_no_link('PSTG_LINEITEM1234', 'TARGET_DB') }} )
         name: INC_LINEITEM1234
         noLinkRefs: []
   name: INC_LINEITEM1234

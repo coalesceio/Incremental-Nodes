@@ -3,7 +3,6 @@ id: e5b61980-a8c7-4804-847e-8ad678987d84
 name: SITE1
 operation:
   database: ""
-  dataset: ""
   deployEnabled: true
   description: ""
   locationName: SOURCE2
@@ -332,12 +331,9 @@ operation:
             transform: ""
         transform: ""
         uniqueKey: false
-    join:
-      joinCondition: FROM {{ ref('TARGET', 'SITE1') }}
   name: SITE1
   schema: ""
   sqlType: Source
-  table: SITE1
   type: sourceInput
   version: 1
 type: Node
