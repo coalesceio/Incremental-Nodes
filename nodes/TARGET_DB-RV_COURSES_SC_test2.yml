@@ -64,14 +64,13 @@ operation:
     cteString: ""
     enabledColumnTestIDs: []
     sourceMapping:
-      - aliases: {}
+      - aliases:
+          COURSES_SC: 389a0772-e6ea-4cdb-9e14-f58492031871
         customSQL:
           customSQL: ""
-        dependencies:
-          - locationName: SOURCE_DATA
-            nodeName: COURSES_SC
+        dependencies: []
         join:
-          joinCondition: FROM{{ ref('SOURCE_DATA', 'COURSES_SC') }} "COURSES_SC"
+          joinCondition: FROM { ref('SOURCE_DATA', 'COURSES_SC') }} "COURSES_SC"
         name: RV_COURSES_SC_test2
         noLinkRefs: []
   name: RV_COURSES_SC_test2

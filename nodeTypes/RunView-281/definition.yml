@@ -107,8 +107,7 @@ metadata:
 
       {%- set src = namespace() -%}
       {%- for dep in sources[0].dependencies -%}
-        FROM
-          {{- ref_raw(dep.node.location.name, dep.node.name) }} "{{ dep.node.name }}"
+        FROM {{ ref_raw(dep.node.location.name, dep.node.name) }} "{{ dep.node.name }}"
         {%- set src.name = dep.node.name -%}
        {%- endfor -%}
 
