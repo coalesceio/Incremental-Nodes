@@ -34,4 +34,8 @@ does not permit copying or modification for any other purpose.
    {% endfor %}
 
    {{ source.join }}
+{% else %}
+    {{ stage('Load Skipped for View') }}
+    --The node {{node.name}} is materialized as View. Therefore, a Load operation is not supported.
+    SELECT 1 AS INFO_MESSAGE WHERE FALSE
 {% endif %}
