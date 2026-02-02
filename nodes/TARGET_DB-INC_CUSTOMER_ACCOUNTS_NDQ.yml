@@ -1,0 +1,99 @@
+fileVersion: 1
+id: 9bf4f95e-5b40-4967-9a5e-d4eef1c9f467
+name: INC_CUSTOMER_ACCOUNTS_NDQ
+operation:
+  config:
+    dqcolumns:
+      items:
+        - {}
+    dqhandle: false
+    ldbadrec: false
+    persistTableLocation: "ex: TARGET"
+    persistTableName: "ex: DIM_ORDERS"
+    refTable: false
+  database: ""
+  deployEnabled: true
+  description: ""
+  isMultisource: false
+  locationName: TARGET_DB
+  materializationType: view
+  metadata:
+    appliedNodeTests: []
+    columns:
+      - appliedColumnTests: {}
+        columnReference:
+          columnCounter: 178f0f05-a0c2-43a5-b8cd-7d42df6f1032
+          stepCounter: 9bf4f95e-5b40-4967-9a5e-d4eef1c9f467
+        config: {}
+        dataType: NUMBER(38,0)
+        description: ""
+        name: ACCOUNT_ID
+        nullable: true
+        sourceColumnReferences:
+          - columnReferences:
+              - columnCounter: b98536bc-5148-438a-b0f3-07fa7a7975ac
+                stepCounter: 6bfb8acf-1757-4fad-b496-2824cc984c66
+            transform: ""
+      - appliedColumnTests: {}
+        columnReference:
+          columnCounter: 203904da-1159-4137-ab52-c951eb1b8a56
+          stepCounter: 9bf4f95e-5b40-4967-9a5e-d4eef1c9f467
+        config: {}
+        dataType: VARCHAR(16777216)
+        description: ""
+        name: CUSTOMER_NAME
+        nullable: true
+        sourceColumnReferences:
+          - columnReferences:
+              - columnCounter: e1dc2df0-a464-4a4d-84d2-4da570090659
+                stepCounter: 6bfb8acf-1757-4fad-b496-2824cc984c66
+            transform: ""
+      - appliedColumnTests: {}
+        columnReference:
+          columnCounter: ecc8117a-9f8c-45b4-a492-c7e825511095
+          stepCounter: 9bf4f95e-5b40-4967-9a5e-d4eef1c9f467
+        config: {}
+        dataType: VARCHAR(16777216)
+        description: ""
+        name: CITY
+        nullable: true
+        sourceColumnReferences:
+          - columnReferences:
+              - columnCounter: f190f20e-b489-45d1-be16-7d9479d899b1
+                stepCounter: 6bfb8acf-1757-4fad-b496-2824cc984c66
+            transform: ""
+      - appliedColumnTests: {}
+        columnReference:
+          columnCounter: 39a561f8-1381-4e62-aa8e-51f3dfbff35a
+          stepCounter: 9bf4f95e-5b40-4967-9a5e-d4eef1c9f467
+        config: {}
+        dataType: DATE
+        description: ""
+        name: SIGNUP_DATE
+        nullable: true
+        sourceColumnReferences:
+          - columnReferences:
+              - columnCounter: 3042cd02-4c10-474d-a455-a831ac2cc19e
+                stepCounter: 6bfb8acf-1757-4fad-b496-2824cc984c66
+            transform: ""
+    cteString: ""
+    enabledColumnTestIDs: []
+    sourceMapping:
+      - aliases:
+          CUSTOMER_ACCOUNTS: 6bfb8acf-1757-4fad-b496-2824cc984c66
+        customSQL:
+          customSQL: ""
+        dependencies:
+          - locationName: SOURCE2
+            nodeName: CUSTOMER_ACCOUNTS
+        join:
+          joinCondition: FROM {{ ref('SOURCE2', 'CUSTOMER_ACCOUNTS') }} "CUSTOMER_ACCOUNTS"
+        name: INC_CUSTOMER_ACCOUNTS_NDQ
+        noLinkRefs: []
+  name: INC_CUSTOMER_ACCOUNTS_NDQ
+  overrideSQL: false
+  schema: ""
+  sqlType: "613"
+  type: sql
+  version: 1
+type: Node

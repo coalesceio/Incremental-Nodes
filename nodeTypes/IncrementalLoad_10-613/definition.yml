@@ -1,11 +1,11 @@
 fileVersion: 1
-id: "230"
+id: "613"
 isDisabled: false
 metadata:
   defaultStorageLocation: null
   error: null
   nodeMetadataSpec: |+
-    capitalized: INCREMENTAL LOAD
+    capitalized: INCREMENTAL LOAD_1
     short: INC
     plural: Incremental
     tagColor: green
@@ -34,7 +34,14 @@ metadata:
         type: toggleButton
         default: false
         isRequired: false  
-
+      
+      - displayName: Load bad records
+        attributeName: ldbadrec
+        type: toggleButton
+        default: false
+        isRequired: false
+        enableIf: "{% if (config.dqhandle) %} true {% else %} false {% endif %}"  
+      
       - type: tabular
         displayName: 'Data Quality'
         attributeName: dqcolumns
@@ -106,5 +113,5 @@ metadata:
 
 
 
-name: Incremental Load
+name: Incremental Load_1.0
 type: NodeType

@@ -1,0 +1,148 @@
+fileVersion: 1
+id: e4145974-78d5-4466-84f7-67fd3f9004e8
+name: INC_SAMPLE_ORDERS_DQ_TBL
+operation:
+  config:
+    dqcolumns:
+      items:
+        - columnName:
+            columnCounter: b134e317-2b18-4d29-b003-d4e30dbf7586
+            stepCounter: e4145974-78d5-4466-84f7-67fd3f9004e8
+          dqtest: Nullability
+        - columnName:
+            columnCounter: b134e317-2b18-4d29-b003-d4e30dbf7586
+            stepCounter: e4145974-78d5-4466-84f7-67fd3f9004e8
+          dqtest: Duplicates
+    dqhandle: true
+    persistTableLocation: "ex: TARGET"
+    persistTableName: "ex: DIM_ORDERS"
+    refTable: false
+  database: ""
+  deployEnabled: true
+  description: ""
+  isMultisource: false
+  locationName: TARGET_DB
+  materializationType: table
+  metadata:
+    appliedNodeTests: []
+    columns:
+      - appliedColumnTests: {}
+        columnReference:
+          columnCounter: b134e317-2b18-4d29-b003-d4e30dbf7586
+          stepCounter: e4145974-78d5-4466-84f7-67fd3f9004e8
+        config: {}
+        dataType: NUMBER(38,0)
+        description: ""
+        name: ORDER_ID
+        nullable: true
+        sourceColumnReferences:
+          - columnReferences:
+              - columnCounter: dd278201-8669-442b-9d00-63e6b1bf0ef3
+                stepCounter: f3b5be20-f8aa-46bf-a560-b33771f86352
+            transform: ""
+      - appliedColumnTests: {}
+        columnReference:
+          columnCounter: c6c6cffe-b8fe-4ca6-b96a-d2cbf3186cdf
+          stepCounter: e4145974-78d5-4466-84f7-67fd3f9004e8
+        config: {}
+        dataType: VARCHAR(16777216)
+        description: ""
+        name: CUSTOMER_NAME
+        nullable: true
+        sourceColumnReferences:
+          - columnReferences:
+              - columnCounter: fa0b6b51-57f1-4f5b-94c8-a0c07363ed22
+                stepCounter: f3b5be20-f8aa-46bf-a560-b33771f86352
+            transform: ""
+      - appliedColumnTests: {}
+        columnReference:
+          columnCounter: 07caf675-e902-40b4-96a7-d410977e67d7
+          stepCounter: e4145974-78d5-4466-84f7-67fd3f9004e8
+        config: {}
+        dataType: NUMBER(10,2)
+        description: ""
+        name: ORDER_AMOUNT
+        nullable: true
+        sourceColumnReferences:
+          - columnReferences:
+              - columnCounter: 1ed83c51-e441-4d09-86a3-869f9c18bbbc
+                stepCounter: f3b5be20-f8aa-46bf-a560-b33771f86352
+            transform: ""
+      - acceptedValues:
+          strictMatch: true
+          values: []
+        appliedColumnTests: {}
+        columnReference:
+          columnCounter: eea45fd3-c44f-4d36-9ffe-eb43aeb3d10b
+          stepCounter: e4145974-78d5-4466-84f7-67fd3f9004e8
+        config: {}
+        dataType: NUMBER(1,0)
+        defaultValue: ""
+        description: ""
+        name: ORDER_ID_null
+        nullable: true
+        primaryKey: false
+        sourceColumnReferences:
+          - columnReferences: []
+            transform: ""
+        transform: ""
+        uniqueKey: false
+      - acceptedValues:
+          strictMatch: true
+          values: []
+        appliedColumnTests: {}
+        columnReference:
+          columnCounter: de3d9ce3-c73c-4b12-8d40-ea39259ef6e3
+          stepCounter: e4145974-78d5-4466-84f7-67fd3f9004e8
+        config: {}
+        dataType: NUMBER(1,0)
+        defaultValue: ""
+        description: ""
+        name: ORDER_ID_dup
+        nullable: true
+        primaryKey: false
+        sourceColumnReferences:
+          - columnReferences: []
+            transform: ""
+        transform: ""
+        uniqueKey: false
+      - acceptedValues:
+          strictMatch: true
+          values: []
+        appliedColumnTests: {}
+        columnReference:
+          columnCounter: dfcfc34f-2ea5-4bd5-8a67-fcc149d1c8a6
+          stepCounter: e4145974-78d5-4466-84f7-67fd3f9004e8
+        config: {}
+        dataType: NUMBER(38,0)
+        defaultValue: ""
+        description: ""
+        name: total_failed_tests
+        nullable: true
+        primaryKey: false
+        sourceColumnReferences:
+          - columnReferences: []
+            transform: ""
+        transform: ""
+        uniqueKey: false
+    cteString: ""
+    enabledColumnTestIDs: []
+    sourceMapping:
+      - aliases:
+          SAMPLE_ORDERS: f3b5be20-f8aa-46bf-a560-b33771f86352
+        customSQL:
+          customSQL: ""
+        dependencies:
+          - locationName: SOURCE2
+            nodeName: SAMPLE_ORDERS
+        join:
+          joinCondition: FROM {{ ref('SOURCE2', 'SAMPLE_ORDERS') }} "SAMPLE_ORDERS"
+        name: INC_SAMPLE_ORDERS_DQ_TBL
+        noLinkRefs: []
+  name: INC_SAMPLE_ORDERS_DQ_TBL
+  overrideSQL: false
+  schema: ""
+  sqlType: "230"
+  type: sql
+  version: 1
+type: Node

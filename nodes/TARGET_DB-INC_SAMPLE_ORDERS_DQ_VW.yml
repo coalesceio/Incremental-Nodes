@@ -1,0 +1,118 @@
+fileVersion: 1
+id: b3868962-aed0-4505-aa72-7a8d695b2ab3
+name: INC_SAMPLE_ORDERS_DQ_VW
+operation:
+  config:
+    dqcolumns:
+      items:
+        - columnName:
+            columnCounter: 8c149c5c-27d5-4144-86db-210f0b3026d6
+            stepCounter: b3868962-aed0-4505-aa72-7a8d695b2ab3
+          dqtest: Nullability
+        - columnName:
+            columnCounter: 8c149c5c-27d5-4144-86db-210f0b3026d6
+            stepCounter: b3868962-aed0-4505-aa72-7a8d695b2ab3
+          dqtest: Duplicates
+    dqhandle: true
+    incColumn:
+      columnCounter: 16d3f563-247b-4f30-8de1-b3f56bdb9365
+      stepCounter: b3868962-aed0-4505-aa72-7a8d695b2ab3
+    persistTableLocation: TARGET
+    persistTableName: PSTG_SAMPLE_ORDERS_DQ_VW
+    refTable: false
+  database: ""
+  deployEnabled: true
+  description: ""
+  isMultisource: false
+  locationName: TARGET_DB
+  materializationType: view
+  metadata:
+    appliedNodeTests: []
+    columns:
+      - appliedColumnTests: {}
+        columnReference:
+          columnCounter: 8c149c5c-27d5-4144-86db-210f0b3026d6
+          stepCounter: b3868962-aed0-4505-aa72-7a8d695b2ab3
+        config: {}
+        dataType: NUMBER(38,0)
+        description: ""
+        name: ORDER_ID
+        nullable: true
+        sourceColumnReferences:
+          - columnReferences:
+              - columnCounter: dd278201-8669-442b-9d00-63e6b1bf0ef3
+                stepCounter: f3b5be20-f8aa-46bf-a560-b33771f86352
+            transform: ""
+      - appliedColumnTests: {}
+        columnReference:
+          columnCounter: 25883051-a1c1-4a28-96dd-c419055b5a67
+          stepCounter: b3868962-aed0-4505-aa72-7a8d695b2ab3
+        config: {}
+        dataType: VARCHAR(16777216)
+        description: ""
+        name: CUSTOMER_NAME
+        nullable: true
+        sourceColumnReferences:
+          - columnReferences:
+              - columnCounter: fa0b6b51-57f1-4f5b-94c8-a0c07363ed22
+                stepCounter: f3b5be20-f8aa-46bf-a560-b33771f86352
+            transform: ""
+      - appliedColumnTests: {}
+        columnReference:
+          columnCounter: 4888b295-3454-4e40-9b7a-b33b94a70492
+          stepCounter: b3868962-aed0-4505-aa72-7a8d695b2ab3
+        config: {}
+        dataType: NUMBER(10,2)
+        description: ""
+        name: ORDER_AMOUNT
+        nullable: true
+        sourceColumnReferences:
+          - columnReferences:
+              - columnCounter: 1ed83c51-e441-4d09-86a3-869f9c18bbbc
+                stepCounter: f3b5be20-f8aa-46bf-a560-b33771f86352
+            transform: ""
+      - acceptedValues:
+          strictMatch: true
+          values: []
+        appliedColumnTests: {}
+        columnReference:
+          columnCounter: 16d3f563-247b-4f30-8de1-b3f56bdb9365
+          stepCounter: b3868962-aed0-4505-aa72-7a8d695b2ab3
+        config: {}
+        dataType: TIMESTAMP
+        defaultValue: ""
+        description: ""
+        keyColumnType: None
+        name: TIME_DT
+        nullable: true
+        sourceColumnReferences:
+          - columnReferences:
+              - columnCounter: "0"
+                stepCounter: "0"
+            transform: CURRENT_TIMESTAMP()
+        systemColumnType: None
+    cteString: ""
+    enabledColumnTestIDs: []
+    sourceMapping:
+      - aliases:
+          SAMPLE_ORDERS: f3b5be20-f8aa-46bf-a560-b33771f86352
+        customSQL:
+          customSQL: ""
+        dependencies:
+          - locationName: SOURCE2
+            nodeName: SAMPLE_ORDERS
+        join:
+          joinCondition: |
+            FROM {{ ref('SOURCE2', 'SAMPLE_ORDERS') }} "SAMPLE_ORDERS"
+              WHERE "SAMPLE_ORDERS"."TIME_DT" > 
+              (SELECT COALESCE(MAX("TIME_DT"), '1900-01-01') 
+                        FROM {{ ref_no_link('TARGET', 'PSTG_SAMPLE_ORDERS_DQ_VW') }} )
+        name: INC_SAMPLE_ORDERS_DQ_VW
+        noLinkRefs: []
+  name: INC_SAMPLE_ORDERS_DQ_VW
+  overrideSQL: false
+  schema: ""
+  sqlType: "230"
+  type: sql
+  version: 1
+type: Node

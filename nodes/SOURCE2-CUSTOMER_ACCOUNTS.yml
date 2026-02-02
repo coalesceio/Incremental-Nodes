@@ -1,0 +1,92 @@
+fileVersion: 1
+id: 6bfb8acf-1757-4fad-b496-2824cc984c66
+name: CUSTOMER_ACCOUNTS
+operation:
+  database: ""
+  deployEnabled: true
+  description: ""
+  locationName: SOURCE2
+  metadata:
+    columns:
+      - acceptedValues:
+          strictMatch: true
+          values: []
+        appliedColumnTests: {}
+        columnReference:
+          columnCounter: b98536bc-5148-438a-b0f3-07fa7a7975ac
+          stepCounter: 6bfb8acf-1757-4fad-b496-2824cc984c66
+        config: {}
+        dataType: NUMBER(38,0)
+        defaultValue: ""
+        description: ""
+        name: ACCOUNT_ID
+        nullable: true
+        primaryKey: false
+        sourceColumnReferences:
+          - columnReferences: []
+            transform: ""
+        transform: ""
+        uniqueKey: false
+      - acceptedValues:
+          strictMatch: true
+          values: []
+        appliedColumnTests: {}
+        columnReference:
+          columnCounter: e1dc2df0-a464-4a4d-84d2-4da570090659
+          stepCounter: 6bfb8acf-1757-4fad-b496-2824cc984c66
+        config: {}
+        dataType: VARCHAR(16777216)
+        defaultValue: ""
+        description: ""
+        name: CUSTOMER_NAME
+        nullable: true
+        primaryKey: false
+        sourceColumnReferences:
+          - columnReferences: []
+            transform: ""
+        transform: ""
+        uniqueKey: false
+      - acceptedValues:
+          strictMatch: true
+          values: []
+        appliedColumnTests: {}
+        columnReference:
+          columnCounter: f190f20e-b489-45d1-be16-7d9479d899b1
+          stepCounter: 6bfb8acf-1757-4fad-b496-2824cc984c66
+        config: {}
+        dataType: VARCHAR(16777216)
+        defaultValue: ""
+        description: ""
+        name: CITY
+        nullable: true
+        primaryKey: false
+        sourceColumnReferences:
+          - columnReferences: []
+            transform: ""
+        transform: ""
+        uniqueKey: false
+      - acceptedValues:
+          strictMatch: true
+          values: []
+        appliedColumnTests: {}
+        columnReference:
+          columnCounter: 3042cd02-4c10-474d-a455-a831ac2cc19e
+          stepCounter: 6bfb8acf-1757-4fad-b496-2824cc984c66
+        config: {}
+        dataType: DATE
+        defaultValue: ""
+        description: ""
+        name: SIGNUP_DATE
+        nullable: true
+        primaryKey: false
+        sourceColumnReferences:
+          - columnReferences: []
+            transform: ""
+        transform: ""
+        uniqueKey: false
+  name: CUSTOMER_ACCOUNTS
+  schema: ""
+  sqlType: Source
+  type: sourceInput
+  version: 1
+type: Node
