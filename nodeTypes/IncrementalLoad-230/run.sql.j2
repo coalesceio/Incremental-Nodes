@@ -12,24 +12,17 @@ does not permit copying or modification for any other purpose.
 {% if node.materializationType == 'table'   %}
 
   {% set source = sources[0] %}
-  {#Columns added for data quality#}
-    {% set ns = namespace(failed_tests=[]) %}
 
      {%if config.refTable %}
-  		{{ stage('Truncate Stage Table') }}
-		TRUNCATE IF EXISTS {{ ref_no_link(node.location.name, node.name) }}
+  			{{ stage('Truncate Stage Table') }}
+			TRUNCATE IF EXISTS {{ ref_no_link(node.location.name, node.name) }}
      {%endif%}
-     
-   {%if config.dqhandle%}
-   {{ stage('Insert valid Data') }}
-   {%else%}
-    {{ stage('Insert Data') }}
-   {%endif%}
 
-  {%if not config.dqhandle %}
-	INSERT INTO {{ ref_no_link(node.location.name, node.name) }}
+ {{ stage('Insert Data') }}
+
+			INSERT INTO {{ ref_no_link(node.location.name, node.name) }}
 				(
-    {% for col in columns if (col.name != "_SEQUENCE") %}
+    {% for col in columns if col.name != "_SEQUENCE" %}
         "{{ col.name }}"
         {% if not loop.last %}, {% endif %}
     {% endfor %}
@@ -40,88 +33,7 @@ does not permit copying or modification for any other purpose.
     {%- if not loop.last -%}, {% endif %} 
    {% endfor %}
 
-   {%elif config.dqhandle%} 
-   INSERT INTO {{ ref_no_link(node.location.name, node.name) }}
-				(
-    {% for col in columns if (col.name != "_SEQUENCE") %}
-        "{{ col.name }}"
-        {% if not loop.last %}, {% endif %}
-    {% endfor %}
-				)
-		select * from(SELECT 
-		  {% for col in source.columns if (col.name != "_SEQUENCE" and "_null" not in col.name and "_dup" not in col.name and col.name != "total_failed_tests")  %}
-    {{ get_source_transform(col) }} AS  "{{ col.name }}" 
-    {%- if not loop.last -%}, {% endif %} 
-   {% endfor %}
-
-	   {% for item in config.dqcolumns['items'] %}
-	    {%if item.dqtest == 'Nullability' %}
-       {# Define the name and add it to our list #}
-        {% set col_name = '"' ~ item.columnName.name ~ '_null"' %}
-        {% set ns.failed_tests = ns.failed_tests + [col_name] %}
-
-	     ,CASE WHEN "{{item.columnName.name}}" IS NULL THEN 1 ELSE 0 END AS {{col_name}}
-
-	    {%elif item.dqtest == 'Duplicates'%}
-
-        {# Define the name and add it to our list #}
-        {% set col_name = '"' ~ item.columnName.name ~ '_dup"' %}
-        {% set ns.failed_tests = ns.failed_tests + [col_name] %}
-        
-	     ,CASE WHEN COUNT("{{item.columnName.name}}") OVER (PARTITION BY "{{item.columnName.name}}") > 1 THEN 1 ELSE 0 END AS {{col_name}}
-
-      {%endif%}
-	   {%endfor%}
-     {# Form the total_failed_tests column by joining the list with ' + ' #}
-      {% if ns.failed_tests | length > 0 %}
-        ,({{ ns.failed_tests | join(' + ') }}) AS "total_failed_tests"
-      {%endif%}  
-           {{  get_clause(source.join,'from')  }})
-      WHERE "total_failed_tests" = 0
-     {{ get_clause(source.join) }}
-    {%else%}
-       {{source.join}})
-    {%endif%}
-
-    {%if config.dqhandle%}  
-    {{ stage('Insert bad Data') }}
-       INSERT INTO {{ ref_no_link(node.location.name, node.name~'_BAD') }}
-				(
-            {% for col in columns if (col.name != "_SEQUENCE") %}
-              "{{ col.name }}"
-             {% if not loop.last %}, {% endif %}
-            {% endfor %}
-				)
-		select * from(SELECT 
-		  {% for col in source.columns if (col.name != "_SEQUENCE" and "_null" not in col.name and "_dup" not in col.name and col.name != "total_failed_tests") %}
-         {{ get_source_transform(col) }} AS  "{{ col.name }}" 
-         {%- if not loop.last -%}, {% endif %} 
-         {% endfor %}
-	   {% for item in config.dqcolumns['items'] %}
-	    {%if item.dqtest == 'Nullability' %}
-       {# Define the name and add it to our list #}
-        {% set col_name = '"' ~ item.columnName.name ~ '_null"' %}
-        {% set ns.failed_tests = ns.failed_tests + [col_name] %}
-	     ,CASE WHEN "{{item.columnName.name}}" IS NULL THEN 1 ELSE 0 END AS {{col_name}}
-
-	    {%elif item.dqtest == 'Duplicates'%}
-
-        {# Define the name and add it to our list #}
-        {% set col_name = '"' ~ item.columnName.name ~ '_dup"' %}
-        {% set ns.failed_tests = ns.failed_tests + [col_name] %}
-        
-	     ,CASE WHEN COUNT("{{item.columnName.name}}") OVER (PARTITION BY "{{item.columnName.name}}") > 1 THEN 1 ELSE 0 END AS {{col_name}}
-
-      {%endif%}
-	   {%endfor%}
-        {# Form the total_failed_tests column by joining the list with ' + ' #}
-        {% if ns.failed_tests | length > 0 %}
-        ,({{ ns.failed_tests | join(' + ') }}) AS "total_failed_tests"
-        {%endif%}  
-           {{  get_clause(source.join,'from')  }})
-        WHERE "total_failed_tests" > 0
-        {{ get_clause(source.join) }}
-    {%endif%} 
+   {{ source.join }}
 {% else %}
     {{ stage('Load Skipped for View') }}
     --The node {{node.name}} is materialized as View. Therefore, a Load operation is not supported.

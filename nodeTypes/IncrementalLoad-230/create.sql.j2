@@ -14,12 +14,7 @@ does not permit copying or modification for any other purpose.
 
 {% if node.materializationType == 'view' %}
 
-  {%if config.dqhandle%}
-   {{ stage('Create Stage View-Good data') }}
-   {%else%}
-    {{ stage('Create Stage View') }}
-   {%endif%}
-
+  {{ stage('Create Stage View') }}
 
 CREATE OR REPLACE VIEW {{ ref_no_link(node.location.name, node.name) }}
   ( 
@@ -28,134 +23,26 @@ CREATE OR REPLACE VIEW {{ ref_no_link(node.location.name, node.name) }}
         {%- if col.description | length > 0 %} COMMENT '{{ col.description | escape }}'{% endif %}
         {% if not loop.last %}, {% endif %}
     {% endfor %}
-    {%if config.dqhandle%} 
-	   {% for item in config.dqcolumns['items'] %}
-	    {%if item.dqtest == 'Nullability' %}
-        {% set col_name = '"' ~ item.columnName.name ~ '_null"' %}
-		 ,{{col_name}} 
-	    {%elif item.dqtest == 'Duplicates'%}
-        {% set col_name = '"' ~ item.columnName.name ~ '_dup"' %}
-		,{{col_name}} 
-        {%endif%}
-	   {%endfor%}
-        ,"total_failed_tests"   
-    {%endif%}
     )
    {%- if node.description | length > 0 %} COMMENT = '{{ node.description | escape }}'{% endif %}
   AS
-   select * from(SELECT
+  SELECT
   {% for col in source.columns  %}
     {{ get_source_transform(col) }} AS  "{{ col.name }}" 
     {%- if not loop.last -%}, {% endif %} 
    {% endfor %}
-   {#Columns added for data quality#}
-    {% set ns = namespace(failed_tests=[]) %}
-	  {%if config.dqhandle%} 
-	   {% for item in config.dqcolumns['items'] %}
-	    {%if item.dqtest == 'Nullability' %}
-       {# Define the name and add it to our list #}
-        {% set col_name = '"' ~ item.columnName.name ~ '_null"' %}
-        {% set ns.failed_tests = ns.failed_tests + [col_name] %}
 
-	     ,CASE WHEN "{{item.columnName.name}}" IS NULL THEN 1 ELSE 0 END AS {{col_name}}
-
-	    {%elif item.dqtest == 'Duplicates'%}
-
-        {# Define the name and add it to our list #}
-        {% set col_name = '"' ~ item.columnName.name ~ '_dup"' %}
-        {% set ns.failed_tests = ns.failed_tests + [col_name] %}
-        
-	     ,CASE WHEN COUNT("{{item.columnName.name}}") OVER (PARTITION BY "{{item.columnName.name}}") > 1 THEN 1 ELSE 0 END AS {{col_name}}
-
-      {%endif%}
-	   {%endfor%}
-     {# Form the total_failed_tests column by joining the list with ' + ' #}
-      {% if ns.failed_tests | length > 0 %}
-        ,({{ ns.failed_tests | join(' + ') }}) AS "total_failed_tests"
-      {%endif%}  
-    {%endif%}
-    {%if config.dqhandle %}
-     {{  get_clause(source.join,'from')  }})
-      WHERE "total_failed_tests" = 0
-     {{ get_clause(source.join) }}
-   {%else%}
-     {{source.join}})
-   {%endif%}
-   
-   {%if config.dqhandle%}
-     {{ stage('Create Stage View-Bad data') }}
-     
-CREATE OR REPLACE VIEW {{ ref_no_link(node.location.name, node.name~'_BAD') }}
-  ( 
-    {% for col in columns if col.name != "_SEQUENCE" %}
-        "{{ col.name }}"
-        {%- if col.description | length > 0 %} COMMENT '{{ col.description | escape }}'{% endif %}
-        {% if not loop.last %}, {% endif %}
-    {% endfor %}
-    {%if config.dqhandle%} 
-	   {% for item in config.dqcolumns['items'] %}
-	    {%if item.dqtest == 'Nullability' %}
-        {% set col_name = '"' ~ item.columnName.name ~ '_null"' %}
-		 ,{{col_name}} 
-	    {%elif item.dqtest == 'Duplicates'%}
-        {% set col_name = '"' ~ item.columnName.name ~ '_dup"' %}
-		,{{col_name}} 
-        {%endif%}
-	   {%endfor%}
-        ,"total_failed_tests"   
-    {%endif%}
-    )
-   {%- if node.description | length > 0 %} COMMENT = '{{ node.description | escape }}'{% endif %}
-  AS
-  select * from(SELECT
-  {% for col in source.columns  %}
-    {{ get_source_transform(col) }} AS  "{{ col.name }}" 
-    {%- if not loop.last -%}, {% endif %} 
-   {% endfor %}
-   {#Columns added for data quality#}
-    {% set ns = namespace(failed_tests=[]) %}
-	  {%if config.dqhandle%} 
-	   {% for item in config.dqcolumns['items'] %}
-	    {%if item.dqtest == 'Nullability' %}
-       {# Define the name and add it to our list #}
-        {% set col_name = '"' ~ item.columnName.name ~ '_null"' %}
-        {% set ns.failed_tests = ns.failed_tests + [col_name] %}
-
-	     ,CASE WHEN "{{item.columnName.name}}" IS NULL THEN 1 ELSE 0 END AS {{col_name}}
-
-	    {%elif item.dqtest == 'Duplicates'%}
-
-        {# Define the name and add it to our list #}
-        {% set col_name = '"' ~ item.columnName.name ~ '_dup"' %}
-        {% set ns.failed_tests = ns.failed_tests + [col_name] %}
-        
-	     ,CASE WHEN COUNT("{{item.columnName.name}}") OVER (PARTITION BY "{{item.columnName.name}}") > 1 THEN 1 ELSE 0 END AS {{col_name}}
-
-      {%endif%}
-	   {%endfor%}
-     {# Form the total_failed_tests column by joining the list with ' + ' #}
-      {% if ns.failed_tests | length > 0 %}
-        ,({{ ns.failed_tests | join(' + ') }}) AS "total_failed_tests"
-      {%endif%}  
-    {%endif%}
-    {{  get_clause(source.join,'from')  }})
-      WHERE "total_failed_tests" > 0
-     {{ get_clause(source.join) }}
-   {%endif%}
+   {{ source.join }}
 
 {% elif node.materializationType == 'table' %}
 {# CreateSQL for Table #}
 
-   {%if config.dqhandle%}
-   {{ stage('Create Stage Table-Good data') }}
-   {%else%}
-    {{ stage('Create Stage Table') }}
-   {%endif%}
+   {{ stage('Create Stage Table') }}
 
 
 	CREATE OR REPLACE TABLE {{ ref_no_link(node.location.name, node.name) }}
 	(
-		{% for col in columns if (col.name != "_SEQUENCE" and "_null" not in col.name and "_dup" not in col.name and col.name != "total_failed_tests") %}
+		{% for col in columns %}
 			"{{ col.name }}" {{ col.dataType }}
 			{%- if not col.nullable %} NOT NULL
 				{%- if col.defaultValue | length > 0 %} DEFAULT {{ col.defaultValue }}{% endif %}
@@ -163,47 +50,7 @@ CREATE OR REPLACE VIEW {{ ref_no_link(node.location.name, node.name~'_BAD') }}
 			{%- if col.description | length > 0 %} COMMENT '{{ col.description | escape }}'{% endif %}
 			{%- if not loop.last -%}, {% endif %}
 		{% endfor %}
-    	{%if config.dqhandle%} 
-	   {% for item in config.dqcolumns['items'] %}
-	    {%if item.dqtest == 'Nullability' %}
-        {% set col_name = '"' ~ item.columnName.name ~ '_null"' %}
-		 ,{{col_name}} NUMBER(1)
-	    {%elif item.dqtest == 'Duplicates'%}
-        {% set col_name = '"' ~ item.columnName.name ~ '_dup"' %}
-		,{{col_name}} NUMBER(1)
-        {%endif%}
-	   {%endfor%}
-        ,"total_failed_tests" NUMBER  
-    {%endif%}
-    )
+	)
 	{%- if node.description | length > 0 %} COMMENT = '{{ node.description | escape }}'{% endif %}
-
-   {%if config.dqhandle%}
-   {{ stage('Create Stage Table-Bad data') }}
-   
-	CREATE OR REPLACE TABLE {{ ref_no_link(node.location.name, node.name~'_BAD') }}
-	(
-		{% for col in columns if (col.name != "_SEQUENCE" and "_null" not in col.name and "_dup" not in col.name and col.name != "total_failed_tests") %}
-			"{{ col.name }}" {{ col.dataType }}
-			{%- if not col.nullable %} NOT NULL
-				{%- if col.defaultValue | length > 0 %} DEFAULT {{ col.defaultValue }}{% endif %}
-			{% endif %}
-			{%- if col.description | length > 0 %} COMMENT '{{ col.description | escape }}'{% endif %}
-			{%- if not loop.last -%}, {% endif %}
-		{% endfor %}
-    	{%if config.dqhandle%} 
-	   {% for item in config.dqcolumns['items'] %}
-	    {%if item.dqtest == 'Nullability' %}
-        {% set col_name = '"' ~ item.columnName.name ~ '_null"' %}
-		 ,{{col_name}} NUMBER(1)
-	    {%elif item.dqtest == 'Duplicates'%}
-        {% set col_name = '"' ~ item.columnName.name ~ '_dup"' %}
-		,{{col_name}} NUMBER(1)
-        {%endif%}
-	   {%endfor%}
-        ,"total_failed_tests" NUMBER  
-    {%endif%}
-    )
-   {%endif%}
 	
 {% endif %}

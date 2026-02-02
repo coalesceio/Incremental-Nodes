@@ -10,8 +10,6 @@ metadata:
     plural: Incremental
     tagColor: green
 
-    isColumnResyncEnabled: true
-
     config:
     - groupName: Options
       items:
@@ -28,33 +26,6 @@ metadata:
         type: toggleButton
         default: false
         isRequired: false    
-      
-      - displayName: Handle data quality
-        attributeName: dqhandle
-        type: toggleButton
-        default: false
-        isRequired: false  
-
-      - type: tabular
-        displayName: 'Data Quality'
-        attributeName: dqcolumns
-        columns:
-
-        -  type: columnDropdownSelector
-           displayName: Column Name
-           attributeName: columnName
-           isRequired: false     
-          
-        -  type: dropdownSelector
-           displayName: Data quality test
-           attributeName: dqtest
-           options:
-           - Nullability
-           - Duplicates
-           isRequired: false
-      
-        isRequired: false
-        enableIf: "{% if (config.dqhandle) %} true {% else %} false {% endif %}"
 
       - displayName: Persistent table can be a Persistent stage,Dimension or  Fact node
         type: label
@@ -79,6 +50,7 @@ metadata:
         type: columnDropdownSelector
         isRequired: false
         enableIf: "{{config.refTable}}"
+
 
     joinTemplate: |
 

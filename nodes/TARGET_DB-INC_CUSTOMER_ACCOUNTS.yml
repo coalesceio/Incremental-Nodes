@@ -1,25 +1,13 @@
 fileVersion: 1
-id: b33032f9-afbb-4fb0-817b-a4b7e120d040
-name: INC_CUSTOMER_ACCOUNT_VW
+id: f50e172f-6b9a-4a81-8750-25eb8d8946c5
+name: INC_CUSTOMER_ACCOUNTS
 operation:
   config:
-    dqcolumns:
-      items:
-        - columnName:
-            columnCounter: 1d29938f-f25a-483f-8698-0092b3c6e063
-            stepCounter: b33032f9-afbb-4fb0-817b-a4b7e120d040
-          dqtest: Nullability
-        - columnName:
-            columnCounter: 1d29938f-f25a-483f-8698-0092b3c6e063
-            stepCounter: b33032f9-afbb-4fb0-817b-a4b7e120d040
-          dqtest: Duplicates
-    dqhandle: true
     incColumn:
-      columnCounter: 3f426cce-f16e-46a3-9f92-e2d851209fac
-      stepCounter: b33032f9-afbb-4fb0-817b-a4b7e120d040
-    ldbadrec: false
+      columnCounter: f0432c0b-caaa-4769-906e-a9a0e0335178
+      stepCounter: f50e172f-6b9a-4a81-8750-25eb8d8946c5
     persistTableLocation: TARGET
-    persistTableName: PSTG_CUSTOMER_ACCOUNT_VW
+    persistTableName: PSTG_CUSTOMER_ACCOUNTS
     refTable: true
   database: ""
   deployEnabled: true
@@ -32,8 +20,8 @@ operation:
     columns:
       - appliedColumnTests: {}
         columnReference:
-          columnCounter: 1d29938f-f25a-483f-8698-0092b3c6e063
-          stepCounter: b33032f9-afbb-4fb0-817b-a4b7e120d040
+          columnCounter: 3bbc0040-4c03-41c6-bc89-199fbee1bde3
+          stepCounter: f50e172f-6b9a-4a81-8750-25eb8d8946c5
         config: {}
         dataType: NUMBER(38,0)
         description: ""
@@ -46,8 +34,8 @@ operation:
             transform: ""
       - appliedColumnTests: {}
         columnReference:
-          columnCounter: 67205123-4076-4315-8cf5-a4099fa1affe
-          stepCounter: b33032f9-afbb-4fb0-817b-a4b7e120d040
+          columnCounter: 5ed7184e-0cf3-4571-9590-9a065f58aef6
+          stepCounter: f50e172f-6b9a-4a81-8750-25eb8d8946c5
         config: {}
         dataType: VARCHAR(16777216)
         description: ""
@@ -60,8 +48,8 @@ operation:
             transform: ""
       - appliedColumnTests: {}
         columnReference:
-          columnCounter: 0546eea1-9eec-4f17-bc6a-4606e54fcca1
-          stepCounter: b33032f9-afbb-4fb0-817b-a4b7e120d040
+          columnCounter: 8958a476-5d0f-4b65-91cb-186c96926d13
+          stepCounter: f50e172f-6b9a-4a81-8750-25eb8d8946c5
         config: {}
         dataType: VARCHAR(16777216)
         description: ""
@@ -74,8 +62,8 @@ operation:
             transform: ""
       - appliedColumnTests: {}
         columnReference:
-          columnCounter: 3f426cce-f16e-46a3-9f92-e2d851209fac
-          stepCounter: b33032f9-afbb-4fb0-817b-a4b7e120d040
+          columnCounter: f0432c0b-caaa-4769-906e-a9a0e0335178
+          stepCounter: f50e172f-6b9a-4a81-8750-25eb8d8946c5
         config: {}
         dataType: DATE
         description: ""
@@ -102,15 +90,13 @@ operation:
             FROM {{ ref('SOURCE2', 'CUSTOMER_ACCOUNTS') }} "CUSTOMER_ACCOUNTS"
               WHERE "CUSTOMER_ACCOUNTS"."SIGNUP_DATE" > 
               (SELECT COALESCE(MAX("SIGNUP_DATE"), '1900-01-01') 
-                        FROM {{ ref_no_link('TARGET_DB', 'PSTG_CUSTOMER_ACCOUNT_VW') }} )
-        name: INC_CUSTOMER_ACCOUNT_VW
-        noLinkRefs:
-          - locationName: TARGET_DB
-            nodeName: PSTG_CUSTOMER_ACCOUNT_VW
-  name: INC_CUSTOMER_ACCOUNT_VW
+                        FROM {{ ref_no_link('TARGET', 'PSTG_CUSTOMER_ACCOUNTS') }} )
+        name: INC_CUSTOMER_ACCOUNTS
+        noLinkRefs: []
+  name: INC_CUSTOMER_ACCOUNTS
   overrideSQL: false
   schema: ""
-  sqlType: "613"
+  sqlType: "230"
   type: sql
   version: 1
 type: Node

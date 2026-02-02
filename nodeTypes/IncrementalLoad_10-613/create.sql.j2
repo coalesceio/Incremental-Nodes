@@ -17,28 +17,27 @@ does not permit copying or modification for any other purpose.
    
     {{ stage('Create Stage View') }}
 
-
 CREATE OR REPLACE VIEW {{ ref_no_link(node.location.name, node.name) }}
   ( 
-    {% for col in columns if col.name != "_SEQUENCE" %}
+    {% for col in columns if col.name != "_SEQUENCE" -%}
         "{{ col.name }}"
-        {%- if col.description | length > 0 %} COMMENT '{{ col.description | escape }}'{% endif %}
-        {% if not loop.last %}, {% endif %}
+        {%- if col.description | length > 0 %} COMMENT '{{ col.description | escape }}'{% endif -%}
+        {% if not loop.last %}, {% endif -%}
     {% endfor %}
     {%if config.dqhandle and not config.ldbadrec%} 
 	   {% for item in config.dqcolumns['items'] %}
 	    {%if item.dqtest == 'Nullability' %}
-        {% set col_name = '"' ~ item.columnName.name ~ '_null"' %}
+        {% set col_name = '"' ~ item.columnName.name ~ '_null"' -%}
 		 ,{{col_name}} 
 	    {%elif item.dqtest == 'Duplicates'%}
-        {% set col_name = '"' ~ item.columnName.name ~ '_dup"' %}
+        {% set col_name = '"' ~ item.columnName.name ~ '_dup"' -%}
 		,{{col_name}} 
-        {%endif%}
-	   {%endfor%}
+        {%endif -%}
+	   {%endfor -%}
         ,"total_failed_tests"   
     {%endif%}
     )
-   {%- if node.description | length > 0 %} COMMENT = '{{ node.description | escape }}'{% endif %}
+   {%- if node.description | length > 0 -%} COMMENT = '{{ node.description | escape }}'{% endif %}
   AS
    select * from(SELECT
   {% for col in source.columns  -%}
@@ -61,7 +60,7 @@ CREATE OR REPLACE VIEW {{ ref_no_link(node.location.name, node.name) }}
         {% set ns.failed_tests = ns.failed_tests + [col_name] -%}
 	     ,CASE WHEN COUNT("{{item.columnName.name}}") OVER (PARTITION BY "{{item.columnName.name}}") > 1 THEN 1 ELSE 0 END AS {{col_name}}
       {%endif -%}
-	   {%endfor-%}
+	   {%endfor -%}
      {# Form the total_failed_tests column by joining the list with ' + ' #}
       {% if ns.failed_tests | length > 0 %}
         ,({{ ns.failed_tests | join(' + ') }}) AS "total_failed_tests"
