@@ -1,15 +1,27 @@
 fileVersion: 1
-id: 9bf4f95e-5b40-4967-9a5e-d4eef1c9f467
-name: INC_CUSTOMER_ACCOUNTS_NDQ
+id: b49635a8-ba9d-45ad-bb5c-beff772a1d40
+name: INC_CUSTOMER_ACCOUNTS_VW
 operation:
   config:
+    ddqcolumns:
+      items:
+        - dcolumnName:
+            columnCounter: abc07743-8bfd-484a-9ee4-672903836bd2
+            stepCounter: b49635a8-ba9d-45ad-bb5c-beff772a1d40
+        - dcolumnName:
+            columnCounter: 89dc4642-64f8-4f02-891c-42f3494f6c76
+            stepCounter: b49635a8-ba9d-45ad-bb5c-beff772a1d40
     dqcolumns:
       items:
-        - {}
-    dqhandle: false
-    ldbadrec: false
-    persistTableLocation: "ex: TARGET"
-    persistTableName: "ex: DIM_ORDERS"
+        - ncolumnName:
+            columnCounter: abc07743-8bfd-484a-9ee4-672903836bd2
+            stepCounter: b49635a8-ba9d-45ad-bb5c-beff772a1d40
+    dqdup: true
+    dqhandle: true
+    dqnull: true
+    incColumn: ""
+    persistTableLocation: TARGET_DB
+    persistTableName: ""
     refTable: false
   database: ""
   deployEnabled: true
@@ -22,8 +34,8 @@ operation:
     columns:
       - appliedColumnTests: {}
         columnReference:
-          columnCounter: 178f0f05-a0c2-43a5-b8cd-7d42df6f1032
-          stepCounter: 9bf4f95e-5b40-4967-9a5e-d4eef1c9f467
+          columnCounter: abc07743-8bfd-484a-9ee4-672903836bd2
+          stepCounter: b49635a8-ba9d-45ad-bb5c-beff772a1d40
         config: {}
         dataType: NUMBER(38,0)
         description: ""
@@ -36,8 +48,8 @@ operation:
             transform: ""
       - appliedColumnTests: {}
         columnReference:
-          columnCounter: 203904da-1159-4137-ab52-c951eb1b8a56
-          stepCounter: 9bf4f95e-5b40-4967-9a5e-d4eef1c9f467
+          columnCounter: 89dc4642-64f8-4f02-891c-42f3494f6c76
+          stepCounter: b49635a8-ba9d-45ad-bb5c-beff772a1d40
         config: {}
         dataType: VARCHAR(16777216)
         description: ""
@@ -50,8 +62,8 @@ operation:
             transform: ""
       - appliedColumnTests: {}
         columnReference:
-          columnCounter: ecc8117a-9f8c-45b4-a492-c7e825511095
-          stepCounter: 9bf4f95e-5b40-4967-9a5e-d4eef1c9f467
+          columnCounter: 5aff5872-a51c-4721-8c0e-bffc8ca1df3e
+          stepCounter: b49635a8-ba9d-45ad-bb5c-beff772a1d40
         config: {}
         dataType: VARCHAR(16777216)
         description: ""
@@ -64,8 +76,8 @@ operation:
             transform: ""
       - appliedColumnTests: {}
         columnReference:
-          columnCounter: 39a561f8-1381-4e62-aa8e-51f3dfbff35a
-          stepCounter: 9bf4f95e-5b40-4967-9a5e-d4eef1c9f467
+          columnCounter: d50d53b0-2b9d-48a8-94eb-c16a2950e2c1
+          stepCounter: b49635a8-ba9d-45ad-bb5c-beff772a1d40
         config: {}
         dataType: DATE
         description: ""
@@ -88,9 +100,9 @@ operation:
             nodeName: CUSTOMER_ACCOUNTS
         join:
           joinCondition: FROM {{ ref('SOURCE2', 'CUSTOMER_ACCOUNTS') }} "CUSTOMER_ACCOUNTS"
-        name: INC_CUSTOMER_ACCOUNTS_NDQ
+        name: INC_CUSTOMER_ACCOUNTS_VW
         noLinkRefs: []
-  name: INC_CUSTOMER_ACCOUNTS_NDQ
+  name: INC_CUSTOMER_ACCOUNTS_VW
   overrideSQL: false
   schema: ""
   sqlType: "613"

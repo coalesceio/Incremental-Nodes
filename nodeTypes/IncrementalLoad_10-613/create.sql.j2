@@ -22,51 +22,43 @@ CREATE OR REPLACE VIEW {{ ref_no_link(node.location.name, node.name) }}
     {% for col in columns if col.name != "_SEQUENCE" -%}
         "{{ col.name }}"
         {%- if col.description | length > 0 %} COMMENT '{{ col.description | escape }}'{% endif -%}
-        {% if not loop.last %}, {% endif -%}
-    {% endfor %}
-    {%if config.dqhandle and not config.ldbadrec%} 
-	   {% for item in config.dqcolumns['items'] %}
-	    {%if item.dqtest == 'Nullability' %}
-        {% set col_name = '"' ~ item.columnName.name ~ '_null"' -%}
+        {% if not loop.last %}, {% endif %}
+    {% endfor -%}
+    {%if config.dqhandle and config.dqnull -%} 
+	   {% for item in config.ndqcolumns['items'] -%}
+        {% set col_name = '"' ~ item.ncolumnName.name ~ '_null"' -%}
 		 ,{{col_name}} 
-	    {%elif item.dqtest == 'Duplicates'%}
-        {% set col_name = '"' ~ item.columnName.name ~ '_dup"' -%}
+	    {% endfor -%}
+    {%elif config.dqhandle and config.dqnull -%}
+	    {% for item in config.ddqcolumns['items'] -%}
+        {% set col_name = '"' ~ item.dcolumnName.name ~ '_dup"' -%}
 		,{{col_name}} 
-        {%endif -%}
 	   {%endfor -%}
-        ,"total_failed_tests"   
-    {%endif%}
+    {%endif -%}
+	{%if config.dqhandle -%}
+	,"TOTAL_FAILED_TESTS" 
+    ,"QUALITY_FLAG"
+	{%endif -%}
     )
-   {%- if node.description | length > 0 -%} COMMENT = '{{ node.description | escape }}'{% endif %}
+   {%- if node.description | length > 0 -%} COMMENT = '{{ node.description | escape }}'{% endif -%}
   AS
    select * from(SELECT
   {% for col in source.columns  -%}
     {{ get_source_transform(col) }} AS  "{{ col.name }}" 
     {%- if not loop.last -%}, {% endif %} 
-   {% endfor -%}
-   {#Columns added for data quality#}
-    {% set ns = namespace(failed_tests=[]) %}
-	  {%if config.dqhandle%} 
-	   {% for item in config.dqcolumns['items'] %}
-	    {%if item.dqtest == 'Nullability' %}
-       {# Define the name and add it to our list #}
-        {% set col_name = '"' ~ item.columnName.name ~ '_null"' %}
-        {% set ns.failed_tests = ns.failed_tests + [col_name] %}
-	     ,CASE WHEN "{{item.columnName.name}}" IS NULL THEN 1 ELSE 0 END AS {{col_name}}
-	    {%elif item.dqtest == 'Duplicates' -%}
-
-        {# Define the name and add it to our list #}
-        {% set col_name = '"' ~ item.columnName.name ~ '_dup"' -%}
-        {% set ns.failed_tests = ns.failed_tests + [col_name] -%}
-	     ,CASE WHEN COUNT("{{item.columnName.name}}") OVER (PARTITION BY "{{item.columnName.name}}") > 1 THEN 1 ELSE 0 END AS {{col_name}}
-      {%endif -%}
-	   {%endfor -%}
+   {% endfor -%}    {#Columns added for data quality#}
+    {% set ns = namespace(failed_tests=[]) -%}
+	  {%if config.dqhandle and config.dqnull -%} 
+	       
+      {%elif config.dqhandle and config.dqdup -%}
+           
+	 {%endif -%}   
      {# Form the total_failed_tests column by joining the list with ' + ' #}
-      {% if ns.failed_tests | length > 0 %}
-        ,({{ ns.failed_tests | join(' + ') }}) AS "total_failed_tests"
-      {%endif%}  
-    {%endif%}
-     {{source.join}})
+      {%- if ns.failed_tests | length > 0 -%}
+        ,({{ ns.failed_tests | join(' + ') }}) AS "TOTAL_FAILED_TESTS"
+        ,CASE WHEN "TOTAL_FAILED_TESTS" > 0 THEN 'G' ELSE 'B' END AS "QUALITY_FLAG"
+      {%endif -%}  
+     {{source.join -}})
    
 {% elif node.materializationType == 'table' %}
 {# CreateSQL for Table #}
@@ -83,18 +75,21 @@ CREATE OR REPLACE VIEW {{ ref_no_link(node.location.name, node.name) }}
 			{%- if col.description | length > 0 %} COMMENT '{{ col.description | escape }}'{% endif %}
 			{%- if not loop.last -%}, {% endif %}
 		{% endfor %}
-    	{%if config.dqhandle and not config.ldbadrec%} 
-	   {% for item in config.dqcolumns['items'] %}
-	    {%if item.dqtest == 'Nullability' %}
-        {% set col_name = '"' ~ item.columnName.name ~ '_null"' %}
-		 ,{{col_name}} NUMBER(1)
-	    {%elif item.dqtest == 'Duplicates'%}
-        {% set col_name = '"' ~ item.columnName.name ~ '_dup"' %}
-		,{{col_name}} NUMBER(1)
-        {%endif%}
-	   {%endfor%}
-        ,"total_failed_tests" NUMBER  
-    {%endif%}
+    	{%if config.dqhandle and config.dqnull -%} 
+	      {% for item in config.ndqcolumns['items'] -%}
+          {% set col_name = '"' ~ item.ncolumnName.name ~ '_null"' -%}
+		    ,{{col_name}} 
+	      {% endfor -%}
+        {%elif config.dqhandle and config.dqnull -%}
+	      {% for item in config.ddqcolumns['items'] -%}
+          {% set col_name = '"' ~ item.dcolumnName.name ~ '_dup"' -%}
+		   ,{{col_name}} 
+	      {%endfor -%}
+        {%endif -%}
+	   {%if config.dqhandle -%}
+	     ,"TOTAL_FAILED_TESTS" 
+         ,"QUALITY_FLAG"
+	   {%endif -%}
     )
 	{%- if node.description | length > 0 %} COMMENT = '{{ node.description | escape }}'{% endif %}
 

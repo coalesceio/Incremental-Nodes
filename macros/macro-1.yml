@@ -1,6 +1,6 @@
 fileVersion: 1
 id: "1"
-macroString: |+
+macroString: |
 
   {%- macro ref_raw(location_name, node_name) -%}
       {%- raw -%}{{ ref('{% endraw %}{{- location_name }}{% raw %}', '{% endraw %}{{ node_name }}{% raw %}') }}{% endraw %}
@@ -11,5 +11,28 @@ macroString: |+
       {% raw %}{{ ref_no_link('{% endraw %}{{ location_name }}{% raw %}', '{% endraw %}{{ node_name }}{% raw %}') }}{% endraw %}
   {%- endmacro -%}
 
+
+  {%- macro nullability_columns -%}
+        {% for item in config.ndqcolumns['items'] -%}
+
+         {# Define the name and add it to our list #}
+          {%- set col_name = '"' ~ item.ncolumnName.name ~ '_null"' -%}
+          {% set ns.failed_tests = ns.failed_tests + [col_name] -%}
+  	      ,CASE WHEN "{{item.ncolumnName.name}}" IS NULL THEN 1 ELSE 0 END AS {{col_name}}	  
+  	  {%endfor -%}
+
+  {%-endmacro-%}
+
+  {%- macro duplicates_columns -%}
+
+         {% for item in config.ddqcolumns['items'] -%}
+  		
+          {# Define the name and add it to our list #}
+          {%- set col_name = '"' ~ item.dcolumnName.name ~ '_dup"' -%}
+          {%- set ns.failed_tests = ns.failed_tests + [col_name] -%}
+          ,CASE WHEN COUNT("{{item.dcolumnName.name}}") OVER (PARTITION BY "{{item.dcolumnName.name}}") > 1 THEN 1 ELSE 0 END AS {{col_name}}
+  	   {%endfor -%}
+
+  {%- endmacro -%}
 name: macro
 type: Macro

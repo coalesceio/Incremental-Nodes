@@ -35,33 +35,43 @@ metadata:
         default: false
         isRequired: false  
       
-      - displayName: Load bad records
-        attributeName: ldbadrec
+      - displayName: Nullability test
+        attributeName: dqnull
         type: toggleButton
         default: false
-        isRequired: false
-        enableIf: "{% if (config.dqhandle) %} true {% else %} false {% endif %}"  
+        isRequired: false  
       
       - type: tabular
-        displayName: 'Data Quality'
-        attributeName: dqcolumns
+        displayName: 'Data Quality-Nullability test'
+        attributeName: ndqcolumns
         columns:
 
         -  type: columnDropdownSelector
            displayName: Column Name
-           attributeName: columnName
+           attributeName: ncolumnName
            isRequired: false     
           
-        -  type: dropdownSelector
-           displayName: Data quality test
-           attributeName: dqtest
-           options:
-           - Nullability
-           - Duplicates
-           isRequired: false
-      
         isRequired: false
-        enableIf: "{% if (config.dqhandle) %} true {% else %} false {% endif %}"
+        enableIf: "{% if (config.dqhandle and config.dqnull) %} true {% else %} false {% endif %}"
+
+      - displayName: Duplicate test
+        attributeName: dqdup
+        type: toggleButton
+        default: false
+        isRequired: false  
+
+      - type: tabular
+        displayName: 'Data Quality-Duplicates test'
+        attributeName: ddqcolumns
+        columns:
+
+        -  type: columnDropdownSelector
+           displayName: Column Name
+           attributeName: dcolumnName
+           isRequired: false     
+          
+        isRequired: false
+        enableIf: "{% if (config.dqhandle and config.dqdup) %} true {% else %} false {% endif %}"
 
       - displayName: Persistent table can be a Persistent stage,Dimension or  Fact node
         type: label
