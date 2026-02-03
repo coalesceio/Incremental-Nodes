@@ -1,6 +1,6 @@
 fileVersion: 1
 id: "1"
-macroString: |
+macroString: |-
 
   {%- macro ref_raw(location_name, node_name) -%}
       {%- raw -%}{{ ref('{% endraw %}{{- location_name }}{% raw %}', '{% endraw %}{{ node_name }}{% raw %}') }}{% endraw %}
@@ -12,27 +12,31 @@ macroString: |
   {%- endmacro -%}
 
 
-  {%- macro nullability_columns -%}
-        {% for item in config.ndqcolumns['items'] -%}
-
-         {# Define the name and add it to our list #}
+  {%- macro generate_null_checks(column_list, ns) -%}
+      {% for item in column_list -%}
+          {# 1. Define the name #}
           {%- set col_name = '"' ~ item.ncolumnName.name ~ '_null"' -%}
-          {% set ns.failed_tests = ns.failed_tests + [col_name] -%}
-  	      ,CASE WHEN "{{item.ncolumnName.name}}" IS NULL THEN 1 ELSE 0 END AS {{col_name}}	  
-  	  {%endfor -%}
+          
+          {# 2. Update the shared list in the namespace #}
+          {%- set _ = ns.failed_tests.append(col_name) -%}
+          
+          {# 3. Generate the SQL snippet #}
+          ,CASE WHEN "{{item.ncolumnName.name}}" IS NULL THEN 1 ELSE 0 END AS {{col_name}}
+      {%- endfor -%}
+  {%- endmacro -%}
 
-  {%-endmacro-%}
 
-  {%- macro duplicates_columns -%}
-
-         {% for item in config.ddqcolumns['items'] -%}
-  		
-          {# Define the name and add it to our list #}
+  {%- macro generate_duplicate_checks(column_list, ns) -%}
+      {% for item in column_list -%}
+          {# 1. Define the name #}
           {%- set col_name = '"' ~ item.dcolumnName.name ~ '_dup"' -%}
-          {%- set ns.failed_tests = ns.failed_tests + [col_name] -%}
-          ,CASE WHEN COUNT("{{item.dcolumnName.name}}") OVER (PARTITION BY "{{item.dcolumnName.name}}") > 1 THEN 1 ELSE 0 END AS {{col_name}}
-  	   {%endfor -%}
-
+          
+          {# 2. Update the shared list in the namespace #}
+          {%- set _ = ns.failed_tests.append(col_name) -%}
+          
+          {# 3. Generate the SQL snippet #}
+           ,CASE WHEN COUNT(*) OVER (PARTITION BY "{{item.dcolumnName.name}}") > 1 THEN 1 ELSE 0 END AS {{col_name}}
+      {%- endfor -%}
   {%- endmacro -%}
 name: macro
 type: Macro

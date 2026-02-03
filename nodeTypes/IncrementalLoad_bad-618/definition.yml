@@ -1,0 +1,27 @@
+fileVersion: 1
+id: "618"
+isDisabled: false
+metadata:
+  defaultStorageLocation: null
+  error: null
+  nodeMetadataSpec: |+
+    capitalized: INCREMENTAL LOAD_BAD
+    short: INC
+    plural: Incremental
+    tagColor: green
+
+    isColumnResyncEnabled: true
+
+    config:
+    - groupName: Options
+      items:
+
+      - type: materializationSelector
+        default: view
+        options:
+        - view
+        - table
+        isRequired: true
+
+name: Incremental Load_bad
+type: NodeType

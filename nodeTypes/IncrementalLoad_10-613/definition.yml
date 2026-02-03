@@ -39,7 +39,8 @@ metadata:
         attributeName: dqnull
         type: toggleButton
         default: false
-        isRequired: false  
+        isRequired: false 
+        enableIf: "{% if (config.dqhandle) %} true {% else %} false {% endif %}" 
       
       - type: tabular
         displayName: 'Data Quality-Nullability test'
@@ -59,6 +60,7 @@ metadata:
         type: toggleButton
         default: false
         isRequired: false  
+        enableIf: "{% if (config.dqhandle) %} true {% else %} false {% endif %}" 
 
       - type: tabular
         displayName: 'Data Quality-Duplicates test'
@@ -75,27 +77,27 @@ metadata:
 
       - displayName: Persistent table can be a Persistent stage,Dimension or  Fact node
         type: label
-        enableIf: "{{config.refTable}}"
+        enableIf: "{% if (config.refTable) %} true {% else %} false {% endif %}"
 
       - displayName: Persistent Table location(Storage location in Coalesce)
         attributeName: persistTableLocation
         type: textBox
         default: "ex: TARGET"
         isRequired: false
-        enableIf: "{{config.refTable}}"
+        enableIf: "{% if (config.refTable) %} true {% else %} false {% endif %}"
 
       - displayName: Persistent Table name
         attributeName: persistTableName
         type: textBox
         default: "ex: DIM_ORDERS"
         isRequired: false
-        enableIf: "{{config.refTable}}"
+        enableIf: "{% if (config.refTable) %} true {% else %} false {% endif %}"
 
       - displayName: "Incremental Load Column (date)"
         attributeName: incColumn
         type: columnDropdownSelector
         isRequired: false
-        enableIf: "{{config.refTable}}"
+        enableIf: "{% if (config.refTable) %} true {% else %} false {% endif %}"
 
     joinTemplate: |
 

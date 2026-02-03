@@ -1,21 +1,16 @@
 fileVersion: 1
-id: b49635a8-ba9d-45ad-bb5c-beff772a1d40
-name: INC_CUSTOMER_ACCOUNTS_VW
+id: 35e56dc9-a27c-4b14-b88c-9806e68a4a2d
+name: INC_CUSTOMER_ACCOUNTS_TBL_DQ
 operation:
   config:
     ddqcolumns:
       items:
         - dcolumnName:
-            columnCounter: abc07743-8bfd-484a-9ee4-672903836bd2
-            stepCounter: b49635a8-ba9d-45ad-bb5c-beff772a1d40
+            columnCounter: 0a5c2400-bc12-4860-bc10-3f682015c4ef
+            stepCounter: 35e56dc9-a27c-4b14-b88c-9806e68a4a2d
         - dcolumnName:
-            columnCounter: 89dc4642-64f8-4f02-891c-42f3494f6c76
-            stepCounter: b49635a8-ba9d-45ad-bb5c-beff772a1d40
-    dqcolumns:
-      items:
-        - ncolumnName:
-            columnCounter: abc07743-8bfd-484a-9ee4-672903836bd2
-            stepCounter: b49635a8-ba9d-45ad-bb5c-beff772a1d40
+            columnCounter: 42a3b7d4-722f-40fb-bdc4-7a08d0f13fdc
+            stepCounter: 35e56dc9-a27c-4b14-b88c-9806e68a4a2d
     dqdup: true
     dqhandle: true
     dqnull: true
@@ -23,24 +18,24 @@ operation:
     ndqcolumns:
       items:
         - ncolumnName:
-            columnCounter: abc07743-8bfd-484a-9ee4-672903836bd2
-            stepCounter: b49635a8-ba9d-45ad-bb5c-beff772a1d40
-    persistTableLocation: ""
-    persistTableName: ""
+            columnCounter: 0a5c2400-bc12-4860-bc10-3f682015c4ef
+            stepCounter: 35e56dc9-a27c-4b14-b88c-9806e68a4a2d
+    persistTableLocation: "ex: TARGET"
+    persistTableName: "ex: DIM_ORDERS"
     refTable: false
   database: ""
   deployEnabled: true
   description: ""
   isMultisource: false
   locationName: TARGET_DB
-  materializationType: view
+  materializationType: table
   metadata:
     appliedNodeTests: []
     columns:
       - appliedColumnTests: {}
         columnReference:
-          columnCounter: abc07743-8bfd-484a-9ee4-672903836bd2
-          stepCounter: b49635a8-ba9d-45ad-bb5c-beff772a1d40
+          columnCounter: 0a5c2400-bc12-4860-bc10-3f682015c4ef
+          stepCounter: 35e56dc9-a27c-4b14-b88c-9806e68a4a2d
         config: {}
         dataType: NUMBER(38,0)
         description: ""
@@ -53,8 +48,8 @@ operation:
             transform: ""
       - appliedColumnTests: {}
         columnReference:
-          columnCounter: 89dc4642-64f8-4f02-891c-42f3494f6c76
-          stepCounter: b49635a8-ba9d-45ad-bb5c-beff772a1d40
+          columnCounter: 42a3b7d4-722f-40fb-bdc4-7a08d0f13fdc
+          stepCounter: 35e56dc9-a27c-4b14-b88c-9806e68a4a2d
         config: {}
         dataType: VARCHAR(16777216)
         description: ""
@@ -67,8 +62,8 @@ operation:
             transform: ""
       - appliedColumnTests: {}
         columnReference:
-          columnCounter: 5aff5872-a51c-4721-8c0e-bffc8ca1df3e
-          stepCounter: b49635a8-ba9d-45ad-bb5c-beff772a1d40
+          columnCounter: c806037b-f001-4760-9a66-ad0444726c5f
+          stepCounter: 35e56dc9-a27c-4b14-b88c-9806e68a4a2d
         config: {}
         dataType: VARCHAR(16777216)
         description: ""
@@ -81,8 +76,8 @@ operation:
             transform: ""
       - appliedColumnTests: {}
         columnReference:
-          columnCounter: d50d53b0-2b9d-48a8-94eb-c16a2950e2c1
-          stepCounter: b49635a8-ba9d-45ad-bb5c-beff772a1d40
+          columnCounter: 0707f501-d2e3-4ed3-8a76-a2a5bb2e6314
+          stepCounter: 35e56dc9-a27c-4b14-b88c-9806e68a4a2d
         config: {}
         dataType: DATE
         description: ""
@@ -98,14 +93,14 @@ operation:
           values: []
         appliedColumnTests: {}
         columnReference:
-          columnCounter: bbbed1f1-90af-4e25-8d5e-39f5314893cb
-          stepCounter: b49635a8-ba9d-45ad-bb5c-beff772a1d40
+          columnCounter: 5248498b-5608-4bc1-958e-6abbd457d03a
+          stepCounter: 35e56dc9-a27c-4b14-b88c-9806e68a4a2d
         config: {}
-        dataType: NUMBER(1,0)
+        dataType: NUMBER(38,0)
         defaultValue: ""
         description: ""
         name: ACCOUNT_ID_null
-        nullable: false
+        nullable: true
         primaryKey: false
         sourceColumnReferences:
           - columnReferences: []
@@ -117,14 +112,14 @@ operation:
           values: []
         appliedColumnTests: {}
         columnReference:
-          columnCounter: cb079886-f6b9-4101-9c33-397db2304000
-          stepCounter: b49635a8-ba9d-45ad-bb5c-beff772a1d40
+          columnCounter: 197be95e-3fcc-4cb6-8a1c-b06000dd8192
+          stepCounter: 35e56dc9-a27c-4b14-b88c-9806e68a4a2d
         config: {}
-        dataType: NUMBER(1,0)
+        dataType: NUMBER(38,0)
         defaultValue: ""
         description: ""
         name: ACCOUNT_ID_dup
-        nullable: false
+        nullable: true
         primaryKey: false
         sourceColumnReferences:
           - columnReferences: []
@@ -136,14 +131,14 @@ operation:
           values: []
         appliedColumnTests: {}
         columnReference:
-          columnCounter: 4873805a-423a-405a-b1ae-004fd48b8bf5
-          stepCounter: b49635a8-ba9d-45ad-bb5c-beff772a1d40
+          columnCounter: 8f685c10-83ac-4fd2-96bd-107c136ba7c3
+          stepCounter: 35e56dc9-a27c-4b14-b88c-9806e68a4a2d
         config: {}
-        dataType: NUMBER(1,0)
+        dataType: NUMBER(38,0)
         defaultValue: ""
         description: ""
         name: CUSTOMER_NAME_dup
-        nullable: false
+        nullable: true
         primaryKey: false
         sourceColumnReferences:
           - columnReferences: []
@@ -155,14 +150,14 @@ operation:
           values: []
         appliedColumnTests: {}
         columnReference:
-          columnCounter: e3e51376-f32c-4a3a-a75d-bc5e78ece5e4
-          stepCounter: b49635a8-ba9d-45ad-bb5c-beff772a1d40
+          columnCounter: c1a7bc1d-4ca8-4bc3-a12a-1ac885430c18
+          stepCounter: 35e56dc9-a27c-4b14-b88c-9806e68a4a2d
         config: {}
-        dataType: NUMBER(3,0)
+        dataType: NUMBER(38,0)
         defaultValue: ""
         description: ""
         name: TOTAL_FAILED_TESTS
-        nullable: false
+        nullable: true
         primaryKey: false
         sourceColumnReferences:
           - columnReferences: []
@@ -174,14 +169,14 @@ operation:
           values: []
         appliedColumnTests: {}
         columnReference:
-          columnCounter: fff6e216-7765-43af-8375-80ddf5aac0d3
-          stepCounter: b49635a8-ba9d-45ad-bb5c-beff772a1d40
+          columnCounter: b9c7ffe0-228d-4c1b-a3f3-d952a8df96b2
+          stepCounter: 35e56dc9-a27c-4b14-b88c-9806e68a4a2d
         config: {}
         dataType: VARCHAR(1)
         defaultValue: ""
         description: ""
         name: QUALITY_FLAG
-        nullable: false
+        nullable: true
         primaryKey: false
         sourceColumnReferences:
           - columnReferences: []
@@ -200,9 +195,9 @@ operation:
             nodeName: CUSTOMER_ACCOUNTS
         join:
           joinCondition: FROM {{ ref('SOURCE2', 'CUSTOMER_ACCOUNTS') }} "CUSTOMER_ACCOUNTS"
-        name: INC_CUSTOMER_ACCOUNTS_VW
+        name: INC_CUSTOMER_ACCOUNTS_TBL_DQ
         noLinkRefs: []
-  name: INC_CUSTOMER_ACCOUNTS_VW
+  name: INC_CUSTOMER_ACCOUNTS_TBL_DQ
   overrideSQL: false
   schema: ""
   sqlType: "613"
