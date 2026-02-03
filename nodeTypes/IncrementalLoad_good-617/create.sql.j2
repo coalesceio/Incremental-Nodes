@@ -19,58 +19,20 @@ does not permit copying or modification for any other purpose.
 
 CREATE OR REPLACE VIEW {{ ref_no_link(node.location.name, node.name) }}
   ( 
-    {% for col in columns if (col.name != "_SEQUENCE" and "_null" not in col.name and "_dup" not in col.name and col.name != "TOTAL_FAILED_TESTS" and col.name != "QUALITY_FLAG" ) -%}
+    {% for col in columns -%}
         "{{ col.name }}"
         {%- if col.description | length > 0 %} COMMENT '{{ col.description | escape }}'{% endif -%}
         {% if not loop.last %}, {% endif %}
     {% endfor -%}
-    {%if config.dqhandle and config.dqnull and config.dqdup -%} 
-	   {% for item in config.ndqcolumns['items'] -%}
-        {% set col_name = '"' ~ item.ncolumnName.name ~ '_null"' -%}
-		 ,{{col_name}} 
-	    {% endfor -%}
-        {% for item in config.ddqcolumns['items'] -%}
-        {% set col_name = '"' ~ item.dcolumnName.name ~ '_dup"' -%}
-		,{{col_name}} 
-	   {%endfor -%}
-    {%elif config.dqhandle and config.dqdup -%}
-	    {% for item in config.ddqcolumns['items'] -%}
-        {% set col_name = '"' ~ item.dcolumnName.name ~ '_dup"' -%}
-		,{{col_name}} 
-	   {%endfor -%}
-    {%elif config.dqhandle and config.dqnull -%}
-        {% for item in config.ndqcolumns['items'] -%}
-        {% set col_name = '"' ~ item.ncolumnName.name ~ '_null"' -%}
-		 ,{{col_name}} 
-	    {% endfor -%}
-    {%endif -%}
-	{%if config.dqhandle -%}
-	,"TOTAL_FAILED_TESTS" 
-    ,"QUALITY_FLAG"
-	{%endif -%}
     )
    {%- if node.description | length > 0 -%} COMMENT = '{{ node.description | escape }}'{% endif -%}
   AS
-   select * from(SELECT
-  {% for col in source.columns if (col.name != "_SEQUENCE" and "_null" not in col.name and "_dup" not in col.name and col.name != "TOTAL_FAILED_TESTS" and col.name != "QUALITY_FLAG" ) -%}
+  SELECT
+  {% for col in source.columns-%}
        {{ get_source_transform(col) }} AS  "{{ col.name }}" 
     {%- if not loop.last -%}, {% endif %} 
-   {% endfor -%}    {#Columns added for data quality#}
-   {%- set ns = namespace(failed_tests=[]) -%}
-	{%- if config.dqhandle and config.dqnull and config.dqdup -%} 
-	    {{- generate_null_checks(config.ndqcolumns['items'], ns) }}
-        {{ generate_duplicate_checks(config.ddqcolumns['items'], ns) -}}
-    {%elif config.dqhandle and config.dqdup -%}
-        {{ generate_duplicate_checks(config.ddqcolumns['items'], ns)}}   
-    {%elif config.dqhandle and config.dqnull -%}
-        {{ generate_null_checks(config.ndqcolumns['items'], ns) }}
-	{%endif -%}   
-     {# Form the total_failed_tests column by joining the list with ' + ' #}
-      {% if ns.failed_tests | length > 0 -%}
-         ,({{ ns.failed_tests | join(' + ') }}) AS "TOTAL_FAILED_TESTS"
-         ,CASE WHEN "TOTAL_FAILED_TESTS" > 0 THEN 'B' ELSE 'G' END AS "QUALITY_FLAG"
-      {%endif -%}  
-     {{source.join -}})
+   {% endfor -%}    
+   {{source.join -}}
    
 {% elif node.materializationType == 'table' %}
 {# CreateSQL for Table #}
@@ -79,7 +41,7 @@ CREATE OR REPLACE VIEW {{ ref_no_link(node.location.name, node.name) }}
 
 	CREATE OR REPLACE TABLE {{ ref_no_link(node.location.name, node.name) }}
 	(
-		{% for col in columns if (col.name != "_SEQUENCE" and "_null" not in col.name and "_dup" not in col.name and col.name != "TOTAL_FAILED_TESTS" and col.name != "QUALITY_FLAG" ) %}
+		{% for col in columns %}
 			"{{ col.name }}" {{ col.dataType }}
 			{%- if not col.nullable %} NOT NULL
 				{%- if col.defaultValue | length > 0 %} DEFAULT {{ col.defaultValue }}{% endif %}
@@ -87,31 +49,7 @@ CREATE OR REPLACE VIEW {{ ref_no_link(node.location.name, node.name) }}
 			{%- if col.description | length > 0 %} COMMENT '{{ col.description | escape }}'{% endif %}
 			{%- if not loop.last -%}, {% endif %}
 		{% endfor %}
-    	{%if config.dqhandle and config.dqnull and config.dqdup -%} 
-	      {% for item in config.ndqcolumns['items'] -%}
-          {% set col_name = '"' ~ item.ncolumnName.name ~ '_null"' -%}
-		  ,{{col_name}} NUMBER
-	      {% endfor -%}
-          {% for item in config.ddqcolumns['items'] -%}
-          {% set col_name = '"' ~ item.dcolumnName.name ~ '_dup"' -%}
-		  ,{{col_name}} NUMBER
-	      {%endfor -%}
-       {%elif config.dqhandle and config.dqdup -%}
-	      {% for item in config.ddqcolumns['items'] -%}
-          {% set col_name = '"' ~ item.dcolumnName.name ~ '_dup"' -%}
-		  ,{{col_name}} NUMBER
-	      {%endfor -%}
-       {%elif config.dqhandle and config.dqnull -%}
-          {% for item in config.ndqcolumns['items'] -%}
-          {% set col_name = '"' ~ item.ncolumnName.name ~ '_null"' -%}
-		   ,{{col_name}} NUMBER
-	      {% endfor -%}
-       {%endif -%}
-	   {%if config.dqhandle -%}
-	    ,"TOTAL_FAILED_TESTS" NUMBER
-        ,"QUALITY_FLAG"  VARCHAR(1)
-        {%endif -%}
-    
+    	{%endif -%} 
     )
 	{%- if node.description | length > 0 %} COMMENT = '{{ node.description | escape }}'{% endif %}
 
