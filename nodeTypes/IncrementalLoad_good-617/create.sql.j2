@@ -32,8 +32,10 @@ CREATE OR REPLACE VIEW {{ ref_no_link(node.location.name, node.name) }}
        {{ get_source_transform(col) }} AS  "{{ col.name }}" 
     {%- if not loop.last -%}, {% endif %} 
    {% endfor -%}    
-   {{source.join -}}
+   {{{{  get_clause(source.join,'from')  }} -}}
+   {%if config.foccurence or config.loccurence%}
    
+   {%endif%}
 {% elif node.materializationType == 'table' %}
 {# CreateSQL for Table #}
 
