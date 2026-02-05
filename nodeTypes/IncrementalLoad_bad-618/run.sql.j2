@@ -24,18 +24,33 @@ does not permit copying or modification for any other purpose.
 
    INSERT INTO {{ ref_no_link(node.location.name, node.name) }}
 	(      
+    {%if config.dqhandle %}
+    {% for col in columns -%}
+        "{{ col.name }}"
+        {% if not loop.last %}, {% endif -%}
+    {% endfor -%}
+    {% else -%}
     {% for col in columns if (col.name != "_SEQUENCE") -%}
         "{{ col.name }}"
         {% if not loop.last %}, {% endif -%}
     {% endfor -%}
+    {%endif -%}
       )
-		select * from(SELECT
-     {% for col in source.columns if (col.name != "_SEQUENCE" ) -%}
-       {{ get_source_transform(col) }} AS  "{{ col.name }}" 
-     {%- if not loop.last -%}, {% endif %} 
-     {% endfor -%}    
-     {{source.join -}})
-          
+		SELECT
+  {% for col in source.columns  %}
+    {{ get_source_transform(col) }} AS  "{{ col.name }}" 
+    {%- if not loop.last -%}, {% endif %} 
+   {% endfor -%}
+
+   {{  get_clause(source.join,'from')  -}}
+    {% for col in columns if ('_dup') in col.name %}
+      {%set ns.dup_cols = ns.dup_cols + [col.name| replace('_dup','')] %}  
+    {% endfor %}
+    
+    {%for col in columns if ('_null') in col.name%}
+     {%set ns.null_cols = ns.null_cols + [col.name] %}
+   {%endfor%}
+    {{get_clause(source.join)}}
 {% else %}
     {{ stage('Load Skipped for View') }}
     --The node {{node.name}} is materialized as View. Therefore, a Load operation is not supported.

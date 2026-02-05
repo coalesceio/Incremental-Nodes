@@ -9,39 +9,54 @@ does not permit copying or modification for any other purpose.
 {# == Node Type Name           : Incremental Load  == #}
 {# == Node Type Description    : This node creates a stage table,view   == #}
 
-
 {% set source = sources[0] %}
+{% set ns = namespace(dup_cols=[],null_cols=[]) %}
 
 {% if node.materializationType == 'view' %}
 
-   
-    {{ stage('Create Stage View') }}
+  {{ stage('Create Stage View') }}
 
 CREATE OR REPLACE VIEW {{ ref_no_link(node.location.name, node.name) }}
   ( 
-    {% for col in columns if (col.name != "_SEQUENCE"  ) -%}
+    {% for col in columns if col.name != "_SEQUENCE" %}
         "{{ col.name }}"
-        {%- if col.description | length > 0 %} COMMENT '{{ col.description | escape }}'{% endif -%}
+        {%- if col.description | length > 0 %} COMMENT '{{ col.description | escape }}'{% endif %}
         {% if not loop.last %}, {% endif %}
-    {% endfor -%}
+    {% endfor %}
     )
-   {%- if node.description | length > 0 -%} COMMENT = '{{ node.description | escape }}'{% endif -%}
+   {%- if node.description | length > 0 %} COMMENT = '{{ node.description | escape }}'{% endif %}
   AS
-   select * from(SELECT
-  {% for col in source.columns -%}
-       {{ get_source_transform(col) }} AS  "{{ col.name }}" 
+  SELECT
+  {% for col in source.columns  %}
+    {{ get_source_transform(col) }} AS  "{{ col.name }}" 
     {%- if not loop.last -%}, {% endif %} 
-   {% endfor -%}    
-     {{source.join -}})
-   
+   {% endfor -%}
+
+   {{  get_clause(source.join,'from')  -}}
+
+    {% for col in columns if ('_dup') in col.name %}
+      {%set ns.dup_cols = ns.dup_cols + [col.name| replace('_dup','')] %}  
+    {% endfor %}
+    
+   {%if config.foccurrence %}
+    QUALIFY QUALITY_FLAG = 'B' AND ROW_NUMBER() OVER (PARTITION BY {{ns.dup_cols|join(',')}} ORDER BY {{config.timcol.name}} ASC) > 1 
+    {%elif config.loccurrence %}
+    QUALIFY QUALITY_FLAG = 'B' AND ROW_NUMBER() OVER (PARTITION BY {{ns.dup_cols|join(',')}} ORDER BY {{config.timcol.name}} DESC) > 1 
+    {%else%}
+    WHERE QUALITY_FLAG = 'B'
+   {%endif%}
+  
+   {{ get_clause(source.join)  -}}
+
 {% elif node.materializationType == 'table' %}
 {# CreateSQL for Table #}
 
-    {{ stage('Create Stage Table') }}
+   {{ stage('Create Stage Table') }}
+
 
 	CREATE OR REPLACE TABLE {{ ref_no_link(node.location.name, node.name) }}
 	(
-		{% for col in columns  %}
+		{% for col in columns %}
 			"{{ col.name }}" {{ col.dataType }}
 			{%- if not col.nullable %} NOT NULL
 				{%- if col.defaultValue | length > 0 %} DEFAULT {{ col.defaultValue }}{% endif %}
@@ -49,9 +64,7 @@ CREATE OR REPLACE VIEW {{ ref_no_link(node.location.name, node.name) }}
 			{%- if col.description | length > 0 %} COMMENT '{{ col.description | escape }}'{% endif %}
 			{%- if not loop.last -%}, {% endif %}
 		{% endfor %}
-    	{%endif -%}
-    
-    )
+	)
 	{%- if node.description | length > 0 %} COMMENT = '{{ node.description | escape }}'{% endif %}
-
+	
 {% endif %}

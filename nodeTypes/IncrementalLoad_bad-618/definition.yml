@@ -4,7 +4,7 @@ isDisabled: false
 metadata:
   defaultStorageLocation: null
   error: null
-  nodeMetadataSpec: |+
+  nodeMetadataSpec: |
     capitalized: INCREMENTAL LOAD_BAD
     short: INC
     plural: Incremental
@@ -23,5 +23,20 @@ metadata:
         - table
         isRequired: true
 
+      - displayName: First Occurence of Duplicate considered as valid
+        type: toggleButton
+        attributeName: foccurrence
+        enableif: ""
+
+      - displayName: Last Occurence of Duplicate considered as valid
+        type: toggleButton
+        attributeName: loccurence
+        enableIf: ""
+
+      - displayName: 'Based on timestamp column'
+        attributeName: timcol
+        type: columnDropdownSelector
+        isRequired: false
+        enableIf: "{% if (config.foccurrence or config.loccurence) %} true {% else %} false {% endif %}"
 name: Incremental Load_bad
 type: NodeType

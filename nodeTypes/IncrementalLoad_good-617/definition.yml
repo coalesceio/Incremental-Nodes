@@ -26,23 +26,19 @@ metadata:
       - displayName: First Occurence of Duplicate considered as valid
         type: toggleButton
         attributeName: foccurrence
+        enableif: ""
 
       - displayName: Last Occurence of Duplicate considered as valid
         type: toggleButton
         attributeName: loccurence
+        enableIf: ""
 
-      - type: tabular
-        displayName: 'Based on timestamp column'
-        attributeName: tcolumns
-        columns:
-
-        -  type: columnDropdownSelector
-           displayName: Column Name
-           attributeName: columnName
-           isRequired: false     
-          
+      - displayName: 'Based on timestamp column'
+        attributeName: timcol
+        type: columnDropdownSelector
         isRequired: false
-        enableIf: "{% if (config.foccurrence and config.loccurence) %} true {% else %} false {% endif %}"
+        enableIf: "{% if (config.foccurrence or config.loccurence) %} true {% else %} false {% endif %}"
+
 
 
       
