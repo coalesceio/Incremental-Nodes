@@ -27,30 +27,27 @@ CREATE OR REPLACE VIEW {{ ref_no_link(node.location.name, node.name) }}
    {%- if node.description | length > 0 %} COMMENT = '{{ node.description | escape }}'{% endif %}
   AS
   SELECT
-  {% for col in source.columns  %}
+  {% for col in source.columns  -%}
     {{ get_source_transform(col) }} AS  "{{ col.name }}" 
-    {%- if not loop.last -%}, {% endif %} 
+    {%- if not loop.last -%}, {%- endif -%} 
    {% endfor -%}
 
-   {{  get_clause(source.join,'from')  -}}
+   {{-get_clause(source.join,'from')-}}
 
-    {% for col in columns if ('_dup') in col.name %}
-      {%set ns.dup_cols = ns.dup_cols + [col.name| replace('_dup','')] %}  
-    {% endfor %}
+    {%- for col in columns if ('_dup') in col.name -%}
+      {%-set ns.dup_cols = ns.dup_cols + [col.name| replace('_dup','')] -%}  
+    {%- endfor -%}
     
-    {%for col in columns if ('_null') in col.name%}
-     {%set ns.null_cols = ns.null_cols + [col.name] %}
-   {%endfor%}
-   
-   {%if config.foccurrence %}
-    QUALIFY QUALITY_FLAG = 'G' OR ROW_NUMBER() OVER (PARTITION BY {{ns.dup_cols|join(',')}} ORDER BY {{config.timcol.name}} ASC) = 1 AND "{{ns.null_cols|join(',')}}" < 1
-    {%elif config.loccurrence %}
-    QUALIFY QUALITY_FLAG = 'G' OR ROW_NUMBER() OVER (PARTITION BY {{ns.dup_cols|join(',')}} ORDER BY {{config.timcol.name}} DESC) = 1 AND "{{ns.null_cols|join(',')}}" < 1
-    {%else%}
-    WHERE QUALITY_FLAG = 'G'
-   {%endif%}
-  
-   {{ get_clause(source.join)  -}}
+   {%- if config.foccurrence -%}
+   {{- get_clause(source.join) }}
+    QUALIFY QUALITY_FLAG = 'B' AND ROW_NUMBER() OVER (PARTITION BY {{ns.dup_cols|join(',')}} ORDER BY {{config.timcol.name}} ASC) > 1 
+    {%- elif config.loccurrence -%}
+    {{ get_clause(source.join) }}
+    QUALIFY QUALITY_FLAG = 'B' AND ROW_NUMBER() OVER (PARTITION BY {{ns.dup_cols|join(',')}} ORDER BY {{config.timcol.name}} DESC) > 1 
+    {%- else -%}
+    WHERE QUALITY_FLAG = 'B'
+    {{- get_clause(source.join)  }}
+   {%endif -%}
 
 {% elif node.materializationType == 'table' %}
 {# CreateSQL for Table #}

@@ -28,7 +28,8 @@ metadata:
         type: toggleButton
         default: false
         isRequired: false    
-      
+        enableIf: "{% if (config.dqhandle) %} false {% else %} true {% endif %}" 
+
       - displayName: Handle data quality
         attributeName: dqhandle
         type: toggleButton

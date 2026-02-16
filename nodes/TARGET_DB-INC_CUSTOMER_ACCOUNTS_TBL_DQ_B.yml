@@ -1,16 +1,13 @@
 fileVersion: 1
-id: e5cb00cc-6658-49d6-9265-dc415ed83cff
-name: INC_CUSTOMER_ACCOUNTS_TBL_DQ_G
+id: 69992114-3190-4e9d-9135-0cce6d5fa731
+name: INC_CUSTOMER_ACCOUNTS_TBL_DQ_B
 operation:
   config:
     foccurrence: false
     loccurence: true
-    tcolumns:
-      items:
-        - {}
     timcol:
-      columnCounter: 66127b5e-f8cb-442d-8394-b3d033f44594
-      stepCounter: e5cb00cc-6658-49d6-9265-dc415ed83cff
+      columnCounter: 0f93cc48-2adc-49f7-a9ed-3d84ab1da112
+      stepCounter: 69992114-3190-4e9d-9135-0cce6d5fa731
   database: ""
   deployEnabled: true
   description: ""
@@ -22,8 +19,8 @@ operation:
     columns:
       - appliedColumnTests: {}
         columnReference:
-          columnCounter: b366c94d-70ea-474d-b0d3-754806557eb6
-          stepCounter: e5cb00cc-6658-49d6-9265-dc415ed83cff
+          columnCounter: 61094048-7d9e-4a6c-9771-b812eabc5959
+          stepCounter: 69992114-3190-4e9d-9135-0cce6d5fa731
         config: {}
         dataType: NUMBER(38,0)
         description: ""
@@ -36,8 +33,8 @@ operation:
             transform: ""
       - appliedColumnTests: {}
         columnReference:
-          columnCounter: 18070c45-cc9a-47f8-9ef7-145bd479376e
-          stepCounter: e5cb00cc-6658-49d6-9265-dc415ed83cff
+          columnCounter: 029e438c-ab17-4cec-addc-5b76df6e5381
+          stepCounter: 69992114-3190-4e9d-9135-0cce6d5fa731
         config: {}
         dataType: VARCHAR(16777216)
         description: ""
@@ -50,8 +47,8 @@ operation:
             transform: ""
       - appliedColumnTests: {}
         columnReference:
-          columnCounter: e780e4ad-22ce-45bc-9067-ddecfc8d74a9
-          stepCounter: e5cb00cc-6658-49d6-9265-dc415ed83cff
+          columnCounter: f4588ecc-c7bb-4bfc-9e17-4bb3f6d3dfa1
+          stepCounter: 69992114-3190-4e9d-9135-0cce6d5fa731
         config: {}
         dataType: VARCHAR(16777216)
         description: ""
@@ -64,8 +61,8 @@ operation:
             transform: ""
       - appliedColumnTests: {}
         columnReference:
-          columnCounter: 66127b5e-f8cb-442d-8394-b3d033f44594
-          stepCounter: e5cb00cc-6658-49d6-9265-dc415ed83cff
+          columnCounter: 0f93cc48-2adc-49f7-a9ed-3d84ab1da112
+          stepCounter: 69992114-3190-4e9d-9135-0cce6d5fa731
         config: {}
         dataType: DATE
         description: ""
@@ -78,8 +75,8 @@ operation:
             transform: ""
       - appliedColumnTests: {}
         columnReference:
-          columnCounter: ee91b343-caed-4502-8353-d321bc72cdb1
-          stepCounter: e5cb00cc-6658-49d6-9265-dc415ed83cff
+          columnCounter: 60702b9a-a972-4dde-b1f2-0ee0ab6bf7ec
+          stepCounter: 69992114-3190-4e9d-9135-0cce6d5fa731
         config: {}
         dataType: NUMBER(38,0)
         description: ""
@@ -92,8 +89,8 @@ operation:
             transform: ""
       - appliedColumnTests: {}
         columnReference:
-          columnCounter: 2057a301-5754-41ee-a24e-19d118397202
-          stepCounter: e5cb00cc-6658-49d6-9265-dc415ed83cff
+          columnCounter: 75ad498f-703f-47d6-9a49-e255d5063c65
+          stepCounter: 69992114-3190-4e9d-9135-0cce6d5fa731
         config: {}
         dataType: NUMBER(38,0)
         description: ""
@@ -106,8 +103,22 @@ operation:
             transform: ""
       - appliedColumnTests: {}
         columnReference:
-          columnCounter: 33baf134-50b7-4537-80ca-2b2263877e76
-          stepCounter: e5cb00cc-6658-49d6-9265-dc415ed83cff
+          columnCounter: ee05181a-0579-415c-9901-d79186ed3197
+          stepCounter: 69992114-3190-4e9d-9135-0cce6d5fa731
+        config: {}
+        dataType: NUMBER(38,0)
+        description: ""
+        name: CUSTOMER_NAME_dup
+        nullable: true
+        sourceColumnReferences:
+          - columnReferences:
+              - columnCounter: 8f685c10-83ac-4fd2-96bd-107c136ba7c3
+                stepCounter: 35e56dc9-a27c-4b14-b88c-9806e68a4a2d
+            transform: ""
+      - appliedColumnTests: {}
+        columnReference:
+          columnCounter: 548f0907-32b0-469e-ab4d-0adee48d8cb1
+          stepCounter: 69992114-3190-4e9d-9135-0cce6d5fa731
         config: {}
         dataType: NUMBER(38,0)
         description: ""
@@ -120,8 +131,8 @@ operation:
             transform: ""
       - appliedColumnTests: {}
         columnReference:
-          columnCounter: 8f7ab05d-3cac-4369-99b9-3a2cceb3057f
-          stepCounter: e5cb00cc-6658-49d6-9265-dc415ed83cff
+          columnCounter: 89daa3ad-9233-4124-8b16-63d935f6f053
+          stepCounter: 69992114-3190-4e9d-9135-0cce6d5fa731
         config: {}
         dataType: VARCHAR(1)
         description: ""
@@ -144,12 +155,12 @@ operation:
             nodeName: INC_CUSTOMER_ACCOUNTS_TBL_DQ
         join:
           joinCondition: FROM {{ ref('TARGET_DB', 'INC_CUSTOMER_ACCOUNTS_TBL_DQ') }} "INC_CUSTOMER_ACCOUNTS_TBL_DQ"
-        name: INC_CUSTOMER_ACCOUNTS_TBL_DQ_G
+        name: INC_CUSTOMER_ACCOUNTS_TBL_DQ_B
         noLinkRefs: []
-  name: INC_CUSTOMER_ACCOUNTS_TBL_DQ_G
+  name: INC_CUSTOMER_ACCOUNTS_TBL_DQ_B
   overrideSQL: false
   schema: ""
-  sqlType: "617"
+  sqlType: "618"
   type: sql
   version: 1
 type: Node

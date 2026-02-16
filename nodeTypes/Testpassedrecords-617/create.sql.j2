@@ -38,16 +38,22 @@ CREATE OR REPLACE VIEW {{ ref_no_link(node.location.name, node.name) }}
       {%set ns.dup_cols = ns.dup_cols + [col.name| replace('_dup','')] %}  
     {% endfor %}
     
+    {%for col in columns if ('_null') in col.name%}
+     {%set _ = ns.null_cols.append('"'~col.name~'"'~" < 1") %}
+   {%endfor%}
+   
    {%if config.foccurrence %}
-    QUALIFY QUALITY_FLAG = 'B' AND ROW_NUMBER() OVER (PARTITION BY {{ns.dup_cols|join(',')}} ORDER BY {{config.timcol.name}} ASC) > 1 
+    {{ get_clause(source.join)  -}}
+    QUALIFY QUALITY_FLAG = 'G' OR ROW_NUMBER() OVER (PARTITION BY {{ns.dup_cols|join(',')}} ORDER BY {{config.timcol.name}} ASC) = 1 AND  {{ns.null_cols | join(' AND')}}
     {%elif config.loccurrence %}
-    QUALIFY QUALITY_FLAG = 'B' AND ROW_NUMBER() OVER (PARTITION BY {{ns.dup_cols|join(',')}} ORDER BY {{config.timcol.name}} DESC) > 1 
+    {{ get_clause(source.join)  -}}
+    QUALIFY QUALITY_FLAG = 'G' OR ROW_NUMBER() OVER (PARTITION BY {{ns.dup_cols|join(',')}} ORDER BY {{config.timcol.name}} DESC) = 1 AND  {{ns.null_cols | join(' AND')}}   
     {%else%}
-    WHERE QUALITY_FLAG = 'B'
+    WHERE QUALITY_FLAG = 'G'
+    {{ get_clause(source.join)  -}}
    {%endif%}
   
-   {{ get_clause(source.join)  -}}
-
+   
 {% elif node.materializationType == 'table' %}
 {# CreateSQL for Table #}
 

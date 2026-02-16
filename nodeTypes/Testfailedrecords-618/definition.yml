@@ -5,8 +5,8 @@ metadata:
   defaultStorageLocation: null
   error: null
   nodeMetadataSpec: |
-    capitalized: INCREMENTAL LOAD_BAD
-    short: INC
+    capitalized: TEST FAILED RECORDS
+    short: FR
     plural: Incremental
     tagColor: green
 
@@ -26,17 +26,17 @@ metadata:
       - displayName: First Occurence of Duplicate considered as valid
         type: toggleButton
         attributeName: foccurrence
-        enableif: ""
-
+        enableIf: "{% if config.loccurence %} false {% else %} true {% endif %}"
+        
       - displayName: Last Occurence of Duplicate considered as valid
         type: toggleButton
         attributeName: loccurence
-        enableIf: ""
+        enableIf: "{% if config.foccurrence %} false {% else %} true {% endif %}"
 
       - displayName: 'Based on timestamp column'
         attributeName: timcol
         type: columnDropdownSelector
         isRequired: false
         enableIf: "{% if (config.foccurrence or config.loccurence) %} true {% else %} false {% endif %}"
-name: Incremental Load_bad
+name: Test failed records
 type: NodeType

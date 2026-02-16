@@ -43,10 +43,9 @@ macroString: |
   {#-- Input parmeters   - joinclause #}
   {#-- Return            - from clause and other clauses #}
 
-
   {%- macro get_clause( joinclause , ret_clause ) -%}
 
-              {% set join_clause = joinclause %}
+              {%- set join_clause = joinclause -%}
               {% set has_where_clause = 'where'in join_clause %}
               {% set has_WHERE_clause = 'WHERE'in join_clause %}
               {% set has_order_clause = 'order by'in join_clause %}

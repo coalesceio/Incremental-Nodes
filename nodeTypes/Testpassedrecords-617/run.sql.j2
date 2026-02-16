@@ -13,12 +13,13 @@ does not permit copying or modification for any other purpose.
 
   {% set source = sources[0] %}
   {#Columns added for data quality#}
-  {% set ns = namespace(failed_tests=[]) %}
-    
-     {%if config.refTable %}
-  		{{ stage('Truncate Stage Table') }}
-		TRUNCATE IF EXISTS {{ ref_no_link(node.location.name, node.name) }}
-     {%endif%}
+  {% set ns = namespace(failed_tests=[],dup_cols=[],null_cols=[]) %}
+      {%- for col in columns if ('_dup') in col.name -%}
+      {%- set ns.dup_cols = ns.dup_cols + [col.name| replace('_dup','')] -%}  
+    {%- endfor -%}
+    {%-for col in columns if ('_null') in col.name-%}
+     {%-set ns.null_cols = ns.null_cols + [col.name] -%}
+   {%-endfor-%}
      
     {{ stage('Insert Data') }}
 
@@ -37,20 +38,22 @@ does not permit copying or modification for any other purpose.
     {%endif -%}
       )
 		SELECT
-  {% for col in source.columns  %}
+  {% for col in source.columns  -%}
     {{ get_source_transform(col) }} AS  "{{ col.name }}" 
-    {%- if not loop.last -%}, {% endif %} 
+    {%- if not loop.last -%}, {% endif -%} 
    {% endfor -%}
-
-   {{  get_clause(source.join,'from')  -}}
-    {% for col in columns if ('_dup') in col.name %}
-      {%set ns.dup_cols = ns.dup_cols + [col.name| replace('_dup','')] %}  
-    {% endfor %}
-    
-    {%for col in columns if ('_null') in col.name%}
-     {%set ns.null_cols = ns.null_cols + [col.name] %}
-   {%endfor%}
-    {{get_clause(source.join)}}
+   {{- get_clause(source.join,'from')  -}}
+   {%- if config.foccurrence -%}
+    {{ get_clause(source.join)  -}}
+    QUALIFY QUALITY_FLAG = 'G' OR ROW_NUMBER() OVER (PARTITION BY {{ns.dup_cols|join(',')}} ORDER BY {{config.timcol.name}} ASC) = 1 AND  {{ns.null_cols | join(' AND')}}
+    {%- elif config.loccurence -%}
+    {{ get_clause(source.join)  -}}
+    QUALIFY QUALITY_FLAG = 'G' OR ROW_NUMBER() OVER (PARTITION BY {{ns.dup_cols|join(',')}} ORDER BY {{config.timcol.name}} DESC) = 1 AND  {{ns.null_cols | join(' AND')}}   
+    {%- else %}
+    WHERE QUALITY_FLAG = 'G'
+    {{- get_clause(source.join)  -}}
+   {%endif%}
+  
 {% else %}
     {{ stage('Load Skipped for View') }}
     --The node {{node.name}} is materialized as View. Therefore, a Load operation is not supported.

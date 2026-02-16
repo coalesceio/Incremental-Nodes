@@ -19,15 +19,17 @@ operation:
     dqdup: true
     dqhandle: true
     dqnull: true
-    incColumn: ""
+    incColumn:
+      columnCounter: d50d53b0-2b9d-48a8-94eb-c16a2950e2c1
+      stepCounter: b49635a8-ba9d-45ad-bb5c-beff772a1d40
     ndqcolumns:
       items:
         - ncolumnName:
             columnCounter: abc07743-8bfd-484a-9ee4-672903836bd2
             stepCounter: b49635a8-ba9d-45ad-bb5c-beff772a1d40
-    persistTableLocation: ""
-    persistTableName: ""
-    refTable: false
+    persistTableLocation: TARGET
+    persistTableName: PSTG_LINEITEM
+    refTable: true
   database: ""
   deployEnabled: true
   description: ""
@@ -98,7 +100,7 @@ operation:
           values: []
         appliedColumnTests: {}
         columnReference:
-          columnCounter: bbbed1f1-90af-4e25-8d5e-39f5314893cb
+          columnCounter: 13bb9658-330b-40ee-9565-a354284cfae0
           stepCounter: b49635a8-ba9d-45ad-bb5c-beff772a1d40
         config: {}
         dataType: NUMBER(1,0)
@@ -117,7 +119,7 @@ operation:
           values: []
         appliedColumnTests: {}
         columnReference:
-          columnCounter: cb079886-f6b9-4101-9c33-397db2304000
+          columnCounter: b99ca319-d2ab-416b-8dcf-f300acc7767b
           stepCounter: b49635a8-ba9d-45ad-bb5c-beff772a1d40
         config: {}
         dataType: NUMBER(1,0)
@@ -136,7 +138,7 @@ operation:
           values: []
         appliedColumnTests: {}
         columnReference:
-          columnCounter: 4873805a-423a-405a-b1ae-004fd48b8bf5
+          columnCounter: 1437c939-484f-4898-9c67-5c92b72e9b36
           stepCounter: b49635a8-ba9d-45ad-bb5c-beff772a1d40
         config: {}
         dataType: NUMBER(1,0)
@@ -155,7 +157,7 @@ operation:
           values: []
         appliedColumnTests: {}
         columnReference:
-          columnCounter: e3e51376-f32c-4a3a-a75d-bc5e78ece5e4
+          columnCounter: 975bdc65-19b2-41c0-b35c-405d8176fe91
           stepCounter: b49635a8-ba9d-45ad-bb5c-beff772a1d40
         config: {}
         dataType: NUMBER(3,0)
@@ -174,7 +176,7 @@ operation:
           values: []
         appliedColumnTests: {}
         columnReference:
-          columnCounter: fff6e216-7765-43af-8375-80ddf5aac0d3
+          columnCounter: 91888994-3a6b-411a-9f23-946e7713525d
           stepCounter: b49635a8-ba9d-45ad-bb5c-beff772a1d40
         config: {}
         dataType: VARCHAR(1)
@@ -199,7 +201,11 @@ operation:
           - locationName: SOURCE2
             nodeName: CUSTOMER_ACCOUNTS
         join:
-          joinCondition: FROM {{ ref('SOURCE2', 'CUSTOMER_ACCOUNTS') }} "CUSTOMER_ACCOUNTS"
+          joinCondition: |+
+
+
+            FROM {{ ref('SOURCE2', 'CUSTOMER_ACCOUNTS') }} "CUSTOMER_ACCOUNTS"
+
         name: INC_CUSTOMER_ACCOUNTS_VW
         noLinkRefs: []
   name: INC_CUSTOMER_ACCOUNTS_VW
