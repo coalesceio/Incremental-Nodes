@@ -10,11 +10,9 @@ does not permit copying or modification for any other purpose.
 {# == Node Type Description    : This node creates a stage table,view   == #}
 
 {% set source = sources[0] %}
-{% set ns = namespace(dup_cols=[],null_cols=[]) %}
-
 {% if node.materializationType == 'view' %}
 
-  {{ stage('Create Stage View') }}
+  {{ stage('Create View-Failed records') }}
 
 CREATE OR REPLACE VIEW {{ ref_no_link(node.location.name, node.name) }}
   ( 
@@ -32,28 +30,12 @@ CREATE OR REPLACE VIEW {{ ref_no_link(node.location.name, node.name) }}
     {%- if not loop.last -%}, {%- endif -%} 
    {% endfor -%}
 
-   {{-get_clause(source.join,'from')-}}
-
-    {%- for col in columns if ('_dup') in col.name -%}
-      {%-set ns.dup_cols = ns.dup_cols + [col.name| replace('_dup','')] -%}  
-    {%- endfor -%}
-    
-   {%- if config.foccurrence -%}
-   {{- get_clause(source.join) }}
-    QUALIFY QUALITY_FLAG = 'B' AND ROW_NUMBER() OVER (PARTITION BY {{ns.dup_cols|join(',')}} ORDER BY {{config.timcol.name}} ASC) > 1 
-    {%- elif config.loccurrence -%}
-    {{ get_clause(source.join) }}
-    QUALIFY QUALITY_FLAG = 'B' AND ROW_NUMBER() OVER (PARTITION BY {{ns.dup_cols|join(',')}} ORDER BY {{config.timcol.name}} DESC) > 1 
-    {%- else -%}
-    WHERE QUALITY_FLAG = 'B'
-    {{- get_clause(source.join)  }}
-   {%endif -%}
+   {{- source.join -}}
 
 {% elif node.materializationType == 'table' %}
 {# CreateSQL for Table #}
 
-   {{ stage('Create Stage Table') }}
-
+  {{ stage('Create Stage Table') }}
 
 	CREATE OR REPLACE TABLE {{ ref_no_link(node.location.name, node.name) }}
 	(

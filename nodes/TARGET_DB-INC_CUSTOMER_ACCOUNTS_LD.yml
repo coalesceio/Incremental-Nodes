@@ -1,0 +1,182 @@
+fileVersion: 1
+id: 888abfff-ce6e-49cd-b3b6-0d9ae61c07fe
+name: INC_CUSTOMER_ACCOUNTS_LD
+operation:
+  config:
+    ddqcolumns:
+      items:
+        - {}
+    dqdup: false
+    dqhandle: false
+    dqnull: false
+    incColumn:
+      columnCounter: 033b7ee6-40ea-4568-ac3e-12e2eea4b33d
+      stepCounter: 888abfff-ce6e-49cd-b3b6-0d9ae61c07fe
+    ndqcolumns:
+      items:
+        - {}
+    persistTableLocation: TARGET_DB
+    persistTableName: PSTG_CUSTOMER_ACCOUNTS_LD
+    refTable: true
+  database: ""
+  deployEnabled: true
+  description: ""
+  isMultisource: false
+  locationName: TARGET_DB
+  materializationType: view
+  metadata:
+    appliedNodeTests: []
+    columns:
+      - appliedColumnTests: {}
+        columnReference:
+          columnCounter: f10605d5-5608-4367-baa0-b69858cf6fa6
+          stepCounter: 888abfff-ce6e-49cd-b3b6-0d9ae61c07fe
+        config: {}
+        dataType: NUMBER(38,0)
+        description: ""
+        name: ACCOUNT_ID
+        nullable: true
+        sourceColumnReferences:
+          - columnReferences:
+              - columnCounter: f1f299b8-4c00-4153-bab8-d2e9c08f3996
+                stepCounter: 064cca8b-4512-4718-b0e4-6d4e24b79533
+            transform: ""
+      - appliedColumnTests: {}
+        columnReference:
+          columnCounter: cbe992df-7e85-460e-839c-e877a75322e6
+          stepCounter: 888abfff-ce6e-49cd-b3b6-0d9ae61c07fe
+        config: {}
+        dataType: VARCHAR(16777216)
+        description: ""
+        name: CUSTOMER_NAME
+        nullable: true
+        sourceColumnReferences:
+          - columnReferences:
+              - columnCounter: 29b0f905-7068-403b-8967-2eb943bd5847
+                stepCounter: 064cca8b-4512-4718-b0e4-6d4e24b79533
+            transform: ""
+      - appliedColumnTests: {}
+        columnReference:
+          columnCounter: 56dbd211-4bd4-41b5-aea0-ba3842e6ed74
+          stepCounter: 888abfff-ce6e-49cd-b3b6-0d9ae61c07fe
+        config: {}
+        dataType: VARCHAR(16777216)
+        description: ""
+        name: CITY
+        nullable: true
+        sourceColumnReferences:
+          - columnReferences:
+              - columnCounter: e46e2eb5-e703-4d24-b5ea-db29cea17f5e
+                stepCounter: 064cca8b-4512-4718-b0e4-6d4e24b79533
+            transform: ""
+      - appliedColumnTests: {}
+        columnReference:
+          columnCounter: 033b7ee6-40ea-4568-ac3e-12e2eea4b33d
+          stepCounter: 888abfff-ce6e-49cd-b3b6-0d9ae61c07fe
+        config: {}
+        dataType: DATE
+        description: ""
+        name: SIGNUP_DATE
+        nullable: true
+        sourceColumnReferences:
+          - columnReferences:
+              - columnCounter: 7cc18c0a-c649-4baa-9dc2-4be8f0c32292
+                stepCounter: 064cca8b-4512-4718-b0e4-6d4e24b79533
+            transform: ""
+      - appliedColumnTests: {}
+        columnReference:
+          columnCounter: 66edc2c3-8a97-49e6-91e6-bebfc96ac044
+          stepCounter: 888abfff-ce6e-49cd-b3b6-0d9ae61c07fe
+        config: {}
+        dataType: NUMBER(1,0)
+        description: ""
+        name: ACCOUNT_ID_null
+        nullable: false
+        sourceColumnReferences:
+          - columnReferences:
+              - columnCounter: c85d0787-6fa0-4f97-a2ac-de821486fc24
+                stepCounter: 064cca8b-4512-4718-b0e4-6d4e24b79533
+            transform: ""
+      - appliedColumnTests: {}
+        columnReference:
+          columnCounter: 1b635a82-b151-4ceb-8f78-54d0d3e7553a
+          stepCounter: 888abfff-ce6e-49cd-b3b6-0d9ae61c07fe
+        config: {}
+        dataType: NUMBER(1,0)
+        description: ""
+        name: ACCOUNT_ID_dup
+        nullable: false
+        sourceColumnReferences:
+          - columnReferences:
+              - columnCounter: 7331f561-44f5-4332-a767-2af80431d0e9
+                stepCounter: 064cca8b-4512-4718-b0e4-6d4e24b79533
+            transform: ""
+      - appliedColumnTests: {}
+        columnReference:
+          columnCounter: 91b368a2-cb12-40d8-ba69-ce9a99e535b5
+          stepCounter: 888abfff-ce6e-49cd-b3b6-0d9ae61c07fe
+        config: {}
+        dataType: VARCHAR(1)
+        description: ""
+        name: QUALITY_FLAG
+        nullable: false
+        sourceColumnReferences:
+          - columnReferences:
+              - columnCounter: 7288ef43-e26e-4443-9c1b-922fbfb00692
+                stepCounter: 064cca8b-4512-4718-b0e4-6d4e24b79533
+            transform: ""
+      - appliedColumnTests: {}
+        columnReference:
+          columnCounter: 08d243a4-99e4-4b79-9840-7692c7441038
+          stepCounter: 888abfff-ce6e-49cd-b3b6-0d9ae61c07fe
+        config: {}
+        dataType: NUMBER(1,0)
+        description: ""
+        name: CUSTOMER_NAME_null
+        nullable: false
+        sourceColumnReferences:
+          - columnReferences:
+              - columnCounter: 240ce85c-708e-4ad8-a27a-74c5c7bdc22b
+                stepCounter: 064cca8b-4512-4718-b0e4-6d4e24b79533
+            transform: ""
+      - appliedColumnTests: {}
+        columnReference:
+          columnCounter: 7e2cf2f7-0e1d-40ae-b910-89a846f34d03
+          stepCounter: 888abfff-ce6e-49cd-b3b6-0d9ae61c07fe
+        config: {}
+        dataType: NUMBER(3,0)
+        description: ""
+        name: TOTAL_FAILED_TESTS
+        nullable: false
+        sourceColumnReferences:
+          - columnReferences:
+              - columnCounter: 5261654e-1ade-40ae-80e0-c5b450851e80
+                stepCounter: 064cca8b-4512-4718-b0e4-6d4e24b79533
+            transform: ""
+    cteString: ""
+    enabledColumnTestIDs: []
+    sourceMapping:
+      - aliases:
+          GR_CUSTOMER_ACCOUNTS: 064cca8b-4512-4718-b0e4-6d4e24b79533
+        customSQL:
+          customSQL: ""
+        dependencies:
+          - locationName: TARGET_DB
+            nodeName: GR_CUSTOMER_ACCOUNTS
+        join:
+          joinCondition: |
+            FROM {{ ref('TARGET_DB', 'GR_CUSTOMER_ACCOUNTS') }} "GR_CUSTOMER_ACCOUNTS"
+              WHERE "GR_CUSTOMER_ACCOUNTS"."SIGNUP_DATE" > 
+              (SELECT COALESCE(MAX("SIGNUP_DATE"), '1900-01-01') 
+                        FROM {{ ref_no_link('TARGET_DB', 'PSTG_CUSTOMER_ACCOUNTS_LD') }} )
+        name: INC_CUSTOMER_ACCOUNTS_LD
+        noLinkRefs:
+          - locationName: TARGET_DB
+            nodeName: PSTG_CUSTOMER_ACCOUNTS_LD
+  name: INC_CUSTOMER_ACCOUNTS_LD
+  overrideSQL: false
+  schema: ""
+  sqlType: "230"
+  type: sql
+  version: 1
+type: Node

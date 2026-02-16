@@ -14,7 +14,7 @@ does not permit copying or modification for any other purpose.
 
 {% if node.materializationType == 'view' %}
 
-  {{ stage('Create Stage View') }}
+  {{ stage('Create View-good records') }}
 
 CREATE OR REPLACE VIEW {{ ref_no_link(node.location.name, node.name) }}
   ( 
@@ -32,28 +32,8 @@ CREATE OR REPLACE VIEW {{ ref_no_link(node.location.name, node.name) }}
     {%- if not loop.last -%}, {% endif %} 
    {% endfor -%}
 
-   {{  get_clause(source.join,'from')  -}}
+   {{ source.join  -}}
 
-    {% for col in columns if ('_dup') in col.name %}
-      {%set ns.dup_cols = ns.dup_cols + [col.name| replace('_dup','')] %}  
-    {% endfor %}
-    
-    {%for col in columns if ('_null') in col.name%}
-     {%set _ = ns.null_cols.append('"'~col.name~'"'~" < 1") %}
-   {%endfor%}
-   
-   {%if config.foccurrence %}
-    {{ get_clause(source.join)  -}}
-    QUALIFY QUALITY_FLAG = 'G' OR ROW_NUMBER() OVER (PARTITION BY {{ns.dup_cols|join(',')}} ORDER BY {{config.timcol.name}} ASC) = 1 AND  {{ns.null_cols | join(' AND')}}
-    {%elif config.loccurrence %}
-    {{ get_clause(source.join)  -}}
-    QUALIFY QUALITY_FLAG = 'G' OR ROW_NUMBER() OVER (PARTITION BY {{ns.dup_cols|join(',')}} ORDER BY {{config.timcol.name}} DESC) = 1 AND  {{ns.null_cols | join(' AND')}}   
-    {%else%}
-    WHERE QUALITY_FLAG = 'G'
-    {{ get_clause(source.join)  -}}
-   {%endif%}
-  
-   
 {% elif node.materializationType == 'table' %}
 {# CreateSQL for Table #}
 

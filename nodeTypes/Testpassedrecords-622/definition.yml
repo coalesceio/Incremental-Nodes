@@ -1,5 +1,5 @@
 fileVersion: 1
-id: "617"
+id: "622"
 isDisabled: false
 metadata:
   defaultStorageLocation: null
@@ -39,6 +39,27 @@ metadata:
         isRequired: false
         enableIf: "{% if (config.foccurrence or config.loccurence) %} true {% else %} false {% endif %}"
 
+    joinTemplate: |
+
+
+      {% set ns = namespace(dup_cols=[],null_cols=[]) %}
+      {%- for col in columns if ('_dup') in col.name -%}
+          {%- set ns.dup_cols = ns.dup_cols + [col.name| replace('_dup','')] -%}  
+        {%- endfor -%}  
+        {%- for col in columns if ('_null') in col.name -%}
+         {%- set _ = ns.null_cols.append('"'~col.name~'"'~" < 1") -%}
+       {%- endfor -%}
+      {%- for dep in sources[0].dependencies -%}
+        FROM {{ ref_raw(dep.node.location.name, dep.node.name) }} "{{ dep.node.name }}"
+      {%-endfor%}
+      {%if config.foccurrence -%}
+        QUALIFY QUALITY_FLAG = 'G' OR ROW_NUMBER() OVER (PARTITION BY {{ns.dup_cols|join(',')}} ORDER BY {{config.timcol.name}} ASC) = 1 AND  {{ns.null_cols | join(' AND')}}
+      {%elif config.loccurrence -%}
+        QUALIFY QUALITY_FLAG = 'G' OR ROW_NUMBER() OVER (PARTITION BY {{ns.dup_cols|join(',')}} ORDER BY {{config.timcol.name}} DESC) = 1 AND  {{ns.null_cols | join(' AND')}}   
+      {%else-%}
+        WHERE QUALITY_FLAG = 'G'
+      {%endif-%}
+      
 
 
       

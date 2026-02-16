@@ -12,15 +12,8 @@ does not permit copying or modification for any other purpose.
 {% if node.materializationType == 'table'   %}
 
   {% set source = sources[0] %}
-  {#Columns added for data quality#}
-  {% set ns = namespace(failed_tests=[]) %}
-    
-     {%if config.refTable %}
-  		{{ stage('Truncate Stage Table') }}
-		TRUNCATE IF EXISTS {{ ref_no_link(node.location.name, node.name) }}
-     {%endif%}
-     
-    {{ stage('Insert Data') }}
+
+  {{ stage('Insert failed records') }}
 
    INSERT INTO {{ ref_no_link(node.location.name, node.name) }}
 	(      
@@ -41,16 +34,8 @@ does not permit copying or modification for any other purpose.
     {{ get_source_transform(col) }} AS  "{{ col.name }}" 
     {%- if not loop.last -%}, {% endif %} 
    {% endfor -%}
+   {{- source.join -}}
 
-   {{  get_clause(source.join,'from')  -}}
-    {% for col in columns if ('_dup') in col.name %}
-      {%set ns.dup_cols = ns.dup_cols + [col.name| replace('_dup','')] %}  
-    {% endfor %}
-    
-    {%for col in columns if ('_null') in col.name%}
-     {%set ns.null_cols = ns.null_cols + [col.name] %}
-   {%endfor%}
-    {{get_clause(source.join)}}
 {% else %}
     {{ stage('Load Skipped for View') }}
     --The node {{node.name}} is materialized as View. Therefore, a Load operation is not supported.

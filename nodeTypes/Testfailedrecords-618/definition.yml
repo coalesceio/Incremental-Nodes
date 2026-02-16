@@ -38,5 +38,25 @@ metadata:
         type: columnDropdownSelector
         isRequired: false
         enableIf: "{% if (config.foccurrence or config.loccurence) %} true {% else %} false {% endif %}"
+
+    joinTemplate: |
+
+
+      {% set ns = namespace(dup_cols=[],null_cols=[]) %}
+      {%- for dep in sources[0].dependencies -%}
+        FROM {{ ref_raw(dep.node.location.name, dep.node.name) }} "{{ dep.node.name }}"
+      {%-endfor%}
+      
+      {%- for col in columns if ('_dup') in col.name -%}
+          {%-set ns.dup_cols = ns.dup_cols + [col.name| replace('_dup','')] -%}  
+      {%- endfor -%}
+        
+      {% if config.foccurrence -%}
+       QUALIFY QUALITY_FLAG = 'B' AND ROW_NUMBER() OVER (PARTITION BY {{ns.dup_cols|join(',')}} ORDER BY {{config.timcol.name}} ASC) > 1 
+      {% elif config.loccurrence -%}
+       QUALIFY QUALITY_FLAG = 'B' AND ROW_NUMBER() OVER (PARTITION BY {{ns.dup_cols|join(',')}} ORDER BY {{config.timcol.name}} DESC) > 1 
+      {% else -%}
+        WHERE QUALITY_FLAG = 'B'
+      {%endif -%}
 name: Test failed records
 type: NodeType
