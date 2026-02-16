@@ -11,17 +11,9 @@ operation:
         - dcolumnName:
             columnCounter: 89dc4642-64f8-4f02-891c-42f3494f6c76
             stepCounter: b49635a8-ba9d-45ad-bb5c-beff772a1d40
-    dqcolumns:
-      items:
-        - ncolumnName:
-            columnCounter: abc07743-8bfd-484a-9ee4-672903836bd2
-            stepCounter: b49635a8-ba9d-45ad-bb5c-beff772a1d40
     dqdup: true
     dqhandle: true
     dqnull: true
-    incColumn:
-      columnCounter: d50d53b0-2b9d-48a8-94eb-c16a2950e2c1
-      stepCounter: b49635a8-ba9d-45ad-bb5c-beff772a1d40
     ndqcolumns:
       items:
         - ncolumnName:
@@ -211,7 +203,7 @@ operation:
   name: INC_CUSTOMER_ACCOUNTS_VW
   overrideSQL: false
   schema: ""
-  sqlType: "613"
+  sqlType: "230"
   type: sql
   version: 1
 type: Node

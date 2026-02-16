@@ -14,7 +14,6 @@ operation:
     dqdup: true
     dqhandle: true
     dqnull: true
-    incColumn: ""
     ndqcolumns:
       items:
         - ncolumnName:
@@ -200,7 +199,7 @@ operation:
   name: INC_CUSTOMER_ACCOUNTS_TBL_DQ
   overrideSQL: false
   schema: ""
-  sqlType: "613"
+  sqlType: "230"
   type: sql
   version: 1
 type: Node
