@@ -9,7 +9,14 @@ does not permit copying or modification for any other purpose.
 {# == Node Type Name           : Incremental Load  == #}
 {# == Node Type Description    :  This node loads full data into stage table the first time and incremental data in subsequent loads  == #}
 
+	
+
 {% if node.materializationType == 'table'   %}
+
+{% if config.preSQL %}
+		{{ stage('Pre-SQL') }}
+		{{ config.preSQL }}
+{% endif %}
 
   {% set source = sources[0] %}
   {#Columns added for data quality#}
@@ -80,7 +87,12 @@ does not permit copying or modification for any other purpose.
          ,CASE WHEN "TOTAL_FAILED_TESTS" > 0 THEN 'B' ELSE 'G' END AS "QUALITY_FLAG"
       {%endif -%}  
      {{source.join -}})
-		
+
+    {% if config.postSQL %}
+		{{ stage('Post-SQL') }}
+		{{ config.postSQL }}
+	{% endif %}
+			
      
 {% else %}
     {{ stage('Load Skipped for View') }}

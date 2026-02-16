@@ -100,6 +100,18 @@ metadata:
         isRequired: false
         enableIf: "{% if (config.refTable) and not config.dqhandle %} true {% else %} false {% endif %}"
 
+      - displayName: Pre-SQL
+        attributeName: preSQL
+        type: textBox
+        syntax: sql
+        isRequired: false
+
+      - displayName: Post-SQL
+        attributeName: postSQL
+        type: textBox
+        syntax: sql
+        isRequired: false
+
     joinTemplate: |
 
 
