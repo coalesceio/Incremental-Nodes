@@ -23,7 +23,7 @@ The Coalesce Incremental load node is a versatile node that allows you to develo
 
 | **Property** | **Description** |
 |-------------|-----------------|
-| **Storage Location** | Storage Location where the WORK will be created. |
+| **Storage Location** | Storage Location where the Incremental node will be created. |
 | **Node Type** | Name of template used to create node objects. |
 | **Description** | A description of the node's purpose. |
 | **Deploy Enabled** | - If TRUE the node will be deployed / redeployed when changes are detected.<br/>- If FALSE the node will not be deployed or will be dropped during redeployment. |
@@ -133,8 +133,68 @@ The stage executed:
 
 ## Test Passed records
 
+The Coalesce "Test Passed Records" (GR) node is a specialized filtering node type designed to extract "clean" data from a source that has already undergone Data Quality (DQ) processing in Incremental node. It serves as a gatekeeper, ensuring only records that meet your business standards move further downstream.
+
+## Key-functions
+
+**Quality Filtering:** By default, it acts as a simple filter that only selects records where the QUALITY_FLAG is set to 'G' (Good/Passed).
+**Duplicate Salvaging:** Unlike a standard filter, it provides logic to "salvage" duplicated records. If a record is flagged as a duplicate, you can configure the node to keep either the First Occurrence or the Last Occurrence based on a chosen timestamp column (timcol).
+**Always use on an incremental node with data quality handled**
+
+### Test Passed records Load Node Configuration
+
+* [Node Properties](#test-passed-records-properties)
+* [Options](#test-passed-records-options)
+
+#### Test Passed records Properties
+
+| **Property** | **Description** |
+|-------------|-----------------|
+| **Storage Location** | Storage Location where the test passed records node will be created. |
+| **Node Type** | Name of template used to create node objects. |
+| **Description** | A description of the node's purpose. |
+| **Deploy Enabled** | - If TRUE the node will be deployed / redeployed when changes are detected.<br/>- If FALSE the node will not be deployed or will be dropped during redeployment. |
+
+#### Test Passed records Options
+
+| **Options** | **Description** |
+|-----------|-----------------|
+| **Create As** | Provides option to choose materialization type as `table` or `view`. |
+| **First Occurence of Duplicate considered as valid**|When enabled,timestamp column should be provided to add the first occurence of duplicate as valid record based on timestamp column|
+| **Last Occurence of Duplicate considered as valid**|When enabled,timestamp column should be provided to add the last occurence of duplicate as valid record based on timestamp column|
+
 ## Test Failed records
 
+The Coalesce "Test Failed Records" node acts as a Quarantine and Error-Capture component. This node isolates all records that failed your Data Quality (DQ) tests for auditing and remediation.
+
+## Key-functions
+
+**1.Error Isolation:** It filters the source to extract only records where the QUALITY_FLAG is ** area for "dirty" data, ensuring that any record failing your Data Quality (DQ) standards is captured for auditing, debugging'B'** (Bad). This ensures that "dirty" data is kept separate from your production analytics.
+**2.Duplicate Capture:** If deduplication logic is enabled (First or Last Occurrence), this node specifically captures the **rejected duplicates, and remediation.
+
+**Always use on an incremental node with data quality handled**
+
+### Test Passed records Load Node Configuration
+
+* [Node Properties](#test-failed-records-properties)
+* [Options](#test-failed-records-options)
+
+#### Test Failed records Properties
+
+| **Property** | **Description** |
+|-------------|-----------------|
+| **Storage Location** | Storage Location where the test passed records node will be created. |
+| **Node Type** | Name of template used to create node objects. |
+| **Description** | A description of the node's purpose. |
+| **Deploy Enabled** | - If TRUE the node will be deployed / redeployed when changes are detected.<br/>- If FALSE the node will not be deployed or will be dropped during redeployment. |
+
+#### Test Failed records Options
+
+| **Options** | **Description** |
+|-----------|-----------------|
+| **Create As** | Provides option to choose materialization type as `table` or `view`. |
+| **First Occurence of Duplicate considered as valid**|When enabled,timestamp column should be provided to capture the records other than first occurence of duplicate considered as  valid record based on timestamp column as bad quality records|
+| **Last Occurence of Duplicate considered as valid**|When enabled,timestamp column should be provided to capture the records other than last occurence of duplicate considered as  valid record based on timestamp column as bad quality record|
 
 ## Loop Load
 
