@@ -62,7 +62,7 @@ The Coalesce Incremental load node is a versatile node that allows you to develo
 6. Lets assume the column name chosen for handling DQ checks is "ACCOUNT_ID".Then,you can find ACCOUNT_ID_nulll,ACCOUNT_ID_dup,TOTAL_FAILED_TESTS and QUALITY_FLAG added to target table
 7. Re-sync the columns after table/view is created
 8.The target table has data quality info with the flag set to 'G' or 'B' denoting good or bad records
-9. Further,you can drill down good or bad records using [TEST PASSED RECORDS](#test_passed_records)or [TEST FAILED RECORDS](#test_failed_records)
+9. Further,you can drill down good or bad records using [Test Passed records](#test_passed_records) or [Test failed records](#test-failed-records)
 
 ### Incremental Load Deployment
 
@@ -128,6 +128,9 @@ The stage executed:
 | **Delete View** | Drops the existing stage view from target environment. |
 
 ## Test Passed records
+
+## Test Failed records
+
 
 ## Loop Load
 
