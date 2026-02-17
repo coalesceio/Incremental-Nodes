@@ -137,9 +137,9 @@ The Coalesce "Test Passed Records" (GR) node is a specialized filtering node typ
 
 ## Key-functions
 
-**Quality Filtering:** By default, it acts as a simple filter that only selects records where the QUALITY_FLAG is set to 'G' (Good/Passed).
-**Duplicate Salvaging:** Unlike a standard filter, it provides logic to "salvage" duplicated records. If a record is flagged as a duplicate, you can configure the node to keep either the First Occurrence or the Last Occurrence based on a chosen timestamp column (timcol).
-**Always use on an incremental node with data quality handled**
+* **Quality Filtering:** By default, it acts as a simple filter that only selects records where the QUALITY_FLAG is set to 'G' (Good/Passed).
+* **Duplicate Salvaging:** Unlike a standard filter, it provides logic to "salvage" duplicated records. If a record is flagged as a duplicate, you can configure the node to keep either the First Occurrence or the Last Occurrence based on a chosen timestamp column (timcol).
+* **Always use on an incremental node with data quality handled**
 
 ### Test Passed records Load Node Configuration
 
@@ -169,12 +169,12 @@ The Coalesce "Test Failed Records" node acts as a Quarantine and Error-Capture c
 
 ## Key-functions
 
-**1.Error Isolation:** It filters the source to extract only records where the QUALITY_FLAG is ** area for "dirty" data, ensuring that any record failing your Data Quality (DQ) standards is captured for auditing, debugging'B'** (Bad). This ensures that "dirty" data is kept separate from your production analytics.
-**2.Duplicate Capture:** If deduplication logic is enabled (First or Last Occurrence), this node specifically captures the **rejected duplicates, and remediation.
+* **Error Isolation:** It filters the source to extract only records where the QUALITY_FLAG is 'B', ensuring that any record failing your Data Quality (DQ) standards is captured for auditing. This ensures that bad quality data is kept separate from your production analytics.
+* **2.Duplicate Capture:** If deduplication logic is enabled (First or Last Occurrence), this node specifically captures the rejected duplicates, and remediation.
 
-**Always use on an incremental node with data quality handled**
+* **Always use on an incremental node with data quality handled**
 
-### Test Passed records Load Node Configuration
+### Test Failed records Load Node Configuration
 
 * [Node Properties](#test-failed-records-properties)
 * [Options](#test-failed-records-options)
