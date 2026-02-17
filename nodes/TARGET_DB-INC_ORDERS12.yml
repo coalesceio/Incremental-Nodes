@@ -1,6 +1,6 @@
 fileVersion: 1
 id: 222f8745-eac1-4d5f-8b85-24127de2f3ef
-name: INC_ORDERS1
+name: INC_ORDERS12
 operation:
   config:
     incColumn:
@@ -8,7 +8,9 @@ operation:
       stepCounter: 222f8745-eac1-4d5f-8b85-24127de2f3ef
     persistTableLocation: TARGET_DB
     persistTableName: PSTG_ORDERS1
-    refTable: true
+    postSQL: ""
+    preSQL: ""
+    refTable: false
   database: ""
   deployEnabled: true
   description: ""
@@ -162,23 +164,19 @@ operation:
     enabledColumnTestIDs: []
     sourceMapping:
       - aliases:
-          ORDERS: 093b998c-fd2f-4d63-a7e1-eda43d1a9fe6
+          ORDERS: 704f4e21-d45f-4356-8cf6-64cbaa535e5e
         customSQL:
           customSQL: ""
         dependencies:
-          - locationName: SOURCE_DATA
+          - locationName: SOURCE2
             nodeName: ORDERS
         join:
-          joinCondition: |
-            FROM {{ ref('SOURCE_DATA', 'ORDERS') }} "ORDERS"
-              WHERE "ORDERS"."O_LOAD_TIMESTAMP" > 
-              (SELECT COALESCE(MAX("O_LOAD_TIMESTAMP"), '1900-01-01') 
-                        FROM {{ ref_no_link('TARGET_DB', 'PSTG_ORDERS1') }} )
-        name: INC_ORDERS1
-        noLinkRefs:
-          - locationName: TARGET_DB
-            nodeName: PSTG_ORDERS1
-  name: INC_ORDERS1
+          joinCondition: |-
+            FROM {{ ref('SOURCE2', 'ORDERS') }} "ORDERS"
+              
+        name: INC_ORDERS12
+        noLinkRefs: []
+  name: INC_ORDERS12
   overrideSQL: false
   schema: ""
   sqlType: "230"

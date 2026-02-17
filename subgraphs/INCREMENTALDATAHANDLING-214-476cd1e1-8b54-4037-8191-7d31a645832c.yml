@@ -1,0 +1,11 @@
+fileVersion: 1
+id: 476cd1e1-8b54-4037-8191-7d31a645832c
+name: INCREMENTAL DATA HANDLING-214
+steps:
+  - 0d564050-c943-4db5-bcf0-1347b89e69fe
+  - 3c387669-db9a-48ce-a7d3-8f439a1b7049
+  - 58364cb8-281c-4c6d-bbff-e86898dd79eb
+  - 86902ff7-b451-4da5-b1f9-b52db1192709
+  - a87ca9d3-66f6-4ea7-bc03-928ec31edd69
+  - ebb94b33-2e3e-4400-ad7a-3402d94e0982
+type: Subgraph

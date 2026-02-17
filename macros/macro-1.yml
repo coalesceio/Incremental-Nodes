@@ -11,5 +11,33 @@ macroString: |+
       {% raw %}{{ ref_no_link('{% endraw %}{{ location_name }}{% raw %}', '{% endraw %}{{ node_name }}{% raw %}') }}{% endraw %}
   {%- endmacro -%}
 
+
+  {%- macro generate_null_checks(column_list, ns) -%}
+      {% for item in column_list -%}
+          {# 1. Define the name #}
+          {%- set col_name = '"' ~ item.ncolumnName.name ~ '_null"' -%}
+          
+          {# 2. Update the shared list in the namespace #}
+          {%- set _ = ns.failed_tests.append(col_name) -%}
+          
+          {# 3. Generate the SQL snippet #}
+          ,CASE WHEN "{{item.ncolumnName.name}}" IS NULL THEN 1 ELSE 0 END AS {{col_name}}
+      {%- endfor -%}
+  {%- endmacro -%}
+
+
+  {%- macro generate_duplicate_checks(column_list, ns) -%}
+      {% for item in column_list -%}
+          {# 1. Define the name #}
+          {%- set col_name = '"' ~ item.dcolumnName.name ~ '_dup"' -%}
+          
+          {# 2. Update the shared list in the namespace #}
+          {%- set _ = ns.failed_tests.append(col_name) -%}
+          
+          {# 3. Generate the SQL snippet #}
+           ,CASE WHEN COUNT(*) OVER (PARTITION BY "{{item.dcolumnName.name}}") > 1 THEN 1 ELSE 0 END AS {{col_name}}
+      {%- endfor -%}
+  {%- endmacro -%}
+
 name: macro
 type: Macro

@@ -1,0 +1,154 @@
+fileVersion: 1
+id: 0d564050-c943-4db5-bcf0-1347b89e69fe
+name: FR_CUSTOMER_ACCOUNTS
+operation:
+  config:
+    foccurrence: true
+    loccurence: false
+    timcol:
+      columnCounter: 84974198-5574-474c-a0a5-491272dd762b
+      stepCounter: 0d564050-c943-4db5-bcf0-1347b89e69fe
+  database: ""
+  deployEnabled: true
+  description: ""
+  isMultisource: false
+  locationName: TARGET_DB
+  materializationType: view
+  metadata:
+    appliedNodeTests: []
+    columns:
+      - appliedColumnTests: {}
+        columnReference:
+          columnCounter: 9abc7e6d-60dd-49f2-9e67-a532dc74d293
+          stepCounter: 0d564050-c943-4db5-bcf0-1347b89e69fe
+        config: {}
+        dataType: NUMBER(38,0)
+        description: ""
+        name: ACCOUNT_ID
+        nullable: true
+        sourceColumnReferences:
+          - columnReferences:
+              - columnCounter: 995f1376-54aa-47f8-bd04-48760561ce7b
+                stepCounter: ebb94b33-2e3e-4400-ad7a-3402d94e0982
+            transform: ""
+      - appliedColumnTests: {}
+        columnReference:
+          columnCounter: 66386b17-4547-4572-8b55-20d0fc0eda85
+          stepCounter: 0d564050-c943-4db5-bcf0-1347b89e69fe
+        config: {}
+        dataType: VARCHAR(16777216)
+        description: ""
+        name: CUSTOMER_NAME
+        nullable: true
+        sourceColumnReferences:
+          - columnReferences:
+              - columnCounter: 7ccf8767-beab-4462-b776-5a80a0fdf5b3
+                stepCounter: ebb94b33-2e3e-4400-ad7a-3402d94e0982
+            transform: ""
+      - appliedColumnTests: {}
+        columnReference:
+          columnCounter: 477df92e-d43e-427d-b862-98cd5bc0c0ef
+          stepCounter: 0d564050-c943-4db5-bcf0-1347b89e69fe
+        config: {}
+        dataType: VARCHAR(16777216)
+        description: ""
+        name: CITY
+        nullable: true
+        sourceColumnReferences:
+          - columnReferences:
+              - columnCounter: 416ff730-61f4-4626-a04f-9ba4847750f6
+                stepCounter: ebb94b33-2e3e-4400-ad7a-3402d94e0982
+            transform: ""
+      - appliedColumnTests: {}
+        columnReference:
+          columnCounter: 84974198-5574-474c-a0a5-491272dd762b
+          stepCounter: 0d564050-c943-4db5-bcf0-1347b89e69fe
+        config: {}
+        dataType: DATE
+        description: ""
+        name: SIGNUP_DATE
+        nullable: true
+        sourceColumnReferences:
+          - columnReferences:
+              - columnCounter: 80ce5aac-4543-4792-a651-63d5a3dddd77
+                stepCounter: ebb94b33-2e3e-4400-ad7a-3402d94e0982
+            transform: ""
+      - appliedColumnTests: {}
+        columnReference:
+          columnCounter: 621c7b33-31cc-46f2-8062-5e71418b9e65
+          stepCounter: 0d564050-c943-4db5-bcf0-1347b89e69fe
+        config: {}
+        dataType: NUMBER(1,0)
+        description: ""
+        name: ACCOUNT_ID_null
+        nullable: false
+        sourceColumnReferences:
+          - columnReferences:
+              - columnCounter: bb34ba71-07c0-4151-af25-f30965c03d3e
+                stepCounter: ebb94b33-2e3e-4400-ad7a-3402d94e0982
+            transform: ""
+      - appliedColumnTests: {}
+        columnReference:
+          columnCounter: c1b30594-3b9a-4021-992a-a65a3ca6057e
+          stepCounter: 0d564050-c943-4db5-bcf0-1347b89e69fe
+        config: {}
+        dataType: NUMBER(1,0)
+        description: ""
+        name: ACCOUNT_ID_dup
+        nullable: false
+        sourceColumnReferences:
+          - columnReferences:
+              - columnCounter: a455f81d-4d34-46c8-814b-67934f6fe2c4
+                stepCounter: ebb94b33-2e3e-4400-ad7a-3402d94e0982
+            transform: ""
+      - appliedColumnTests: {}
+        columnReference:
+          columnCounter: 296c3b1d-e981-4b89-936e-fb41c83ef5de
+          stepCounter: 0d564050-c943-4db5-bcf0-1347b89e69fe
+        config: {}
+        dataType: NUMBER(2,0)
+        description: ""
+        name: TOTAL_FAILED_TESTS
+        nullable: false
+        sourceColumnReferences:
+          - columnReferences:
+              - columnCounter: 0109e648-7534-4957-82f6-479f3fea719e
+                stepCounter: ebb94b33-2e3e-4400-ad7a-3402d94e0982
+            transform: ""
+      - appliedColumnTests: {}
+        columnReference:
+          columnCounter: 785ab23b-d252-4908-a443-8b9e434feb4c
+          stepCounter: 0d564050-c943-4db5-bcf0-1347b89e69fe
+        config: {}
+        dataType: VARCHAR(1)
+        description: ""
+        name: QUALITY_FLAG
+        nullable: false
+        sourceColumnReferences:
+          - columnReferences:
+              - columnCounter: 1cae69cd-b196-4725-b269-58453fd1b87b
+                stepCounter: ebb94b33-2e3e-4400-ad7a-3402d94e0982
+            transform: ""
+    cteString: ""
+    enabledColumnTestIDs: []
+    sourceMapping:
+      - aliases:
+          INC_CUSTOMER_ACCOUNTS: ebb94b33-2e3e-4400-ad7a-3402d94e0982
+        customSQL:
+          customSQL: ""
+        dependencies:
+          - locationName: TARGET_DB
+            nodeName: INC_CUSTOMER_ACCOUNTS
+        join:
+          joinCondition: |-
+            FROM {{ ref('TARGET_DB', 'INC_CUSTOMER_ACCOUNTS') }} "INC_CUSTOMER_ACCOUNTS"
+             QUALIFY QUALITY_FLAG = 'B' AND ROW_NUMBER() OVER (PARTITION BY ACCOUNT_ID ORDER BY SIGNUP_DATE ASC) > 1
+        name: FR_CUSTOMER_ACCOUNTS
+        noLinkRefs: []
+  name: FR_CUSTOMER_ACCOUNTS
+  overrideSQL: false
+  schema: ""
+  sqlType: "618"
+  type: sql
+  version: 1
+type: Node

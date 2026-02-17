@@ -1,0 +1,185 @@
+fileVersion: 1
+id: ebb94b33-2e3e-4400-ad7a-3402d94e0982
+name: INC_CUSTOMER_ACCOUNTS
+operation:
+  config:
+    ddqcolumns:
+      items:
+        - dcolumnName:
+            columnCounter: 995f1376-54aa-47f8-bd04-48760561ce7b
+            stepCounter: ebb94b33-2e3e-4400-ad7a-3402d94e0982
+    dqdup: true
+    dqhandle: true
+    dqnull: true
+    ndqcolumns:
+      items:
+        - ncolumnName:
+            columnCounter: 995f1376-54aa-47f8-bd04-48760561ce7b
+            stepCounter: ebb94b33-2e3e-4400-ad7a-3402d94e0982
+    persistTableLocation: "ex: TARGET"
+    persistTableName: "ex: DIM_ORDERS"
+    postSQL: ""
+    preSQL: ""
+    refTable: false
+  database: ""
+  deployEnabled: true
+  description: ""
+  isMultisource: false
+  locationName: TARGET_DB
+  materializationType: view
+  metadata:
+    appliedNodeTests: []
+    columns:
+      - appliedColumnTests: {}
+        columnReference:
+          columnCounter: 995f1376-54aa-47f8-bd04-48760561ce7b
+          stepCounter: ebb94b33-2e3e-4400-ad7a-3402d94e0982
+        config: {}
+        dataType: NUMBER(38,0)
+        description: ""
+        name: ACCOUNT_ID
+        nullable: true
+        sourceColumnReferences:
+          - columnReferences:
+              - columnCounter: a7492eca-5042-47be-9af8-c6f9e6701bdd
+                stepCounter: 86902ff7-b451-4da5-b1f9-b52db1192709
+            transform: ""
+      - appliedColumnTests: {}
+        columnReference:
+          columnCounter: 7ccf8767-beab-4462-b776-5a80a0fdf5b3
+          stepCounter: ebb94b33-2e3e-4400-ad7a-3402d94e0982
+        config: {}
+        dataType: VARCHAR(16777216)
+        description: ""
+        name: CUSTOMER_NAME
+        nullable: true
+        sourceColumnReferences:
+          - columnReferences:
+              - columnCounter: c26b08d7-42ed-4954-9c32-939302f1162b
+                stepCounter: 86902ff7-b451-4da5-b1f9-b52db1192709
+            transform: ""
+      - appliedColumnTests: {}
+        columnReference:
+          columnCounter: 416ff730-61f4-4626-a04f-9ba4847750f6
+          stepCounter: ebb94b33-2e3e-4400-ad7a-3402d94e0982
+        config: {}
+        dataType: VARCHAR(16777216)
+        description: ""
+        name: CITY
+        nullable: true
+        sourceColumnReferences:
+          - columnReferences:
+              - columnCounter: 907a2571-49a3-4c1b-910e-a480f736d4c1
+                stepCounter: 86902ff7-b451-4da5-b1f9-b52db1192709
+            transform: ""
+      - appliedColumnTests: {}
+        columnReference:
+          columnCounter: 80ce5aac-4543-4792-a651-63d5a3dddd77
+          stepCounter: ebb94b33-2e3e-4400-ad7a-3402d94e0982
+        config: {}
+        dataType: DATE
+        description: ""
+        name: SIGNUP_DATE
+        nullable: true
+        sourceColumnReferences:
+          - columnReferences:
+              - columnCounter: 72215ded-50da-48db-9a9e-b5d5ed7b9116
+                stepCounter: 86902ff7-b451-4da5-b1f9-b52db1192709
+            transform: ""
+      - acceptedValues:
+          strictMatch: true
+          values: []
+        appliedColumnTests: {}
+        columnReference:
+          columnCounter: bb34ba71-07c0-4151-af25-f30965c03d3e
+          stepCounter: ebb94b33-2e3e-4400-ad7a-3402d94e0982
+        config: {}
+        dataType: NUMBER(1,0)
+        defaultValue: ""
+        description: ""
+        name: ACCOUNT_ID_null
+        nullable: false
+        primaryKey: false
+        sourceColumnReferences:
+          - columnReferences: []
+            transform: ""
+        transform: ""
+        uniqueKey: false
+      - acceptedValues:
+          strictMatch: true
+          values: []
+        appliedColumnTests: {}
+        columnReference:
+          columnCounter: a455f81d-4d34-46c8-814b-67934f6fe2c4
+          stepCounter: ebb94b33-2e3e-4400-ad7a-3402d94e0982
+        config: {}
+        dataType: NUMBER(1,0)
+        defaultValue: ""
+        description: ""
+        name: ACCOUNT_ID_dup
+        nullable: false
+        primaryKey: false
+        sourceColumnReferences:
+          - columnReferences: []
+            transform: ""
+        transform: ""
+        uniqueKey: false
+      - acceptedValues:
+          strictMatch: true
+          values: []
+        appliedColumnTests: {}
+        columnReference:
+          columnCounter: 0109e648-7534-4957-82f6-479f3fea719e
+          stepCounter: ebb94b33-2e3e-4400-ad7a-3402d94e0982
+        config: {}
+        dataType: NUMBER(2,0)
+        defaultValue: ""
+        description: ""
+        name: TOTAL_FAILED_TESTS
+        nullable: false
+        primaryKey: false
+        sourceColumnReferences:
+          - columnReferences: []
+            transform: ""
+        transform: ""
+        uniqueKey: false
+      - acceptedValues:
+          strictMatch: true
+          values: []
+        appliedColumnTests: {}
+        columnReference:
+          columnCounter: 1cae69cd-b196-4725-b269-58453fd1b87b
+          stepCounter: ebb94b33-2e3e-4400-ad7a-3402d94e0982
+        config: {}
+        dataType: VARCHAR(1)
+        defaultValue: ""
+        description: ""
+        name: QUALITY_FLAG
+        nullable: false
+        primaryKey: false
+        sourceColumnReferences:
+          - columnReferences: []
+            transform: ""
+        transform: ""
+        uniqueKey: false
+    cteString: ""
+    enabledColumnTestIDs: []
+    sourceMapping:
+      - aliases:
+          CUSTOMER_ACCOUNTS: 86902ff7-b451-4da5-b1f9-b52db1192709
+        customSQL:
+          customSQL: ""
+        dependencies:
+          - locationName: SOURCE2
+            nodeName: CUSTOMER_ACCOUNTS
+        join:
+          joinCondition: FROM {{ ref('SOURCE2', 'CUSTOMER_ACCOUNTS') }} "CUSTOMER_ACCOUNTS"
+        name: INC_CUSTOMER_ACCOUNTS
+        noLinkRefs: []
+  name: INC_CUSTOMER_ACCOUNTS
+  overrideSQL: false
+  schema: ""
+  sqlType: "230"
+  type: sql
+  version: 1
+type: Node

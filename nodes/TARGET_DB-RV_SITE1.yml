@@ -3,6 +3,7 @@ id: 95add59e-e68f-475b-95b8-ecdb0ce0ecf9
 name: RV_SITE1
 operation:
   config:
+    incColumn: ""
     insertStrategy: UNION ALL
     persistTableLocation: "ex: TARGET"
     persistTableName: "ex: DIM_ORDERS"

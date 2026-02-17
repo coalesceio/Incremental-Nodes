@@ -8,6 +8,8 @@ operation:
       stepCounter: a83c55fb-7dcd-41c4-975f-c7736d80f76f
     persistTableLocation: TARGET_DB
     persistTableName: PSTG_ORDERS
+    postSQL: ""
+    preSQL: ""
     refTable: true
   database: ""
   deployEnabled: true
@@ -162,15 +164,15 @@ operation:
     enabledColumnTestIDs: []
     sourceMapping:
       - aliases:
-          ORDERS: 52f22891-db54-4757-8575-9f66228b21cb
+          ORDERS: 704f4e21-d45f-4356-8cf6-64cbaa535e5e
         customSQL:
           customSQL: ""
         dependencies:
-          - locationName: SOURCE_DATA
+          - locationName: SOURCE2
             nodeName: ORDERS
         join:
           joinCondition: |
-            FROM{{ ref('SOURCE_DATA', 'ORDERS') }} "ORDERS"
+            FROM {{ ref('SOURCE2', 'ORDERS') }} "ORDERS"
               WHERE "ORDERS"."O_LOAD_TIMESTAMP" > 
               (SELECT COALESCE(MAX("O_LOAD_TIMESTAMP"), '1900-01-01') 
                         FROM {{ ref_no_link('TARGET_DB', 'PSTG_ORDERS') }} )
