@@ -141,6 +141,15 @@ The Coalesce "Test Passed Records" (GR) node is a specialized filtering node typ
 * **Duplicate Salvaging:** Unlike a standard filter, it provides logic to "salvage" duplicated records. If a record is flagged as a duplicate, you can configure the node to keep either the First Occurrence or the Last Occurrence based on a chosen timestamp column (timcol).
 * **Always use on an incremental node with data quality handled**
 
+## Test passed records Example Workflow
+
+1. Add a source node.
+2. Add the Incremental UDN.
+3. By default,where clause to filter 'G' quality is added in JOIN tab
+4. If you want the first or last occurrence of record as valid enable corresponding toggles in config
+5. Go to join tab and override join clause by clicking on 'Copy to editor'
+6. The target will have good quality records
+
 ### Test Passed records Load Node Configuration
 
 * [Node Properties](#test-passed-records-properties)
@@ -173,6 +182,15 @@ The Coalesce "Test Failed Records" node acts as a Quarantine and Error-Capture c
 * **2.Duplicate Capture:** If deduplication logic is enabled (First or Last Occurrence), this node specifically captures the rejected duplicates, and remediation.
 
 * **Always use on an incremental node with data quality handled**
+  
+## Test failed records Example Workflow
+
+1. Add a source node.
+2. Add the Incremental UDN.
+3. By default,where clause to filter 'B' quality is added in JOIN tab
+4. If you want the first or last occurrence of record as valid enable corresponding toggles in config
+5. Go to join tab and override join clause by clicking on 'Copy to editor'
+6. The target will have good quality records
 
 ### Test Failed records Load Node Configuration
 
