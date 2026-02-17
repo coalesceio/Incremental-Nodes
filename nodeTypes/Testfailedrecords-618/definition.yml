@@ -51,11 +51,11 @@ metadata:
           {%-set ns.dup_cols = ns.dup_cols + [col.name| replace('_dup','')] -%}  
       {%- endfor -%}
         
-      {% if config.foccurrence -%}
+      {%- if config.foccurrence %}
        QUALIFY QUALITY_FLAG = 'B' AND ROW_NUMBER() OVER (PARTITION BY {{ns.dup_cols|join(',')}} ORDER BY {{config.timcol.name}} ASC) > 1 
-      {% elif config.loccurrence -%}
+      {%- elif config.loccurence %}
        QUALIFY QUALITY_FLAG = 'B' AND ROW_NUMBER() OVER (PARTITION BY {{ns.dup_cols|join(',')}} ORDER BY {{config.timcol.name}} DESC) > 1 
-      {% else -%}
+      {%- else %}
         WHERE QUALITY_FLAG = 'B'
       {%endif -%}
 name: Test failed records

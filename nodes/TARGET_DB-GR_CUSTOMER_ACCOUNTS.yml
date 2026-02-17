@@ -154,8 +154,9 @@ operation:
           - locationName: TARGET_DB
             nodeName: INC_CUSTOMER_ACCOUNTS
         join:
-          joinCondition: |
-            FROM {{ ref('TARGET_DB', 'INC_CUSTOMER_ACCOUNTS') }} "INC_CUSTOMER_ACCOUNTS"QUALIFY QUALITY_FLAG = 'G' OR ROW_NUMBER() OVER (PARTITION BY ACCOUNT_ID ORDER BY SIGNUP_DATE ASC) = 1 AND  "ACCOUNT_ID_null" < 1 AND "CUSTOMER_NAME_null" < 1
+          joinCondition: |-
+            FROM {{ ref('TARGET_DB', 'INC_CUSTOMER_ACCOUNTS') }} "INC_CUSTOMER_ACCOUNTS"
+              QUALIFY QUALITY_FLAG = 'G' OR ROW_NUMBER() OVER (PARTITION BY ACCOUNT_ID ORDER BY SIGNUP_DATE ASC) = 1 AND  "ACCOUNT_ID_null" < 1 AND "CUSTOMER_NAME_null" < 1
         name: GR_CUSTOMER_ACCOUNTS
         noLinkRefs: []
   name: GR_CUSTOMER_ACCOUNTS

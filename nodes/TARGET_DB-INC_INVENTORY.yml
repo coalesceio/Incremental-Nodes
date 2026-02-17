@@ -1,0 +1,297 @@
+fileVersion: 1
+id: 2761ec71-c158-4570-a477-69c83d517db7
+name: INC_INVENTORY
+operation:
+  config:
+    ddqcolumns:
+      items:
+        - dcolumnName:
+            columnCounter: 21158535-42db-4851-81d6-1dbd4dea1edc
+            stepCounter: 2761ec71-c158-4570-a477-69c83d517db7
+        - dcolumnName:
+            columnCounter: 4ad202d8-b6db-4381-a415-98109fde4704
+            stepCounter: 2761ec71-c158-4570-a477-69c83d517db7
+    dqdup: true
+    dqhandle: true
+    dqnull: true
+    ndqcolumns:
+      items:
+        - ncolumnName:
+            columnCounter: 21158535-42db-4851-81d6-1dbd4dea1edc
+            stepCounter: 2761ec71-c158-4570-a477-69c83d517db7
+        - ncolumnName:
+            columnCounter: 4ad202d8-b6db-4381-a415-98109fde4704
+            stepCounter: 2761ec71-c158-4570-a477-69c83d517db7
+    persistTableLocation: "ex: TARGET"
+    persistTableName: "ex: DIM_ORDERS"
+    postSQL: |-
+      SELECT 
+          (SELECT COUNT(*) FROM anandhis_dev.source_data.inventory) as staging_count,
+          (SELECT COUNT(*) FROM anandhis_dev.target_acc.INC_INVENTORY WHERE quality_flag='G') as good_records,
+          (SELECT COUNT(*) FROM anandhis_dev.target_acc.INC_INVENTORY where quality_flag='B') as rejected_count;
+    preSQL: |-
+      Create view anandhis_dev.target.error_inventory_records4
+      as
+      SELECT 
+          COALESCE(sku, 'MISSING') as error_d, 
+          'Invalid Numeric Price or Missing SKU' as error_info, 
+          CURRENT_TIMESTAMP as load_time
+      FROM anandhis_dev.source_data.inventory
+      WHERE sku IS NULL ; 
+    refTable: false
+  database: ""
+  deployEnabled: true
+  description: ""
+  isMultisource: false
+  locationName: TARGET_DB
+  materializationType: table
+  metadata:
+    appliedNodeTests: []
+    columns:
+      - appliedColumnTests: {}
+        columnReference:
+          columnCounter: 21158535-42db-4851-81d6-1dbd4dea1edc
+          stepCounter: 2761ec71-c158-4570-a477-69c83d517db7
+        config: {}
+        dataType: VARCHAR(50)
+        description: ""
+        name: SKU
+        nullable: true
+        sourceColumnReferences:
+          - columnReferences:
+              - columnCounter: a5c8bcce-5857-4ddf-a164-84e7cb7b74a9
+                stepCounter: 497a79bd-56fc-4618-b971-1fd11b89f15f
+            transform: ""
+      - appliedColumnTests: {}
+        columnReference:
+          columnCounter: 4ad202d8-b6db-4381-a415-98109fde4704
+          stepCounter: 2761ec71-c158-4570-a477-69c83d517db7
+        config: {}
+        dataType: VARCHAR(100)
+        description: ""
+        name: PRODUCT_NAME
+        nullable: true
+        sourceColumnReferences:
+          - columnReferences:
+              - columnCounter: cc975a95-1361-4225-ac9a-9b04dd3fcd01
+                stepCounter: 497a79bd-56fc-4618-b971-1fd11b89f15f
+            transform: ""
+      - appliedColumnTests: {}
+        columnReference:
+          columnCounter: f0ad0c7e-3e07-4034-b4a2-d3df5b11ee8c
+          stepCounter: 2761ec71-c158-4570-a477-69c83d517db7
+        config: {}
+        dataType: VARCHAR(50)
+        description: ""
+        name: CATEGORY
+        nullable: true
+        sourceColumnReferences:
+          - columnReferences:
+              - columnCounter: 119a5abf-e060-4c26-9fe7-b9cc729c8e42
+                stepCounter: 497a79bd-56fc-4618-b971-1fd11b89f15f
+            transform: ""
+      - appliedColumnTests: {}
+        columnReference:
+          columnCounter: 82a6ee23-2ae1-4344-aaff-a7856d97c5a8
+          stepCounter: 2761ec71-c158-4570-a477-69c83d517db7
+        config: {}
+        dataType: VARCHAR(50)
+        description: ""
+        name: UNIT_PRICE
+        nullable: true
+        sourceColumnReferences:
+          - columnReferences:
+              - columnCounter: 4c4db9df-2708-49bc-9f3d-228d158582e7
+                stepCounter: 497a79bd-56fc-4618-b971-1fd11b89f15f
+            transform: ""
+      - appliedColumnTests: {}
+        columnReference:
+          columnCounter: 62b393a7-45b3-41a0-8714-295e47b62178
+          stepCounter: 2761ec71-c158-4570-a477-69c83d517db7
+        config: {}
+        dataType: NUMBER(5,2)
+        description: ""
+        name: DISCOUNT_PCT
+        nullable: true
+        sourceColumnReferences:
+          - columnReferences:
+              - columnCounter: 71d0e459-30bb-40a4-a87d-7a8edf2a0474
+                stepCounter: 497a79bd-56fc-4618-b971-1fd11b89f15f
+            transform: ""
+      - appliedColumnTests: {}
+        columnReference:
+          columnCounter: 00da4ca8-0de5-471b-b96e-84d48d2caa81
+          stepCounter: 2761ec71-c158-4570-a477-69c83d517db7
+        config: {}
+        dataType: NUMBER(38,0)
+        description: ""
+        name: STOCK_QTY
+        nullable: true
+        sourceColumnReferences:
+          - columnReferences:
+              - columnCounter: 7f673770-05c4-43f1-8004-463aa865b362
+                stepCounter: 497a79bd-56fc-4618-b971-1fd11b89f15f
+            transform: ""
+      - appliedColumnTests: {}
+        columnReference:
+          columnCounter: 41e6f96d-b74c-42e7-9def-0f59558707a2
+          stepCounter: 2761ec71-c158-4570-a477-69c83d517db7
+        config: {}
+        dataType: VARCHAR(20)
+        description: ""
+        name: WAREHOUSE_ID
+        nullable: true
+        sourceColumnReferences:
+          - columnReferences:
+              - columnCounter: a98c9b59-e80a-4876-91cb-e5fe646544f9
+                stepCounter: 497a79bd-56fc-4618-b971-1fd11b89f15f
+            transform: ""
+      - appliedColumnTests: {}
+        columnReference:
+          columnCounter: f3c71708-7f17-4024-9f9a-9d8ffbf99ed8
+          stepCounter: 2761ec71-c158-4570-a477-69c83d517db7
+        config: {}
+        dataType: VARCHAR(50)
+        description: ""
+        name: LAST_RESTOCKED
+        nullable: true
+        sourceColumnReferences:
+          - columnReferences:
+              - columnCounter: 86208b85-5924-42fa-be11-56a9ae859db7
+                stepCounter: 497a79bd-56fc-4618-b971-1fd11b89f15f
+            transform: ""
+      - acceptedValues:
+          strictMatch: true
+          values: []
+        appliedColumnTests: {}
+        columnReference:
+          columnCounter: a640aecf-3fd4-43ac-8428-9bc7066495e4
+          stepCounter: 2761ec71-c158-4570-a477-69c83d517db7
+        config: {}
+        dataType: NUMBER(38,0)
+        defaultValue: ""
+        description: ""
+        name: SKU_null
+        nullable: true
+        primaryKey: false
+        sourceColumnReferences:
+          - columnReferences: []
+            transform: ""
+        transform: ""
+        uniqueKey: false
+      - acceptedValues:
+          strictMatch: true
+          values: []
+        appliedColumnTests: {}
+        columnReference:
+          columnCounter: 42dfd79e-d2f5-4bf7-b563-1c550ed68eff
+          stepCounter: 2761ec71-c158-4570-a477-69c83d517db7
+        config: {}
+        dataType: NUMBER(38,0)
+        defaultValue: ""
+        description: ""
+        name: PRODUCT_NAME_null
+        nullable: true
+        primaryKey: false
+        sourceColumnReferences:
+          - columnReferences: []
+            transform: ""
+        transform: ""
+        uniqueKey: false
+      - acceptedValues:
+          strictMatch: true
+          values: []
+        appliedColumnTests: {}
+        columnReference:
+          columnCounter: 4018d917-2a41-4a60-8883-3a7052d96ea4
+          stepCounter: 2761ec71-c158-4570-a477-69c83d517db7
+        config: {}
+        dataType: NUMBER(38,0)
+        defaultValue: ""
+        description: ""
+        name: SKU_dup
+        nullable: true
+        primaryKey: false
+        sourceColumnReferences:
+          - columnReferences: []
+            transform: ""
+        transform: ""
+        uniqueKey: false
+      - acceptedValues:
+          strictMatch: true
+          values: []
+        appliedColumnTests: {}
+        columnReference:
+          columnCounter: 29446323-262e-4884-8eeb-aa24a6f063f5
+          stepCounter: 2761ec71-c158-4570-a477-69c83d517db7
+        config: {}
+        dataType: NUMBER(38,0)
+        defaultValue: ""
+        description: ""
+        name: PRODUCT_NAME_dup
+        nullable: true
+        primaryKey: false
+        sourceColumnReferences:
+          - columnReferences: []
+            transform: ""
+        transform: ""
+        uniqueKey: false
+      - acceptedValues:
+          strictMatch: true
+          values: []
+        appliedColumnTests: {}
+        columnReference:
+          columnCounter: 6959cdd4-0ad1-4a9c-b56c-c77ebd363bc4
+          stepCounter: 2761ec71-c158-4570-a477-69c83d517db7
+        config: {}
+        dataType: NUMBER(38,0)
+        defaultValue: ""
+        description: ""
+        name: TOTAL_FAILED_TESTS
+        nullable: true
+        primaryKey: false
+        sourceColumnReferences:
+          - columnReferences: []
+            transform: ""
+        transform: ""
+        uniqueKey: false
+      - acceptedValues:
+          strictMatch: true
+          values: []
+        appliedColumnTests: {}
+        columnReference:
+          columnCounter: 390ad0a1-42f1-4b14-b9d4-16fcddf88f34
+          stepCounter: 2761ec71-c158-4570-a477-69c83d517db7
+        config: {}
+        dataType: VARCHAR(1)
+        defaultValue: ""
+        description: ""
+        name: QUALITY_FLAG
+        nullable: true
+        primaryKey: false
+        sourceColumnReferences:
+          - columnReferences: []
+            transform: ""
+        transform: ""
+        uniqueKey: false
+    cteString: ""
+    enabledColumnTestIDs: []
+    sourceMapping:
+      - aliases:
+          INVENTORY: 497a79bd-56fc-4618-b971-1fd11b89f15f
+        customSQL:
+          customSQL: ""
+        dependencies:
+          - locationName: SOURCE2
+            nodeName: INVENTORY
+        join:
+          joinCondition: FROM {{ ref('SOURCE2', 'INVENTORY') }} "INVENTORY"
+        name: INC_INVENTORY
+        noLinkRefs: []
+  name: INC_INVENTORY
+  overrideSQL: false
+  schema: ""
+  sqlType: "230"
+  type: sql
+  version: 1
+type: Node

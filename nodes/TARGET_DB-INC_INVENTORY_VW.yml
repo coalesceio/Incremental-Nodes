@@ -1,0 +1,171 @@
+fileVersion: 1
+id: 3d591a22-7de1-423f-aed8-f5a81dc165d7
+name: INC_INVENTORY_VW
+operation:
+  config:
+    ddqcolumns:
+      items:
+        - dcolumnName:
+            columnCounter: 130a9b95-8389-41de-b07f-34864088b237
+            stepCounter: 3d591a22-7de1-423f-aed8-f5a81dc165d7
+        - dcolumnName:
+            columnCounter: 0fb6f9fb-3600-49d1-b181-a5c32fdb68f1
+            stepCounter: 3d591a22-7de1-423f-aed8-f5a81dc165d7
+    dqdup: true
+    dqhandle: true
+    dqnull: true
+    ndqcolumns:
+      items:
+        - ncolumnName:
+            columnCounter: 0fb6f9fb-3600-49d1-b181-a5c32fdb68f1
+            stepCounter: 3d591a22-7de1-423f-aed8-f5a81dc165d7
+        - ncolumnName:
+            columnCounter: 130a9b95-8389-41de-b07f-34864088b237
+            stepCounter: 3d591a22-7de1-423f-aed8-f5a81dc165d7
+    persistTableLocation: "ex: TARGET"
+    persistTableName: "ex: DIM_ORDERS"
+    postSQL: ""
+    preSQL: ""
+    refTable: false
+  database: ""
+  deployEnabled: true
+  description: ""
+  isMultisource: false
+  locationName: TARGET_DB
+  materializationType: view
+  metadata:
+    appliedNodeTests: []
+    columns:
+      - appliedColumnTests: {}
+        columnReference:
+          columnCounter: 0fb6f9fb-3600-49d1-b181-a5c32fdb68f1
+          stepCounter: 3d591a22-7de1-423f-aed8-f5a81dc165d7
+        config: {}
+        dataType: VARCHAR(50)
+        description: ""
+        name: SKU
+        nullable: true
+        sourceColumnReferences:
+          - columnReferences:
+              - columnCounter: a5c8bcce-5857-4ddf-a164-84e7cb7b74a9
+                stepCounter: 497a79bd-56fc-4618-b971-1fd11b89f15f
+            transform: ""
+      - appliedColumnTests: {}
+        columnReference:
+          columnCounter: 130a9b95-8389-41de-b07f-34864088b237
+          stepCounter: 3d591a22-7de1-423f-aed8-f5a81dc165d7
+        config: {}
+        dataType: VARCHAR(100)
+        description: ""
+        name: PRODUCT_NAME
+        nullable: true
+        sourceColumnReferences:
+          - columnReferences:
+              - columnCounter: cc975a95-1361-4225-ac9a-9b04dd3fcd01
+                stepCounter: 497a79bd-56fc-4618-b971-1fd11b89f15f
+            transform: ""
+      - appliedColumnTests: {}
+        columnReference:
+          columnCounter: 2c112972-8ea8-40d3-875c-eb308332c8d0
+          stepCounter: 3d591a22-7de1-423f-aed8-f5a81dc165d7
+        config: {}
+        dataType: VARCHAR(50)
+        description: ""
+        name: CATEGORY
+        nullable: true
+        sourceColumnReferences:
+          - columnReferences:
+              - columnCounter: 119a5abf-e060-4c26-9fe7-b9cc729c8e42
+                stepCounter: 497a79bd-56fc-4618-b971-1fd11b89f15f
+            transform: ""
+      - appliedColumnTests: {}
+        columnReference:
+          columnCounter: 4482ddae-3992-4b79-b5b1-9805f8eda7bb
+          stepCounter: 3d591a22-7de1-423f-aed8-f5a81dc165d7
+        config: {}
+        dataType: VARCHAR(50)
+        description: ""
+        name: UNIT_PRICE
+        nullable: true
+        sourceColumnReferences:
+          - columnReferences:
+              - columnCounter: 4c4db9df-2708-49bc-9f3d-228d158582e7
+                stepCounter: 497a79bd-56fc-4618-b971-1fd11b89f15f
+            transform: ""
+      - appliedColumnTests: {}
+        columnReference:
+          columnCounter: 56906e68-eb03-46b7-bae4-bc7c837d0c16
+          stepCounter: 3d591a22-7de1-423f-aed8-f5a81dc165d7
+        config: {}
+        dataType: NUMBER(5,2)
+        description: ""
+        name: DISCOUNT_PCT
+        nullable: true
+        sourceColumnReferences:
+          - columnReferences:
+              - columnCounter: 71d0e459-30bb-40a4-a87d-7a8edf2a0474
+                stepCounter: 497a79bd-56fc-4618-b971-1fd11b89f15f
+            transform: ""
+      - appliedColumnTests: {}
+        columnReference:
+          columnCounter: 70cb39cd-e68c-47d4-9480-dcfe7728d0d1
+          stepCounter: 3d591a22-7de1-423f-aed8-f5a81dc165d7
+        config: {}
+        dataType: NUMBER(38,0)
+        description: ""
+        name: STOCK_QTY
+        nullable: true
+        sourceColumnReferences:
+          - columnReferences:
+              - columnCounter: 7f673770-05c4-43f1-8004-463aa865b362
+                stepCounter: 497a79bd-56fc-4618-b971-1fd11b89f15f
+            transform: ""
+      - appliedColumnTests: {}
+        columnReference:
+          columnCounter: b3eda282-d8af-4ffa-b8dd-c515f1703056
+          stepCounter: 3d591a22-7de1-423f-aed8-f5a81dc165d7
+        config: {}
+        dataType: VARCHAR(20)
+        description: ""
+        name: WAREHOUSE_ID
+        nullable: true
+        sourceColumnReferences:
+          - columnReferences:
+              - columnCounter: a98c9b59-e80a-4876-91cb-e5fe646544f9
+                stepCounter: 497a79bd-56fc-4618-b971-1fd11b89f15f
+            transform: ""
+      - appliedColumnTests: {}
+        columnReference:
+          columnCounter: 877203c3-5bcf-4f71-ad25-bf8420fed94c
+          stepCounter: 3d591a22-7de1-423f-aed8-f5a81dc165d7
+        config: {}
+        dataType: VARCHAR(50)
+        description: ""
+        name: LAST_RESTOCKED
+        nullable: true
+        sourceColumnReferences:
+          - columnReferences:
+              - columnCounter: 86208b85-5924-42fa-be11-56a9ae859db7
+                stepCounter: 497a79bd-56fc-4618-b971-1fd11b89f15f
+            transform: ""
+    cteString: ""
+    enabledColumnTestIDs: []
+    sourceMapping:
+      - aliases:
+          INVENTORY: 497a79bd-56fc-4618-b971-1fd11b89f15f
+        customSQL:
+          customSQL: ""
+        dependencies:
+          - locationName: SOURCE2
+            nodeName: INVENTORY
+        join:
+          joinCondition: FROM {{ ref('SOURCE2', 'INVENTORY') }} "INVENTORY"
+        name: INC_INVENTORY_VW
+        noLinkRefs: []
+  name: INC_INVENTORY_VW
+  overrideSQL: false
+  schema: ""
+  sqlType: "230"
+  type: sql
+  version: 1
+type: Node

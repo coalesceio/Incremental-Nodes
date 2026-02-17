@@ -21,6 +21,8 @@ operation:
             stepCounter: 391d9870-9d85-44ae-825d-bd41f9d83b83
     persistTableLocation: "ex: TARGET"
     persistTableName: "ex: DIM_ORDERS"
+    postSQL: ""
+    preSQL: ""
     refTable: false
   database: ""
   deployEnabled: true

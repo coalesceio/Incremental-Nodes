@@ -1,0 +1,168 @@
+fileVersion: 1
+id: 497a79bd-56fc-4618-b971-1fd11b89f15f
+name: INVENTORY
+operation:
+  database: ""
+  deployEnabled: true
+  description: ""
+  locationName: SOURCE2
+  metadata:
+    columns:
+      - acceptedValues:
+          strictMatch: true
+          values: []
+        appliedColumnTests: {}
+        columnReference:
+          columnCounter: a5c8bcce-5857-4ddf-a164-84e7cb7b74a9
+          stepCounter: 497a79bd-56fc-4618-b971-1fd11b89f15f
+        config: {}
+        dataType: VARCHAR(50)
+        defaultValue: ""
+        description: ""
+        name: SKU
+        nullable: true
+        primaryKey: false
+        sourceColumnReferences:
+          - columnReferences: []
+            transform: ""
+        transform: ""
+        uniqueKey: false
+      - acceptedValues:
+          strictMatch: true
+          values: []
+        appliedColumnTests: {}
+        columnReference:
+          columnCounter: cc975a95-1361-4225-ac9a-9b04dd3fcd01
+          stepCounter: 497a79bd-56fc-4618-b971-1fd11b89f15f
+        config: {}
+        dataType: VARCHAR(100)
+        defaultValue: ""
+        description: ""
+        name: PRODUCT_NAME
+        nullable: true
+        primaryKey: false
+        sourceColumnReferences:
+          - columnReferences: []
+            transform: ""
+        transform: ""
+        uniqueKey: false
+      - acceptedValues:
+          strictMatch: true
+          values: []
+        appliedColumnTests: {}
+        columnReference:
+          columnCounter: 119a5abf-e060-4c26-9fe7-b9cc729c8e42
+          stepCounter: 497a79bd-56fc-4618-b971-1fd11b89f15f
+        config: {}
+        dataType: VARCHAR(50)
+        defaultValue: ""
+        description: ""
+        name: CATEGORY
+        nullable: true
+        primaryKey: false
+        sourceColumnReferences:
+          - columnReferences: []
+            transform: ""
+        transform: ""
+        uniqueKey: false
+      - acceptedValues:
+          strictMatch: true
+          values: []
+        appliedColumnTests: {}
+        columnReference:
+          columnCounter: 4c4db9df-2708-49bc-9f3d-228d158582e7
+          stepCounter: 497a79bd-56fc-4618-b971-1fd11b89f15f
+        config: {}
+        dataType: VARCHAR(50)
+        defaultValue: ""
+        description: ""
+        name: UNIT_PRICE
+        nullable: true
+        primaryKey: false
+        sourceColumnReferences:
+          - columnReferences: []
+            transform: ""
+        transform: ""
+        uniqueKey: false
+      - acceptedValues:
+          strictMatch: true
+          values: []
+        appliedColumnTests: {}
+        columnReference:
+          columnCounter: 71d0e459-30bb-40a4-a87d-7a8edf2a0474
+          stepCounter: 497a79bd-56fc-4618-b971-1fd11b89f15f
+        config: {}
+        dataType: NUMBER(5,2)
+        defaultValue: ""
+        description: ""
+        name: DISCOUNT_PCT
+        nullable: true
+        primaryKey: false
+        sourceColumnReferences:
+          - columnReferences: []
+            transform: ""
+        transform: ""
+        uniqueKey: false
+      - acceptedValues:
+          strictMatch: true
+          values: []
+        appliedColumnTests: {}
+        columnReference:
+          columnCounter: 7f673770-05c4-43f1-8004-463aa865b362
+          stepCounter: 497a79bd-56fc-4618-b971-1fd11b89f15f
+        config: {}
+        dataType: NUMBER(38,0)
+        defaultValue: ""
+        description: ""
+        name: STOCK_QTY
+        nullable: true
+        primaryKey: false
+        sourceColumnReferences:
+          - columnReferences: []
+            transform: ""
+        transform: ""
+        uniqueKey: false
+      - acceptedValues:
+          strictMatch: true
+          values: []
+        appliedColumnTests: {}
+        columnReference:
+          columnCounter: a98c9b59-e80a-4876-91cb-e5fe646544f9
+          stepCounter: 497a79bd-56fc-4618-b971-1fd11b89f15f
+        config: {}
+        dataType: VARCHAR(20)
+        defaultValue: ""
+        description: ""
+        name: WAREHOUSE_ID
+        nullable: true
+        primaryKey: false
+        sourceColumnReferences:
+          - columnReferences: []
+            transform: ""
+        transform: ""
+        uniqueKey: false
+      - acceptedValues:
+          strictMatch: true
+          values: []
+        appliedColumnTests: {}
+        columnReference:
+          columnCounter: 86208b85-5924-42fa-be11-56a9ae859db7
+          stepCounter: 497a79bd-56fc-4618-b971-1fd11b89f15f
+        config: {}
+        dataType: VARCHAR(50)
+        defaultValue: ""
+        description: ""
+        name: LAST_RESTOCKED
+        nullable: true
+        primaryKey: false
+        sourceColumnReferences:
+          - columnReferences: []
+            transform: ""
+        transform: ""
+        uniqueKey: false
+  name: INVENTORY
+  schema: ""
+  sqlType: Source
+  type: sourceInput
+  version: 1
+type: Node

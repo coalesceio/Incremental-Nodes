@@ -18,11 +18,19 @@ does not permit copying or modification for any other purpose.
 
 CREATE OR REPLACE VIEW {{ ref_no_link(node.location.name, node.name) }}
   ( 
+    {%if config.dqhandle%}
     {% for col in columns if (col.name != "_SEQUENCE" and "_null" not in col.name and "_dup" not in col.name and col.name != "TOTAL_FAILED_TESTS" and col.name != "QUALITY_FLAG" ) -%}
         "{{ col.name }}"
         {%- if col.description | length > 0 %} COMMENT '{{ col.description | escape }}'{% endif -%}
         {% if not loop.last %}, {% endif %}
     {% endfor -%}
+    {%else-%}
+    {% for col in columns -%}
+        "{{ col.name }}"
+        {%- if col.description | length > 0 %} COMMENT '{{ col.description | escape }}'{% endif -%}
+        {% if not loop.last %}, {% endif %}
+    {% endfor -%}
+    {%endif-%}
     {%if config.dqhandle and config.dqnull and config.dqdup -%} 
 	   {% for item in config.ndqcolumns['items'] -%}
         {% set col_name = '"' ~ item.ncolumnName.name ~ '_null"' -%}
@@ -51,10 +59,18 @@ CREATE OR REPLACE VIEW {{ ref_no_link(node.location.name, node.name) }}
    {%- if node.description | length > 0 -%} COMMENT = '{{ node.description | escape }}'{% endif -%}
   AS
    select * from(SELECT
-  {% for col in source.columns if (col.name != "_SEQUENCE" and "_null" not in col.name and "_dup" not in col.name and col.name != "TOTAL_FAILED_TESTS" and col.name != "QUALITY_FLAG" ) -%}
+   {%if config.dqhandle%}
+    {% for col in source.columns if (col.name != "_SEQUENCE" and "_null" not in col.name and "_dup" not in col.name and col.name != "TOTAL_FAILED_TESTS" and col.name != "QUALITY_FLAG" ) -%}
        {{ get_source_transform(col) }} AS  "{{ col.name }}" 
     {%- if not loop.last -%}, {% endif %} 
-   {% endfor -%}    {#Columns added for data quality#}
+   {% endfor -%}   
+   {%else%}
+    {% for col in source.columns -%}
+       {{ get_source_transform(col) }} AS  "{{ col.name }}" 
+    {%- if not loop.last -%}, {% endif %} 
+    {% endfor -%}
+   {% endif -%} 
+   {#Columns added for data quality#}
    {%- set ns = namespace(failed_tests=[]) -%}
 	{%- if config.dqhandle and config.dqnull and config.dqdup -%} 
 	    {{- generate_null_checks(config.ndqcolumns['items'], ns) }}
@@ -78,7 +94,8 @@ CREATE OR REPLACE VIEW {{ ref_no_link(node.location.name, node.name) }}
 
 	CREATE OR REPLACE TABLE {{ ref_no_link(node.location.name, node.name) }}
 	(
-		{% for col in columns if (col.name != "_SEQUENCE" and "_null" not in col.name and "_dup" not in col.name and col.name != "TOTAL_FAILED_TESTS" and col.name != "QUALITY_FLAG" ) %}
+	    {%if config.dqhandle%}
+        {% for col in columns if (col.name != "_SEQUENCE" and "_null" not in col.name and "_dup" not in col.name and col.name != "TOTAL_FAILED_TESTS" and col.name != "QUALITY_FLAG" ) %}
 			"{{ col.name }}" {{ col.dataType }}
 			{%- if not col.nullable %} NOT NULL
 				{%- if col.defaultValue | length > 0 %} DEFAULT {{ col.defaultValue }}{% endif %}
@@ -86,6 +103,16 @@ CREATE OR REPLACE VIEW {{ ref_no_link(node.location.name, node.name) }}
 			{%- if col.description | length > 0 %} COMMENT '{{ col.description | escape }}'{% endif %}
 			{%- if not loop.last -%}, {% endif %}
 		{% endfor %}
+        {%else%}
+         {% for col in columns %}
+			"{{ col.name }}" {{ col.dataType }}
+			{%- if not col.nullable %} NOT NULL
+				{%- if col.defaultValue | length > 0 %} DEFAULT {{ col.defaultValue }}{% endif %}
+			{% endif %}
+			{%- if col.description | length > 0 %} COMMENT '{{ col.description | escape }}'{% endif %}
+			{%- if not loop.last -%}, {% endif %}
+		{% endfor %}
+        {%endif%}
     	{%if config.dqhandle and config.dqnull and config.dqdup -%} 
 	      {% for item in config.ndqcolumns['items'] -%}
           {% set col_name = '"' ~ item.ncolumnName.name ~ '_null"' -%}
