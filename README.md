@@ -38,6 +38,10 @@ The Coalesce Incremental load node is a versatile node that allows you to develo
 | **Persistent table name(required)** | The table name of the persistent table. |
 | **Incremental load column(date)** | A date column based on which incremental data is loaded. |
 | **Handle Data Quality**|When enabled you can add new columns to handle nullability and duplicate test.|
+| **Nullanility test**| When enabled,you can choose columns based on which nullability checks needs to be done|
+| **Duplicate test**|When enabled,you can choose columns based on which duplicate checks can be done|
+| **Pre-SQL**|SQL to execute before data insert operation|
+| **Post-SQL**|SQL to execute after data insert operation|
 
 ## Incremental Load Example Workflow
 
@@ -62,7 +66,7 @@ The Coalesce Incremental load node is a versatile node that allows you to develo
 6. Lets assume the column name chosen for handling DQ checks is "ACCOUNT_ID".Then,you can find ACCOUNT_ID_nulll,ACCOUNT_ID_dup,TOTAL_FAILED_TESTS and QUALITY_FLAG added to target table
 7. Re-sync the columns after table/view is created
 8.The target table has data quality info with the flag set to 'G' or 'B' denoting good or bad records
-9. Further,you can drill down good or bad records using [Test Passed records](#test_passed_records) or [Test failed records](#test-failed-records)
+9. Further,you can drill down good or bad records using [Test Passed records](#test-passed-records) or [Test failed records](#test-failed-records)
 
 ### Incremental Load Deployment
 
