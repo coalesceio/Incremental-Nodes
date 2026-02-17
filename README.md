@@ -3,6 +3,8 @@
 The Coalesce Incremental Package includes:
 
 * [Incremental load](#incremental-load)
+* [Test Passed Records](#test-passed-records)
+* [Test Failed Records](#test-failed-records)
 * [Looped Load](#loop-load)
 * [Run view](#run-view)
 * [Grouped Incremental load](#grouped-incremental-load)
@@ -35,6 +37,7 @@ The Coalesce Incremental load node is a versatile node that allows you to develo
 | **Persistent table location(required)** | The Coalesce storage location. |
 | **Persistent table name(required)** | The table name of the persistent table. |
 | **Incremental load column(date)** | A date column based on which incremental data is loaded. |
+| **Handle Data Quality**|When enabled you can add new columns to handle nullability and duplicate test.|
 
 ## Incremental Load Example Workflow
 
@@ -48,6 +51,18 @@ The Coalesce Incremental load node is a versatile node that allows you to develo
 8. Use the pattern based option to match the persistent table (alter the definition of the UDN, if necessary), or add the table name manually in the last config item.
 9. Remove the existing (basic) join and use the 'Copy To Editor' to add the new join, including sub-select.
 10. Re-run the Incremental UDN.
+
+## Incremental Load-With data quality Example Workflow
+
+1. Add a source node.
+2. Add the Incremental UDN.
+3. Enable 'Handle Data Quality' toggle
+4. When data quality is handled ,filter based on target(incremental processing)is diabled
+5. Two types of Data Quality checks possible,Nullability and Duplicate records.
+6. Lets assume the column name chosen for handling DQ checks is "ACCOUNT_ID".Then,you can find ACCOUNT_ID_nulll,ACCOUNT_ID_dup,TOTAL_FAILED_TESTS and QUALITY_FLAG added to target table
+7. Re-sync the columns after table/view is created
+8.The target table has data quality info with the flag set to 'G' or 'B' denoting good or bad records
+9. Further,you can drill down good or bad records using [TEST PASSED RECORDS](#test_passed_records)or [TEST FAILED RECORDS](#test_failed_records)
 
 ### Incremental Load Deployment
 
@@ -111,6 +126,8 @@ The stage executed:
 | **Stage** | **Description** |
 |----------|-----------------|
 | **Delete View** | Drops the existing stage view from target environment. |
+
+## Test Passed records
 
 ## Loop Load
 
