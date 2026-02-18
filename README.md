@@ -145,10 +145,11 @@ The Coalesce "Test Passed Records" (GR) node is a specialized filtering node typ
 
 1. Add a source node.
 2. Add the Incremental UDN.
-3. By default,where clause to filter 'G' quality is added in JOIN tab
-4. If you want the first or last occurrence of record as valid enable corresponding toggles in config
-5. Go to join tab and override join clause by clicking on 'Copy to editor'
-6. The target will have good quality records
+3. Add Test Passed records UDN on top of Incremental node.
+4. By default,where clause to filter 'G' quality is added in JOIN tab
+5. If you want the first or last occurrence of record as valid enable corresponding toggles in config
+6. Go to join tab and override join clause by clicking on 'Copy to editor'
+7. The target will have good quality records
 
 ### Test Passed records Load Node Configuration
 
@@ -187,10 +188,11 @@ The Coalesce "Test Failed Records" node acts as a Quarantine and Error-Capture c
 
 1. Add a source node.
 2. Add the Incremental UDN.
-3. By default,where clause to filter 'B' quality is added in JOIN tab
-4. If you want the first or last occurrence of record as valid enable corresponding toggles in config
-5. Go to join tab and override join clause by clicking on 'Copy to editor'
-6. The target will have good quality records
+3. Add Test Failed records UDN on top of Incremental node.
+4. By default,where clause to filter 'B' quality is added in JOIN tab
+5. If you want the first or last occurrence of record as valid enable corresponding toggles in config
+6. Go to join tab and override join clause by clicking on 'Copy to editor'
+7. The target will have good quality records
 
 ### Test Failed records Load Node Configuration
 
