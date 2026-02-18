@@ -151,6 +151,9 @@ The Coalesce "Test Passed Records" (GR) node is a specialized filtering node typ
 6. Go to join tab and override join clause by clicking on 'Copy to editor'
 7. The target will have good quality records
 
+<img width="1156" height="212" alt="test-passed" src="https://github.com/user-attachments/assets/a95e48f9-5fb9-4e49-89ee-e497fd087efd" />
+
+
 ### Test Passed records Load Node Configuration
 
 * [Node Properties](#test-passed-records-properties)
@@ -193,6 +196,9 @@ The Coalesce "Test Failed Records" node acts as a Quarantine and Error-Capture c
 5. If you want the first or last occurrence of record as valid enable corresponding toggles in config
 6. Go to join tab and override join clause by clicking on 'Copy to editor'
 7. The target will have good quality records
+
+<img width="1156" height="212" alt="test-failed-image" src="https://github.com/user-attachments/assets/01be5e80-8b16-4cf6-a27d-525f360a4cac" />
+
 
 ### Test Failed records Load Node Configuration
 
