@@ -1,8 +1,9 @@
 fileVersion: 1
-id: 4d8b3aaf-d6c7-4a6d-ae4d-83a6510d9d45
-name: TSKWRK_ORDERS
+id: 1d3562ab-17db-4b6c-a89f-d87fd0d9a290
+name: SIM_ORDERS
 operation:
   config:
+    appendOnly: false
     clusterKey: false
     clusterKeyConfig:
       items:
@@ -11,25 +12,30 @@ operation:
       items:
         - {}
     clusterKeyExpressions: false
-    devMode: true
+    createas: table
+    devMode: false
     flagSrcStream: true
     groupByAll: false
-    insertStrategy: UNION
-    multiStreamBehavior: AND
-    orderby: false
-    orderbycolumn:
+    initialRows: true
+    loadType: Insert
+    orderBy:
+      items:
+        - {}
+    partitionBy:
       items:
         - {}
     predTask: DATA_TRANSFORMATION_ROOT_TASK
+    propagateDeletes: false
+    redeploymentBehavior: Create or Replace
     rootTask: DATA_TRANSFORMATION_ROOT_TASK
-    scheduleCRON: 5 0-23 * * * America/Los_Angeles
+    scheduleCRON: ""
     schedulePeriod: "60"
     schedulePeriodOption: Minutes
     schedulingMode: Warehouse Task
-    selectDistinct: true
+    selectDistinct: false
     serverlessSize: MEDIUM
-    truncateBefore: true
-    whName: <WAREHOUSE_NAME>
+    sourceType: Table
+    whName: COMPUTE_WH
   database: ""
   deployEnabled: true
   description: ""
@@ -41,8 +47,8 @@ operation:
     columns:
       - appliedColumnTests: {}
         columnReference:
-          columnCounter: 0bac9cc5-cce9-4902-ab62-b0a3d26c7fcd
-          stepCounter: 4d8b3aaf-d6c7-4a6d-ae4d-83a6510d9d45
+          columnCounter: 4ff4df54-5e7f-47c9-846e-a2c0441c27ee
+          stepCounter: 1d3562ab-17db-4b6c-a89f-d87fd0d9a290
         config: {}
         dataType: NUMBER(38,0)
         description: ""
@@ -55,8 +61,8 @@ operation:
             transform: ""
       - appliedColumnTests: {}
         columnReference:
-          columnCounter: 170ca4b3-e0cb-436d-b552-f2d822b4039c
-          stepCounter: 4d8b3aaf-d6c7-4a6d-ae4d-83a6510d9d45
+          columnCounter: dbd49bf0-6589-4d8a-b3bf-5ab1f405c9b7
+          stepCounter: 1d3562ab-17db-4b6c-a89f-d87fd0d9a290
         config: {}
         dataType: VARCHAR(25)
         description: ""
@@ -69,8 +75,8 @@ operation:
             transform: ""
       - appliedColumnTests: {}
         columnReference:
-          columnCounter: d9b669e4-1cd7-46bd-a7cb-f717c60b1f8d
-          stepCounter: 4d8b3aaf-d6c7-4a6d-ae4d-83a6510d9d45
+          columnCounter: f05b5de0-1a01-4093-bb7c-b17f0c6163d8
+          stepCounter: 1d3562ab-17db-4b6c-a89f-d87fd0d9a290
         config: {}
         dataType: DATE
         description: ""
@@ -83,8 +89,8 @@ operation:
             transform: ""
       - appliedColumnTests: {}
         columnReference:
-          columnCounter: 7c558300-a30a-4a32-be7a-80cca2620f4a
-          stepCounter: 4d8b3aaf-d6c7-4a6d-ae4d-83a6510d9d45
+          columnCounter: aecbe55a-01ec-4168-831d-62531001d6a6
+          stepCounter: 1d3562ab-17db-4b6c-a89f-d87fd0d9a290
         config: {}
         dataType: TIMESTAMP_NTZ(9)
         description: ""
@@ -95,6 +101,40 @@ operation:
               - columnCounter: 6f62583c-ee6d-4c99-9e0c-fb317162c205
                 stepCounter: fe0fd1e9-59a5-4651-9e65-f495e030b7ba
             transform: ""
+      - acceptedValues:
+          strictMatch: true
+          values: []
+        appliedColumnTests: {}
+        columnReference:
+          columnCounter: ca9a8a30-8a12-45c5-9baa-9816432ab4ec
+          stepCounter: 1d3562ab-17db-4b6c-a89f-d87fd0d9a290
+        config: {}
+        dataType: TIMESTAMP
+        defaultValue: ""
+        description: ""
+        isSystemCreateDate: true
+        name: SYSTEM_CREATE_DATE
+        nullable: true
+        sourceColumnReferences:
+          - columnReferences: []
+            transform: CAST(CURRENT_TIMESTAMP AS TIMESTAMP)
+      - acceptedValues:
+          strictMatch: true
+          values: []
+        appliedColumnTests: {}
+        columnReference:
+          columnCounter: 344b6391-4a4d-4e22-8d14-b645f59c70c8
+          stepCounter: 1d3562ab-17db-4b6c-a89f-d87fd0d9a290
+        config: {}
+        dataType: TIMESTAMP
+        defaultValue: ""
+        description: ""
+        isSystemUpdateDate: true
+        name: SYSTEM_UPDATE_DATE
+        nullable: true
+        sourceColumnReferences:
+          - columnReferences: []
+            transform: CAST(CURRENT_TIMESTAMP AS TIMESTAMP)
     cteString: ""
     enabledColumnTestIDs: []
     sourceMapping:
@@ -107,12 +147,12 @@ operation:
             nodeName: ORDERS
         join:
           joinCondition: FROM {{ ref('SOURCE_DATA', 'ORDERS') }} "ORDERS"
-        name: TSKWRK_ORDERS
+        name: SIM_ORDERS
         noLinkRefs: []
-  name: TSKWRK_ORDERS
+  name: SIM_ORDERS
   overrideSQL: false
   schema: ""
-  sqlType: streams-and-tasks:::151
+  sqlType: streams-and-tasks:::152
   type: sql
   version: 1
 type: Node

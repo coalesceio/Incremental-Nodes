@@ -60,7 +60,7 @@ does not permit copying or modification for any other purpose.
             {% set desiredDatabase = desiredState.storageLocations | selectattr('name', 'equalto', desiredState.node.location.name) | map(attribute='database') | first %}
             {% set desiredSchema = desiredState.storageLocations | selectattr('name', 'equalto', desiredState.node.location.name) | map(attribute='schema') | first %}
             {% set desiredDatabaseSchema = desiredDatabase + '.' + desiredSchema %}  		
-                {% if (currentState.node.materializationType not in ['view', 'Materialized View']) or (desiredState.node.name != currentState.node.name) or (desiredDatabaseSchema != currentDatabaseSchema) %}
+                {% if (currentState.node.materializationType != desiredState.node.materializationType ) or (desiredState.node.name != currentState.node.name) or (desiredDatabaseSchema != currentDatabaseSchema) %}
                     {{ stage('Drop ' + ref_no_link(currentState.node.location.name, currentState.node.name),true, "sql", "drop") }}
                     {%- set materialization = dropMaterialization(currentState.node.materializationType) %}
                     DROP {{ materialization }} {{ ref_no_link(currentState.node.location.name, currentState.node.name) }}

@@ -1,8 +1,9 @@
 fileVersion: 1
-id: 4d8b3aaf-d6c7-4a6d-ae4d-83a6510d9d45
-name: TSKWRK_ORDERS
+id: f8950c9f-f26d-4b3a-b92d-81e6947b3b0b
+name: DL_ORDERS
 operation:
   config:
+    capUpdate: false
     clusterKey: false
     clusterKeyConfig:
       items:
@@ -11,38 +12,57 @@ operation:
       items:
         - {}
     clusterKeyExpressions: false
+    createas: table
     devMode: true
-    flagSrcStream: true
-    groupByAll: false
-    insertStrategy: UNION
-    multiStreamBehavior: AND
-    orderby: false
-    orderbycolumn:
+    dmlCol:
+      columnCounter: a8c33a35-c6a0-4203-b01e-9580b65e16ee
+      stepCounter: f8950c9f-f26d-4b3a-b92d-81e6947b3b0b
+    dmlDelete: D
+    dmlInsert: I
+    dmlUpdate: U
+    flagSrcStream: false
+    initialRows: true
+    insertOnly: false
+    orderBy:
+      items:
+        - colName:
+            columnCounter: c03e72e9-c16c-4eb3-af4a-98c5da40fa7a
+            stepCounter: f8950c9f-f26d-4b3a-b92d-81e6947b3b0b
+          sortOrd: desc
+    orderByDateTime:
       items:
         - {}
-    predTask: DATA_TRANSFORMATION_ROOT_TASK
-    rootTask: DATA_TRANSFORMATION_ROOT_TASK
+    partitionBy:
+      items:
+        - partColName:
+            columnCounter: 44e4a5b9-0b74-4877-ae04-4a14b6349803
+            stepCounter: f8950c9f-f26d-4b3a-b92d-81e6947b3b0b
+    predTask: ""
+    recordVersioning: Datetime Column
+    redeploymentBehavior: Create At Existing Stream
+    retainLastNonDeleteFlag: false
+    rootTask: ""
     scheduleCRON: 5 0-23 * * * America/Los_Angeles
     schedulePeriod: "60"
     schedulePeriodOption: Minutes
     schedulingMode: Warehouse Task
-    selectDistinct: true
     serverlessSize: MEDIUM
-    truncateBefore: true
+    softDeleteFlag: false
+    sourceType: Table
     whName: <WAREHOUSE_NAME>
   database: ""
   deployEnabled: true
   description: ""
   isMultisource: false
   locationName: TARGET_DB
-  materializationType: task
+  materializationType: table
   metadata:
     appliedNodeTests: []
     columns:
       - appliedColumnTests: {}
         columnReference:
-          columnCounter: 0bac9cc5-cce9-4902-ab62-b0a3d26c7fcd
-          stepCounter: 4d8b3aaf-d6c7-4a6d-ae4d-83a6510d9d45
+          columnCounter: 44e4a5b9-0b74-4877-ae04-4a14b6349803
+          stepCounter: f8950c9f-f26d-4b3a-b92d-81e6947b3b0b
         config: {}
         dataType: NUMBER(38,0)
         description: ""
@@ -55,8 +75,8 @@ operation:
             transform: ""
       - appliedColumnTests: {}
         columnReference:
-          columnCounter: 170ca4b3-e0cb-436d-b552-f2d822b4039c
-          stepCounter: 4d8b3aaf-d6c7-4a6d-ae4d-83a6510d9d45
+          columnCounter: a8c33a35-c6a0-4203-b01e-9580b65e16ee
+          stepCounter: f8950c9f-f26d-4b3a-b92d-81e6947b3b0b
         config: {}
         dataType: VARCHAR(25)
         description: ""
@@ -69,8 +89,8 @@ operation:
             transform: ""
       - appliedColumnTests: {}
         columnReference:
-          columnCounter: d9b669e4-1cd7-46bd-a7cb-f717c60b1f8d
-          stepCounter: 4d8b3aaf-d6c7-4a6d-ae4d-83a6510d9d45
+          columnCounter: c02e2f9c-6e0f-4d3f-8124-21f3e65dce90
+          stepCounter: f8950c9f-f26d-4b3a-b92d-81e6947b3b0b
         config: {}
         dataType: DATE
         description: ""
@@ -83,8 +103,8 @@ operation:
             transform: ""
       - appliedColumnTests: {}
         columnReference:
-          columnCounter: 7c558300-a30a-4a32-be7a-80cca2620f4a
-          stepCounter: 4d8b3aaf-d6c7-4a6d-ae4d-83a6510d9d45
+          columnCounter: c03e72e9-c16c-4eb3-af4a-98c5da40fa7a
+          stepCounter: f8950c9f-f26d-4b3a-b92d-81e6947b3b0b
         config: {}
         dataType: TIMESTAMP_NTZ(9)
         description: ""
@@ -95,6 +115,23 @@ operation:
               - columnCounter: 6f62583c-ee6d-4c99-9e0c-fb317162c205
                 stepCounter: fe0fd1e9-59a5-4651-9e65-f495e030b7ba
             transform: ""
+      - acceptedValues:
+          strictMatch: true
+          values: []
+        appliedColumnTests: {}
+        columnReference:
+          columnCounter: fa66e6d8-a2c4-4e42-bcf9-0e51f4435213
+          stepCounter: f8950c9f-f26d-4b3a-b92d-81e6947b3b0b
+        config: {}
+        dataType: timestamp
+        defaultValue: ""
+        description: ""
+        hmUpdTs: true
+        name: DM_UPDATE_TIMESTAMP
+        nullable: true
+        sourceColumnReferences:
+          - columnReferences: []
+            transform: current_timestamp::timestamp_ntz
     cteString: ""
     enabledColumnTestIDs: []
     sourceMapping:
@@ -107,12 +144,12 @@ operation:
             nodeName: ORDERS
         join:
           joinCondition: FROM {{ ref('SOURCE_DATA', 'ORDERS') }} "ORDERS"
-        name: TSKWRK_ORDERS
+        name: DL_ORDERS
         noLinkRefs: []
-  name: TSKWRK_ORDERS
+  name: DL_ORDERS
   overrideSQL: false
   schema: ""
-  sqlType: streams-and-tasks:::151
+  sqlType: deferred-merge:::301
   type: sql
   version: 1
 type: Node

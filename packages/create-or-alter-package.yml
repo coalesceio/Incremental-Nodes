@@ -1,0 +1,34 @@
+config:
+  entities:
+    nodeTypes:
+      "345":
+        defaultStorageLocation: null
+        isDisabled: false
+      "419":
+        defaultStorageLocation: null
+        isDisabled: false
+      "533":
+        defaultStorageLocation: null
+        isDisabled: false
+      "534":
+        defaultStorageLocation: null
+        isDisabled: false
+      "535":
+        defaultStorageLocation: null
+        isDisabled: false
+      "548":
+        defaultStorageLocation: null
+        isDisabled: false
+      "549":
+        defaultStorageLocation: null
+        isDisabled: false
+      "550":
+        defaultStorageLocation: null
+        isDisabled: false
+  packageVariables: ""
+fileVersion: 1
+id: "@coalesce/snowflake/create-or-alter-package"
+name: create-or-alter-package
+packageID: "@coalesce/snowflake/create-or-alter-package"
+releaseID: 4e43a14e-7a82-45e4-a379-0c8a84423b49
+type: Package

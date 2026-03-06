@@ -1,48 +1,60 @@
 fileVersion: 1
-id: 4d8b3aaf-d6c7-4a6d-ae4d-83a6510d9d45
-name: TSKWRK_ORDERS
+id: 5363766b-5966-45ef-a5d1-1c3bb2af3a84
+name: CSS_ORDERS
 operation:
   config:
-    clusterKey: false
-    clusterKeyConfig:
+    allcol: false
+    attrcol:
+      items:
+        - acolname:
+            columnCounter: 61f1d38e-970b-42db-9fce-521b045c33c1
+            stepCounter: 5363766b-5966-45ef-a5d1-1c3bb2af3a84
+    colpreview:
       items:
         - {}
-    clusterKeyConfigExpressions:
+    createcortex: true
+    embmodel: ""
+    excss: false
+    filcrit:
       items:
         - {}
-    clusterKeyExpressions: false
-    devMode: true
-    flagSrcStream: true
-    groupByAll: false
-    insertStrategy: UNION
-    multiStreamBehavior: AND
-    orderby: false
-    orderbycolumn:
+    filtoggle: false
+    initialize: ON_CREATE
+    lagSpecification:
+      items:
+        - lagPeriod: Minutes
+          lagValue: "60"
+    locCSS: ""
+    lopt: and
+    mulfilcon: false
+    namCSS: ""
+    numboost: false
+    numericboost:
       items:
         - {}
-    predTask: DATA_TRANSFORMATION_ROOT_TASK
-    rootTask: DATA_TRANSFORMATION_ROOT_TASK
-    scheduleCRON: 5 0-23 * * * America/Los_Angeles
-    schedulePeriod: "60"
-    schedulePeriodOption: Minutes
-    schedulingMode: Warehouse Task
-    selectDistinct: true
-    serverlessSize: MEDIUM
-    truncateBefore: true
-    whName: <WAREHOUSE_NAME>
+    query1: ""
+    querycortex: false
+    searchcol:
+      columnCounter: 61f1d38e-970b-42db-9fce-521b045c33c1
+      stepCounter: 5363766b-5966-45ef-a5d1-1c3bb2af3a84
+    timdec: false
+    timedecay:
+      items:
+        - {}
+    warehouseName: COMPUTE_WH
   database: ""
   deployEnabled: true
   description: ""
   isMultisource: false
   locationName: TARGET_DB
-  materializationType: task
+  materializationType: cortex search service
   metadata:
     appliedNodeTests: []
     columns:
       - appliedColumnTests: {}
         columnReference:
-          columnCounter: 0bac9cc5-cce9-4902-ab62-b0a3d26c7fcd
-          stepCounter: 4d8b3aaf-d6c7-4a6d-ae4d-83a6510d9d45
+          columnCounter: c6c16ba2-fb7f-4588-af05-9f67551f736f
+          stepCounter: 5363766b-5966-45ef-a5d1-1c3bb2af3a84
         config: {}
         dataType: NUMBER(38,0)
         description: ""
@@ -55,8 +67,8 @@ operation:
             transform: ""
       - appliedColumnTests: {}
         columnReference:
-          columnCounter: 170ca4b3-e0cb-436d-b552-f2d822b4039c
-          stepCounter: 4d8b3aaf-d6c7-4a6d-ae4d-83a6510d9d45
+          columnCounter: 61f1d38e-970b-42db-9fce-521b045c33c1
+          stepCounter: 5363766b-5966-45ef-a5d1-1c3bb2af3a84
         config: {}
         dataType: VARCHAR(25)
         description: ""
@@ -69,8 +81,8 @@ operation:
             transform: ""
       - appliedColumnTests: {}
         columnReference:
-          columnCounter: d9b669e4-1cd7-46bd-a7cb-f717c60b1f8d
-          stepCounter: 4d8b3aaf-d6c7-4a6d-ae4d-83a6510d9d45
+          columnCounter: 9f4d650c-fe8d-41d9-a22b-d5f8479f4397
+          stepCounter: 5363766b-5966-45ef-a5d1-1c3bb2af3a84
         config: {}
         dataType: DATE
         description: ""
@@ -83,8 +95,8 @@ operation:
             transform: ""
       - appliedColumnTests: {}
         columnReference:
-          columnCounter: 7c558300-a30a-4a32-be7a-80cca2620f4a
-          stepCounter: 4d8b3aaf-d6c7-4a6d-ae4d-83a6510d9d45
+          columnCounter: 7a36e0c6-ebe5-42a7-8b99-d24c1d94966c
+          stepCounter: 5363766b-5966-45ef-a5d1-1c3bb2af3a84
         config: {}
         dataType: TIMESTAMP_NTZ(9)
         description: ""
@@ -107,12 +119,12 @@ operation:
             nodeName: ORDERS
         join:
           joinCondition: FROM {{ ref('SOURCE_DATA', 'ORDERS') }} "ORDERS"
-        name: TSKWRK_ORDERS
+        name: CSS_ORDERS
         noLinkRefs: []
-  name: TSKWRK_ORDERS
+  name: CSS_ORDERS
   overrideSQL: false
   schema: ""
-  sqlType: streams-and-tasks:::151
+  sqlType: cortex:::499
   type: sql
   version: 1
 type: Node

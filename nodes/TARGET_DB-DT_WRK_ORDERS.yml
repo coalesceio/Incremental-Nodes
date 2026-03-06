@@ -1,8 +1,12 @@
 fileVersion: 1
-id: 4d8b3aaf-d6c7-4a6d-ae4d-83a6510d9d45
-name: TSKWRK_ORDERS
+id: 78f360f9-c59a-4a8f-8ed3-c86e4a31a169
+name: DT_WRK_ORDERS
 operation:
   config:
+    advanceWarehouse: false
+    backfill: false
+    backfillSource: ""
+    backfillSourceSchema: ""
     clusterKey: false
     clusterKeyConfig:
       items:
@@ -11,38 +15,39 @@ operation:
       items:
         - {}
     clusterKeyExpressions: false
-    devMode: true
-    flagSrcStream: true
+    cpygrants: false
+    downstreamOption: false
     groupByAll: false
-    insertStrategy: UNION
-    multiStreamBehavior: AND
-    orderby: false
-    orderbycolumn:
+    immutabilityConstraint: false
+    immutableExpression: ""
+    initialize: ON_CREATE
+    initializeWarehouseSize: ""
+    insertStrategy: UNION ALL
+    lagSpecification:
       items:
-        - {}
-    predTask: DATA_TRANSFORMATION_ROOT_TASK
-    rootTask: DATA_TRANSFORMATION_ROOT_TASK
-    scheduleCRON: 5 0-23 * * * America/Los_Angeles
-    schedulePeriod: "60"
-    schedulePeriodOption: Minutes
-    schedulingMode: Warehouse Task
-    selectDistinct: true
-    serverlessSize: MEDIUM
-    truncateBefore: true
-    whName: <WAREHOUSE_NAME>
+        - lagPeriod: Minutes
+          lagValue: "60"
+    refreshWarehouseSize: ""
+    refresh_mode: AUTO
+    selectDistinct: false
+    timeTravel: false
+    timeTravelreference: ""
+    timeTraveltype: ""
+    timeTravelvalue: ""
+    warehouseName: COMPUTE_WH
   database: ""
   deployEnabled: true
   description: ""
   isMultisource: false
   locationName: TARGET_DB
-  materializationType: task
+  materializationType: dynamic table
   metadata:
     appliedNodeTests: []
     columns:
       - appliedColumnTests: {}
         columnReference:
-          columnCounter: 0bac9cc5-cce9-4902-ab62-b0a3d26c7fcd
-          stepCounter: 4d8b3aaf-d6c7-4a6d-ae4d-83a6510d9d45
+          columnCounter: f27376d7-fd48-4780-b70c-d47922beb862
+          stepCounter: 78f360f9-c59a-4a8f-8ed3-c86e4a31a169
         config: {}
         dataType: NUMBER(38,0)
         description: ""
@@ -55,8 +60,8 @@ operation:
             transform: ""
       - appliedColumnTests: {}
         columnReference:
-          columnCounter: 170ca4b3-e0cb-436d-b552-f2d822b4039c
-          stepCounter: 4d8b3aaf-d6c7-4a6d-ae4d-83a6510d9d45
+          columnCounter: 62a7e070-258b-4be0-9026-885f27feafe2
+          stepCounter: 78f360f9-c59a-4a8f-8ed3-c86e4a31a169
         config: {}
         dataType: VARCHAR(25)
         description: ""
@@ -69,8 +74,8 @@ operation:
             transform: ""
       - appliedColumnTests: {}
         columnReference:
-          columnCounter: d9b669e4-1cd7-46bd-a7cb-f717c60b1f8d
-          stepCounter: 4d8b3aaf-d6c7-4a6d-ae4d-83a6510d9d45
+          columnCounter: 2a1b8a43-e4e0-42f3-adbe-33a169e79268
+          stepCounter: 78f360f9-c59a-4a8f-8ed3-c86e4a31a169
         config: {}
         dataType: DATE
         description: ""
@@ -83,8 +88,8 @@ operation:
             transform: ""
       - appliedColumnTests: {}
         columnReference:
-          columnCounter: 7c558300-a30a-4a32-be7a-80cca2620f4a
-          stepCounter: 4d8b3aaf-d6c7-4a6d-ae4d-83a6510d9d45
+          columnCounter: 0a623410-f85b-43ac-9fee-cbe68155c015
+          stepCounter: 78f360f9-c59a-4a8f-8ed3-c86e4a31a169
         config: {}
         dataType: TIMESTAMP_NTZ(9)
         description: ""
@@ -107,12 +112,12 @@ operation:
             nodeName: ORDERS
         join:
           joinCondition: FROM {{ ref('SOURCE_DATA', 'ORDERS') }} "ORDERS"
-        name: TSKWRK_ORDERS
+        name: DT_WRK_ORDERS
         noLinkRefs: []
-  name: TSKWRK_ORDERS
+  name: DT_WRK_ORDERS
   overrideSQL: false
   schema: ""
-  sqlType: streams-and-tasks:::151
+  sqlType: dynamic-tables:::347
   type: sql
   version: 1
 type: Node

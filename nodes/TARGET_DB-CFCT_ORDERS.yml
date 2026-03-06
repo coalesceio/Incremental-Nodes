@@ -1,28 +1,61 @@
 fileVersion: 1
-id: 0d35f1d2-53b9-4eac-a7c7-ba29b171f8ef
-name: RV_ORDERS
+id: 90b6bd3f-a347-44fe-a7a6-cc86bef25126
+name: CFCT_ORDERS
 operation:
   config:
-    insertStrategy: UNION ALL
-    persistTableLocation: "ex: TARGET"
-    persistTableName: "ex: DIM_ORDERS"
-    refTable: false
-    srcTable: false
-    suffixlength: ex:1
-    testsEnabled: true
+    changetracking: false
+    clusterKey: true
+    clusterKeyConfig:
+      items:
+        - columnName:
+            columnCounter: b5372300-37e7-483d-8b5d-f0e3444c0ef9
+            stepCounter: 90b6bd3f-a347-44fe-a7a6-cc86bef25126
+    clusterKeyConfigExpressions:
+      items:
+        - {}
+    clusterKeyExpressions: false
+    constraintsspec:
+      items:
+        - {}
+    datretention: ""
+    defaultcoallation: ""
+    eschemaevol: false
+    foreignk: false
+    foreignkeycon:
+      items:
+        - {}
+    groupByAll: false
+    inlineconst: false
+    insertStrategy: UNION
+    lastModifiedComparison: false
+    maxdataretention: ""
+    orderby: false
+    orderbycolumn:
+      items:
+        - {}
+    outlineconst: false
+    primary: false
+    primarykeycon:
+      items:
+        - {}
+    primarykeyname: ""
+    selectDistinct: true
+    testsEnabled: false
+    treatNullAsCurrentTimestamp: false
+    truncateBefore: true
   database: ""
   deployEnabled: true
   description: ""
   isMultisource: false
   locationName: TARGET_DB
-  materializationType: run view
+  materializationType: table
   metadata:
     appliedNodeTests: []
     columns:
       - appliedColumnTests: {}
         columnReference:
-          columnCounter: 3ade2454-6a7b-420d-a419-763f222f44eb
-          stepCounter: 0d35f1d2-53b9-4eac-a7c7-ba29b171f8ef
+          columnCounter: b5372300-37e7-483d-8b5d-f0e3444c0ef9
+          stepCounter: 90b6bd3f-a347-44fe-a7a6-cc86bef25126
         config: {}
         dataType: NUMBER(38,0)
         description: ""
@@ -35,8 +68,8 @@ operation:
             transform: ""
       - appliedColumnTests: {}
         columnReference:
-          columnCounter: 062d0d27-dea7-409d-99ea-c839f8e6b550
-          stepCounter: 0d35f1d2-53b9-4eac-a7c7-ba29b171f8ef
+          columnCounter: b4dee75d-6960-4c43-9c57-d70fe6f11a6f
+          stepCounter: 90b6bd3f-a347-44fe-a7a6-cc86bef25126
         config: {}
         dataType: VARCHAR(25)
         description: ""
@@ -49,8 +82,8 @@ operation:
             transform: ""
       - appliedColumnTests: {}
         columnReference:
-          columnCounter: 587305ad-11ff-48b2-9279-a1bb0cc65466
-          stepCounter: 0d35f1d2-53b9-4eac-a7c7-ba29b171f8ef
+          columnCounter: 12be79b2-06b5-4d94-9d3d-c8e05d5e215b
+          stepCounter: 90b6bd3f-a347-44fe-a7a6-cc86bef25126
         config: {}
         dataType: DATE
         description: ""
@@ -63,8 +96,8 @@ operation:
             transform: ""
       - appliedColumnTests: {}
         columnReference:
-          columnCounter: e5b8592e-bab5-4c39-96d3-91410cc9da6b
-          stepCounter: 0d35f1d2-53b9-4eac-a7c7-ba29b171f8ef
+          columnCounter: 523fa560-d5cf-41f2-a946-5e18e71c1949
+          stepCounter: 90b6bd3f-a347-44fe-a7a6-cc86bef25126
         config: {}
         dataType: TIMESTAMP_NTZ(9)
         description: ""
@@ -87,12 +120,12 @@ operation:
             nodeName: ORDERS
         join:
           joinCondition: FROM {{ ref('SOURCE_DATA', 'ORDERS') }} "ORDERS"
-        name: RV_ORDERS
+        name: CFCT_ORDERS
         noLinkRefs: []
-  name: RV_ORDERS
+  name: CFCT_ORDERS
   overrideSQL: false
   schema: ""
-  sqlType: "281"
+  sqlType: create-or-alter-package:::534
   type: sql
   version: 1
 type: Node
