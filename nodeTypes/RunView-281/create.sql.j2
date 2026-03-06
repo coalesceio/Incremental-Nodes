@@ -23,6 +23,17 @@ does not permit copying or modification for any other purpose.
 
 {% if desiredState %}
 
+    {%- if currentState != undefined and currentState.node.nodeType != desiredState.node.nodeType %}
+        {%- set warningMsg = getNodeTypeSwitchWarning() | default('') %}
+
+        {# Warning display - Node type changes can impact related tasks, streams, or services. #}
+        {%- if warningMsg | trim | length > 0 -%}
+            {{ stage('Warning! Node Type Switching Detected', false) }}
+            {{ warningMsg }}
+            select 1=0
+        {%- endif -%}
+    {%- endif -%}   
+
 {# Override CreateSQL for view #}
 
     {% if desiredState.node.override.create.enabled %}
@@ -39,20 +50,21 @@ does not permit copying or modification for any other purpose.
                {% set currentDatabaseSchema = currentDatabase + '.' + currentSchema %}
                
             {%else %}  
-            {# Current target node mappings #}
-            {% set currentDatabase = currentState.storageLocations | selectattr('name', 'equalto', currentState.node.location.name) | map(attribute='database') | first %}
-            {% set currentSchema = currentState.storageLocations | selectattr('name', 'equalto', currentState.node.location.name) | map(attribute='schema') | first %}
-            {% set currentDatabaseSchema = currentDatabase + '.' + currentSchema %}  
+                {# Current target node mappings #}
+                {% set currentDatabase = currentState.storageLocations | selectattr('name', 'equalto', currentState.node.location.name) | map(attribute='database') | first %}
+                {% set currentSchema = currentState.storageLocations | selectattr('name', 'equalto', currentState.node.location.name) | map(attribute='schema') | first %}
+                {% set currentDatabaseSchema = currentDatabase + '.' + currentSchema %}  
             {% endif %}      
        
             {# Desired target node mappings #}
             {% set desiredDatabase = desiredState.storageLocations | selectattr('name', 'equalto', desiredState.node.location.name) | map(attribute='database') | first %}
             {% set desiredSchema = desiredState.storageLocations | selectattr('name', 'equalto', desiredState.node.location.name) | map(attribute='schema') | first %}
             {% set desiredDatabaseSchema = desiredDatabase + '.' + desiredSchema %}  		
-            {% if  desiredState.node.name != currentState.node.name or desiredDatabaseSchema != currentDatabaseSchema  %}
-                {{ stage('Drop ' + currentState.node.materializationType + ' ' + ref_no_link(currentState.node.location.name, currentState.node.name)) }}
-                DROP VIEW IF EXISTS {{ ref_no_link(currentState.node.location.name, currentState.node.name) }}                    
-            {% endif %}
+                {% if (currentState.node.materializationType not in ['view', 'Materialized View']) or (desiredState.node.name != currentState.node.name) or (desiredDatabaseSchema != currentDatabaseSchema) %}
+                    {{ stage('Drop ' + ref_no_link(currentState.node.location.name, currentState.node.name),true, "sql", "drop") }}
+                    {%- set materialization = dropMaterialization(currentState.node.materializationType) %}
+                    DROP {{ materialization }} {{ ref_no_link(currentState.node.location.name, currentState.node.name) }}
+                {% endif %}
         {% endif %}
         
         {# CreateSQL for view #}
@@ -95,7 +107,8 @@ does not permit copying or modification for any other purpose.
     {% set targetViewSchema = ref_no_link(currentState.node.location.name, currentState.node.name).split('.')[1] %} 
     {% set fullyQualifiedTargetViewName = ref_no_link(currentState.node.location.name, currentState.node.name) %}
 
-    {{ stage('Drop View') }}
-    DROP VIEW IF EXISTS {{ fullyQualifiedTargetViewName }}
+    {{ stage('Drop ' + ref_no_link(currentState.node.location.name, currentState.node.name)) }}
+    {%- set materialization = dropMaterialization(currentState.node.materializationType) %}
+    DROP {{ materialization }} {{ ref_no_link(currentState.node.location.name, currentState.node.name) }}
 
 {% endif %}

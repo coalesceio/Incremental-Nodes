@@ -12,6 +12,17 @@ does not permit copying or modification for any other purpose.
 
 {% if desiredState %}
 
+    {%- if currentState != undefined and currentState.node.nodeType != desiredState.node.nodeType %}
+        {%- set warningMsg = getNodeTypeSwitchWarning() | default('') %}
+
+        {# Warning display - Node type changes can impact related tasks, streams, or services. #}
+        {%- if warningMsg | trim | length > 0 -%}
+            {{ stage('Warning! Node Type Switching Detected', false) }}
+            {{ warningMsg }}
+            select 1=0
+        {%- endif -%}
+    {%- endif -%}
+
 {# CreateSQL for table #}
 
 {% if desiredState.node.materializationType == 'table' or desiredState.node.materializationType == 'transient table' %}
@@ -53,8 +64,9 @@ does not permit copying or modification for any other purpose.
 
              {# Change in materialization type #} 
 
-                {{ stage('Drop ' + currentState.node.materializationType + ' ' + ref_no_link(currentState.node.location.name, currentState.node.name)) }}
-                DROP TABLE IF EXISTS {{ ref_no_link(currentState.node.location.name, currentState.node.name) }}
+                {{ stage('Drop ' + ref_no_link(currentState.node.location.name, currentState.node.name)) }}
+                {%- set materialization = dropMaterialization(currentState.node.materializationType) %}
+                DROP {{ materialization }} {{ ref_no_link(currentState.node.location.name, currentState.node.name) }}
 
                 {{ stage('Create '+ desiredState.node.materializationType) }}
 			   CREATE OR REPLACE {{ desiredState.node.materializationType }} {{ ref_no_link(desiredState.node.location.name, desiredState.node.name) }}
@@ -361,8 +373,9 @@ does not permit copying or modification for any other purpose.
 
     {% else %}
      
-       {{ stage('Drop' +' ' + currentState.node.materializationType ) }}
-       DROP TABLE IF EXISTS {{ fullyQualifiedTargetObjectName }}
+        {{ stage('Drop ' + ref_no_link(currentState.node.location.name, currentState.node.name)) }}
+        {%- set materialization = dropMaterialization(currentState.node.materializationType) %}
+        DROP {{ materialization }} {{ ref_no_link(currentState.node.location.name, currentState.node.name) }}
 
     {% endif %}
 
