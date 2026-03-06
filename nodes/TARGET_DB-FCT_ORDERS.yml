@@ -3,34 +3,19 @@ id: 1c352af3-3666-4c09-889d-95f3cceba3a1
 name: FCT_ORDERS
 operation:
   config:
-    clusterKey: false
-    clusterKeyConfig:
-      items:
-        - {}
-    clusterKeyConfigExpressions:
-      items:
-        - {}
-    clusterKeyExpressions: false
-    groupByAll: false
     insertStrategy: UNION ALL
-    orderby: true
-    orderbycolumn:
-      items:
-        - sortColName:
-            columnCounter: 1983cb77-27e0-4a95-9fed-3ea12b3721f6
-            stepCounter: 1c352af3-3666-4c09-889d-95f3cceba3a1
-          sortOrder: desc
-    postSQL: ""
-    preSQL: SELECT COUNT(*) FROM {{ ref('SOURCE_DATA', 'ORDERS') }}
-    selectDistinct: false
+    persistTableLocation: "ex: TARGET"
+    persistTableName: "ex: DIM_ORDERS"
+    refTable: false
+    srcTable: false
+    suffixlength: ex:1
     testsEnabled: false
-    truncateBefore: false
   database: ""
   deployEnabled: true
   description: ""
   isMultisource: false
   locationName: TARGET_DB
-  materializationType: transient table
+  materializationType: run view
   metadata:
     appliedNodeTests: []
     columns:
@@ -90,40 +75,6 @@ operation:
               - columnCounter: 6f62583c-ee6d-4c99-9e0c-fb317162c205
                 stepCounter: fe0fd1e9-59a5-4651-9e65-f495e030b7ba
             transform: ""
-      - acceptedValues:
-          strictMatch: true
-          values: []
-        appliedColumnTests: {}
-        columnReference:
-          columnCounter: 8f8ad584-1361-4722-9cd4-45a431c33f69
-          stepCounter: 1c352af3-3666-4c09-889d-95f3cceba3a1
-        config: {}
-        dataType: TIMESTAMP
-        defaultValue: ""
-        description: ""
-        isSystemCreateDate: true
-        name: SYSTEM_CREATE_DATE
-        nullable: true
-        sourceColumnReferences:
-          - columnReferences: []
-            transform: CAST(CURRENT_TIMESTAMP AS TIMESTAMP)
-      - acceptedValues:
-          strictMatch: true
-          values: []
-        appliedColumnTests: {}
-        columnReference:
-          columnCounter: 6c5da79d-fd19-4e55-8622-a646dd89e159
-          stepCounter: 1c352af3-3666-4c09-889d-95f3cceba3a1
-        config: {}
-        dataType: TIMESTAMP
-        defaultValue: ""
-        description: ""
-        isSystemUpdateDate: true
-        name: SYSTEM_UPDATE_DATE
-        nullable: true
-        sourceColumnReferences:
-          - columnReferences: []
-            transform: CAST(CURRENT_TIMESTAMP AS TIMESTAMP)
     cteString: ""
     enabledColumnTestIDs: []
     sourceMapping:
@@ -141,7 +92,7 @@ operation:
   name: FCT_ORDERS
   overrideSQL: false
   schema: ""
-  sqlType: base-node-types-advanced-deploy:::390
+  sqlType: "281"
   type: sql
   version: 1
 type: Node

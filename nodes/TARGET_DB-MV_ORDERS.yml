@@ -3,22 +3,19 @@ id: e2521195-6f5b-4082-a34f-9de6548b566e
 name: MV_ORDERS
 operation:
   config:
-    clusterKey: false
-    clusterKeyConfig:
-      items:
-        - {}
-    clusterKeyConfigExpressions:
-      items:
-        - {}
-    clusterKeyExpressions: false
-    secureOption: false
-    selectDistinct: false
+    insertStrategy: UNION ALL
+    persistTableLocation: "ex: TARGET"
+    persistTableName: "ex: DIM_ORDERS"
+    refTable: false
+    srcTable: false
+    suffixlength: ex:1
+    testsEnabled: true
   database: ""
   deployEnabled: true
   description: ""
   isMultisource: false
   locationName: TARGET_DB
-  materializationType: Materialized View
+  materializationType: run view
   metadata:
     appliedNodeTests: []
     columns:
@@ -95,7 +92,7 @@ operation:
   name: MV_ORDERS
   overrideSQL: false
   schema: ""
-  sqlType: materialized-view:::178
+  sqlType: "281"
   type: sql
   version: 1
 type: Node

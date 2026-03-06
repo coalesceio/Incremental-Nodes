@@ -3,54 +3,22 @@ id: f3a445f5-ca62-4cac-b8c7-f7f5a2316dbf
 name: PSTG_ORDERS
 operation:
   config:
-    clusterKey: false
-    clusterKeyConfig:
-      items:
-        - {}
-    clusterKeyConfigExpressions:
-      items:
-        - {}
-    clusterKeyExpressions: false
-    groupByAll: false
     insertStrategy: UNION ALL
-    lastModifiedComparison: false
-    orderby: false
-    orderbycolumn:
-      items:
-        - {}
-    postSQL: ""
-    preSQL: ""
-    selectDistinct: false
+    persistTableLocation: "ex: TARGET"
+    persistTableName: "ex: DIM_ORDERS"
+    refTable: false
+    srcTable: false
+    suffixlength: ex:1
     testsEnabled: false
-    treatNullAsCurrentTimestamp: false
-    truncateBefore: false
-    type2Dimension: false
   database: ""
   deployEnabled: true
   description: ""
   isMultisource: false
   locationName: TARGET_DB
-  materializationType: table
+  materializationType: run view
   metadata:
     appliedNodeTests: []
     columns:
-      - acceptedValues:
-          strictMatch: true
-          values: []
-        appliedColumnTests: {}
-        columnReference:
-          columnCounter: 6ef3fa3f-b180-4478-9356-b5ce82f89fe7
-          stepCounter: f3a445f5-ca62-4cac-b8c7-f7f5a2316dbf
-        config: {}
-        dataType: NUMBER
-        defaultValue: ""
-        description: ""
-        isSurrogateKey: true
-        name: PSTG_ORDERS_KEY
-        nullable: true
-        sourceColumnReferences:
-          - columnReferences: []
-            transform: ""
       - appliedColumnTests: {}
         columnReference:
           columnCounter: 6d6d7d0e-c84e-4cd7-b226-a8d6507469fe
@@ -107,115 +75,22 @@ operation:
               - columnCounter: 6f62583c-ee6d-4c99-9e0c-fb317162c205
                 stepCounter: fe0fd1e9-59a5-4651-9e65-f495e030b7ba
             transform: ""
-      - acceptedValues:
-          strictMatch: true
-          values: []
-        appliedColumnTests: {}
-        columnReference:
-          columnCounter: d2308fcc-6097-44cd-952a-c617613bdab9
-          stepCounter: f3a445f5-ca62-4cac-b8c7-f7f5a2316dbf
-        config: {}
-        dataType: NUMBER
-        defaultValue: ""
-        description: ""
-        isSystemVersion: true
-        name: SYSTEM_VERSION
-        nullable: true
-        sourceColumnReferences:
-          - columnReferences: []
-            transform: ""
-      - acceptedValues:
-          strictMatch: true
-          values: []
-        appliedColumnTests: {}
-        columnReference:
-          columnCounter: 615afcc6-36f1-4532-885a-ea77d3b58292
-          stepCounter: f3a445f5-ca62-4cac-b8c7-f7f5a2316dbf
-        config: {}
-        dataType: VARCHAR
-        defaultValue: ""
-        description: ""
-        isSystemCurrentFlag: true
-        name: SYSTEM_CURRENT_FLAG
-        nullable: true
-        sourceColumnReferences:
-          - columnReferences: []
-            transform: ""
-      - acceptedValues:
-          strictMatch: true
-          values: []
-        appliedColumnTests: {}
-        columnReference:
-          columnCounter: e30f3587-b7b2-45fd-98d3-9ea0b76a79ce
-          stepCounter: f3a445f5-ca62-4cac-b8c7-f7f5a2316dbf
-        config: {}
-        dataType: TIMESTAMP
-        defaultValue: ""
-        description: ""
-        isSystemStartDate: true
-        name: SYSTEM_START_DATE
-        nullable: true
-        sourceColumnReferences:
-          - columnReferences: []
-            transform: CAST(CURRENT_TIMESTAMP AS TIMESTAMP)
-      - acceptedValues:
-          strictMatch: true
-          values: []
-        appliedColumnTests: {}
-        columnReference:
-          columnCounter: 2f6f9370-e022-4d13-b670-dd1c66f8b994
-          stepCounter: f3a445f5-ca62-4cac-b8c7-f7f5a2316dbf
-        config: {}
-        dataType: TIMESTAMP
-        defaultValue: ""
-        description: ""
-        isSystemEndDate: true
-        name: SYSTEM_END_DATE
-        nullable: true
-        sourceColumnReferences:
-          - columnReferences: []
-            transform: CAST('2999-12-31 00:00:00' AS TIMESTAMP)
-      - acceptedValues:
-          strictMatch: true
-          values: []
-        appliedColumnTests: {}
-        columnReference:
-          columnCounter: 2e097b65-9e55-4106-ab48-19b3127b2da4
-          stepCounter: f3a445f5-ca62-4cac-b8c7-f7f5a2316dbf
-        config: {}
-        dataType: TIMESTAMP
-        defaultValue: ""
-        description: ""
-        isSystemCreateDate: true
-        name: SYSTEM_CREATE_DATE
-        nullable: true
-        sourceColumnReferences:
-          - columnReferences: []
-            transform: CAST(CURRENT_TIMESTAMP AS TIMESTAMP)
-      - acceptedValues:
-          strictMatch: true
-          values: []
-        appliedColumnTests: {}
-        columnReference:
-          columnCounter: 6808062d-dfcf-4c58-91c0-2f0e154c60ae
-          stepCounter: f3a445f5-ca62-4cac-b8c7-f7f5a2316dbf
-        config: {}
-        dataType: TIMESTAMP
-        defaultValue: ""
-        description: ""
-        isSystemUpdateDate: true
-        name: SYSTEM_UPDATE_DATE
-        nullable: true
-        sourceColumnReferences:
-          - columnReferences: []
-            transform: CAST(CURRENT_TIMESTAMP AS TIMESTAMP)
     cteString: ""
     enabledColumnTestIDs: []
     sourceMapping:
       - aliases:
           ORDERS: fe0fd1e9-59a5-4651-9e65-f495e030b7ba
         customSQL:
-          customSQL: ""
+          customSQL: |-
+            {{ stage('Override Create SQL', deploy_phase_override="create") }}
+            	CREATE OR REPLACE VIEW {{ ref('TARGET_DB', 'PSTG_ORDERS')}} AS (
+            		SELECT 
+             "ORDER_KEY" AS "ORDER_KEY",
+             "ORDER_NAME" AS "ORDER_NAME",
+             "ORDER_DATE" AS "ORDER_DATE",
+             "CREATED_AT" AS "CREATED_AT"
+             FROM {{ ref('SOURCE_DATA', 'ORDERS') }}
+            	)
         dependencies:
           - locationName: SOURCE_DATA
             nodeName: ORDERS
@@ -224,9 +99,9 @@ operation:
         name: PSTG_ORDERS
         noLinkRefs: []
   name: PSTG_ORDERS
-  overrideSQL: false
+  overrideSQL: true
   schema: ""
-  sqlType: base-node-types-advanced-deploy:::391
+  sqlType: "281"
   type: sql
   version: 1
 type: Node
