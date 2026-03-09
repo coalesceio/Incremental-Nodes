@@ -37,6 +37,14 @@ does not permit copying or modification for any other purpose.
 {# Override CreateSQL for view #}
 
     {% if desiredState.node.override.create.enabled %}
+
+        {% if currentState != undefined %}
+            {% if currentState.node.materializationType != desiredState.node.materializationType %}
+                {{ stage('Drop ' + ref_no_link(currentState.node.location.name, currentState.node.name)) }}
+                {%- set materialization = dropMaterialization(currentState.node.materializationType) %}
+                DROP {{ materialization }} {{ ref_no_link(currentState.node.location.name, currentState.node.name) }}
+            {% endif %}
+        {% endif %}
             
         {{ desiredState.node.override.create.script }}
 

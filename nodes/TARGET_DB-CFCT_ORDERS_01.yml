@@ -1,28 +1,59 @@
 fileVersion: 1
-id: 1d3562ab-17db-4b6c-a89f-d87fd0d9a290
-name: SIM_ORDERS
+id: 114f9882-46c0-41eb-b290-c58357879291
+name: CFCT_ORDERS_01
 operation:
   config:
-    insertStrategy: UNION ALL
-    persistTableLocation: "ex: TARGET"
-    persistTableName: "ex: DIM_ORDERS"
-    refTable: false
-    srcTable: false
-    suffixlength: ex:1
-    testsEnabled: true
+    changetracking: true
+    clusterKey: false
+    clusterKeyConfig:
+      items:
+        - {}
+    clusterKeyConfigExpressions:
+      items:
+        - {}
+    clusterKeyExpressions: false
+    constraintsspec:
+      items:
+        - {}
+    datretention: ""
+    defaultcoallation: ""
+    eschemaevol: false
+    foreignk: false
+    foreignkeycon:
+      items:
+        - {}
+    groupByAll: false
+    inlineconst: false
+    insertStrategy: UNION
+    lastModifiedComparison: false
+    maxdataretention: ""
+    orderby: false
+    orderbycolumn:
+      items:
+        - {}
+    outlineconst: false
+    primary: false
+    primarykeycon:
+      items:
+        - {}
+    primarykeyname: ""
+    selectDistinct: false
+    testsEnabled: false
+    treatNullAsCurrentTimestamp: false
+    truncateBefore: true
   database: ""
   deployEnabled: true
   description: ""
   isMultisource: false
   locationName: TARGET_DB
-  materializationType: run view
+  materializationType: table
   metadata:
     appliedNodeTests: []
     columns:
       - appliedColumnTests: {}
         columnReference:
-          columnCounter: 4ff4df54-5e7f-47c9-846e-a2c0441c27ee
-          stepCounter: 1d3562ab-17db-4b6c-a89f-d87fd0d9a290
+          columnCounter: 121b11fe-5a0c-48da-8d10-f0710fb3d928
+          stepCounter: 114f9882-46c0-41eb-b290-c58357879291
         config: {}
         dataType: NUMBER(38,0)
         description: ""
@@ -35,8 +66,8 @@ operation:
             transform: ""
       - appliedColumnTests: {}
         columnReference:
-          columnCounter: dbd49bf0-6589-4d8a-b3bf-5ab1f405c9b7
-          stepCounter: 1d3562ab-17db-4b6c-a89f-d87fd0d9a290
+          columnCounter: c557e04d-6689-4834-848f-80cb9e97d996
+          stepCounter: 114f9882-46c0-41eb-b290-c58357879291
         config: {}
         dataType: VARCHAR(25)
         description: ""
@@ -49,8 +80,8 @@ operation:
             transform: ""
       - appliedColumnTests: {}
         columnReference:
-          columnCounter: f05b5de0-1a01-4093-bb7c-b17f0c6163d8
-          stepCounter: 1d3562ab-17db-4b6c-a89f-d87fd0d9a290
+          columnCounter: ee8aa723-559a-4b42-b3d4-d5144718e780
+          stepCounter: 114f9882-46c0-41eb-b290-c58357879291
         config: {}
         dataType: DATE
         description: ""
@@ -63,8 +94,8 @@ operation:
             transform: ""
       - appliedColumnTests: {}
         columnReference:
-          columnCounter: aecbe55a-01ec-4168-831d-62531001d6a6
-          stepCounter: 1d3562ab-17db-4b6c-a89f-d87fd0d9a290
+          columnCounter: 131dac85-2443-4842-8844-067ed4576b87
+          stepCounter: 114f9882-46c0-41eb-b290-c58357879291
         config: {}
         dataType: TIMESTAMP_NTZ(9)
         description: ""
@@ -87,12 +118,12 @@ operation:
             nodeName: ORDERS
         join:
           joinCondition: FROM {{ ref('SOURCE_DATA', 'ORDERS') }} "ORDERS"
-        name: SIM_ORDERS
+        name: CFCT_ORDERS_01
         noLinkRefs: []
-  name: SIM_ORDERS
+  name: CFCT_ORDERS_01
   overrideSQL: false
   schema: ""
-  sqlType: "281"
+  sqlType: create-or-alter-package:::534
   type: sql
   version: 1
 type: Node

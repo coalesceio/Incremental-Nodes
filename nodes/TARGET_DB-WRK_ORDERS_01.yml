@@ -1,32 +1,50 @@
 fileVersion: 1
-id: f18803cf-5616-4dd3-9077-a761547bd69b
-name: CDIM_ORDERS
+id: 6fa16945-6916-4c18-829b-746772326b4f
+name: WRK_ORDERS_01
 operation:
   config:
-    insertStrategy: UNION
-    persistTableLocation: "ex: TARGET"
-    persistTableName: "ex: DIM_ORDERS"
-    refTable: false
-    srcTable: false
-    suffixlength: ex:1
+    asofColumn:
+      items:
+        - {}
+    asofJoin: true
+    asofJoinMain: false
+    asofJoinON: false
+    asofJoinUSING: false
+    clusterKey: false
+    clusterKeyConfig:
+      items:
+        - {}
+    clusterKeyConfigExpressions:
+      items:
+        - {}
+    clusterKeyExpressions: false
+    groupByAll: false
+    insertStrategy: INSERT
+    orderby: false
+    orderbycolumn:
+      items:
+        - {}
+    postSQL: ""
+    preSQL: ""
+    selectDistinct: false
     testsEnabled: false
+    truncateBefore: true
   database: ""
   deployEnabled: true
   description: ""
   isMultisource: false
   locationName: TARGET_DB
-  materializationType: run view
+  materializationType: table
   metadata:
     appliedNodeTests: []
     columns:
       - appliedColumnTests: {}
         columnReference:
-          columnCounter: 67995ad1-6e95-4cb5-b3ce-0326c7002bb8
-          stepCounter: f18803cf-5616-4dd3-9077-a761547bd69b
+          columnCounter: f8bdb3cb-c6cf-4913-9e9d-e01542cb3071
+          stepCounter: 6fa16945-6916-4c18-829b-746772326b4f
         config: {}
         dataType: NUMBER(38,0)
         description: ""
-        isBusinessKey: true
         name: ORDER_KEY
         nullable: true
         sourceColumnReferences:
@@ -36,8 +54,8 @@ operation:
             transform: ""
       - appliedColumnTests: {}
         columnReference:
-          columnCounter: 2194fcf8-7d76-4c03-a8b8-e3cef14a7336
-          stepCounter: f18803cf-5616-4dd3-9077-a761547bd69b
+          columnCounter: 6a4d4f59-302d-47f0-8b7b-aedfde7cf9cc
+          stepCounter: 6fa16945-6916-4c18-829b-746772326b4f
         config: {}
         dataType: VARCHAR(25)
         description: ""
@@ -50,8 +68,8 @@ operation:
             transform: ""
       - appliedColumnTests: {}
         columnReference:
-          columnCounter: 49e8184d-c9e1-4784-b679-f1295eecba01
-          stepCounter: f18803cf-5616-4dd3-9077-a761547bd69b
+          columnCounter: ed3dad01-5b47-41a9-ab55-d09548f59ec8
+          stepCounter: 6fa16945-6916-4c18-829b-746772326b4f
         config: {}
         dataType: DATE
         description: ""
@@ -64,8 +82,8 @@ operation:
             transform: ""
       - appliedColumnTests: {}
         columnReference:
-          columnCounter: 3c4111b7-b114-443a-9b5a-7495c6ffe659
-          stepCounter: f18803cf-5616-4dd3-9077-a761547bd69b
+          columnCounter: c514ee64-497e-4aa4-9785-e8a411aa9e47
+          stepCounter: 6fa16945-6916-4c18-829b-746772326b4f
         config: {}
         dataType: TIMESTAMP_NTZ(9)
         description: ""
@@ -87,13 +105,13 @@ operation:
           - locationName: SOURCE_DATA
             nodeName: ORDERS
         join:
-          joinCondition: FROM {{ ref('SOURCE_DATA', 'ORDERS') }} "ORDERS"
-        name: CDIM_ORDERS
+          joinCondition: FROM  {{ ref('SOURCE_DATA', 'ORDERS') }} ORDERS
+        name: WRK_ORDERS_01
         noLinkRefs: []
-  name: CDIM_ORDERS
+  name: WRK_ORDERS_01
   overrideSQL: false
   schema: ""
-  sqlType: "281"
+  sqlType: base-node-types-advanced-deploy:::179
   type: sql
   version: 1
 type: Node
