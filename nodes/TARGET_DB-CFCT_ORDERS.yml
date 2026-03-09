@@ -1,0 +1,131 @@
+fileVersion: 1
+id: eab02243-fbf9-43af-bf53-8a722f673d13
+name: CFCT_ORDERS
+operation:
+  config:
+    changetracking: true
+    clusterKey: true
+    clusterKeyConfig:
+      items:
+        - columnName:
+            columnCounter: 00b32701-d1ce-40e2-aedb-c90a07c031cf
+            stepCounter: eab02243-fbf9-43af-bf53-8a722f673d13
+    clusterKeyConfigExpressions:
+      items:
+        - {}
+    clusterKeyExpressions: false
+    constraintsspec:
+      items:
+        - {}
+    datretention: ""
+    defaultcoallation: ""
+    eschemaevol: false
+    foreignk: false
+    foreignkeycon:
+      items:
+        - {}
+    groupByAll: false
+    inlineconst: false
+    insertStrategy: UNION
+    lastModifiedComparison: false
+    maxdataretention: ""
+    orderby: false
+    orderbycolumn:
+      items:
+        - {}
+    outlineconst: false
+    primary: false
+    primarykeycon:
+      items:
+        - {}
+    primarykeyname: ""
+    selectDistinct: false
+    testsEnabled: false
+    treatNullAsCurrentTimestamp: false
+    truncateBefore: true
+  database: ""
+  deployEnabled: true
+  description: ""
+  isMultisource: false
+  locationName: TARGET_DB
+  materializationType: transient table
+  metadata:
+    appliedNodeTests: []
+    columns:
+      - appliedColumnTests: {}
+        columnReference:
+          columnCounter: 00b32701-d1ce-40e2-aedb-c90a07c031cf
+          stepCounter: eab02243-fbf9-43af-bf53-8a722f673d13
+        config: {}
+        dataType: NUMBER(38,0)
+        description: ""
+        name: ORDER_KEY
+        nullable: true
+        sourceColumnReferences:
+          - columnReferences:
+              - columnCounter: 21f75008-1395-4571-9cce-3475048ccec1
+                stepCounter: fe0fd1e9-59a5-4651-9e65-f495e030b7ba
+            transform: ""
+      - appliedColumnTests: {}
+        columnReference:
+          columnCounter: d49ff8be-5d12-41d5-9f46-b2d3b407da5c
+          stepCounter: eab02243-fbf9-43af-bf53-8a722f673d13
+        config: {}
+        dataType: VARCHAR(25)
+        description: ""
+        name: ORDER_NAME
+        nullable: true
+        sourceColumnReferences:
+          - columnReferences:
+              - columnCounter: d278a843-a888-4282-bf32-59a09c5d0f76
+                stepCounter: fe0fd1e9-59a5-4651-9e65-f495e030b7ba
+            transform: ""
+      - appliedColumnTests: {}
+        columnReference:
+          columnCounter: d9a0a713-9ecb-42a9-b14f-af768eadf70f
+          stepCounter: eab02243-fbf9-43af-bf53-8a722f673d13
+        config: {}
+        dataType: DATE
+        description: ""
+        name: ORDER_DATE
+        nullable: true
+        sourceColumnReferences:
+          - columnReferences:
+              - columnCounter: b292a44a-c3b3-4ec4-8d71-5367fb80fc35
+                stepCounter: fe0fd1e9-59a5-4651-9e65-f495e030b7ba
+            transform: ""
+      - appliedColumnTests: {}
+        columnReference:
+          columnCounter: 0c570e96-05c7-4459-9814-462a450e5a2a
+          stepCounter: eab02243-fbf9-43af-bf53-8a722f673d13
+        config: {}
+        dataType: TIMESTAMP_NTZ(9)
+        description: ""
+        name: CREATED_AT
+        nullable: true
+        sourceColumnReferences:
+          - columnReferences:
+              - columnCounter: 6f62583c-ee6d-4c99-9e0c-fb317162c205
+                stepCounter: fe0fd1e9-59a5-4651-9e65-f495e030b7ba
+            transform: ""
+    cteString: ""
+    enabledColumnTestIDs: []
+    sourceMapping:
+      - aliases:
+          ORDERS: fe0fd1e9-59a5-4651-9e65-f495e030b7ba
+        customSQL:
+          customSQL: ""
+        dependencies:
+          - locationName: SOURCE_DATA
+            nodeName: ORDERS
+        join:
+          joinCondition: FROM {{ ref('SOURCE_DATA', 'ORDERS') }} "ORDERS"
+        name: CFCT_ORDERS
+        noLinkRefs: []
+  name: CFCT_ORDERS
+  overrideSQL: false
+  schema: ""
+  sqlType: create-or-alter-package:::534
+  type: sql
+  version: 1
+type: Node

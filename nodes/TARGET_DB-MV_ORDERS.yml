@@ -1,0 +1,101 @@
+fileVersion: 1
+id: a6328af7-c2b6-43e4-8b7b-24a57d3b7856
+name: MV_ORDERS
+operation:
+  config:
+    clusterKey: false
+    clusterKeyConfig:
+      items:
+        - {}
+    clusterKeyConfigExpressions:
+      items:
+        - {}
+    clusterKeyExpressions: false
+    secureOption: false
+    selectDistinct: true
+  database: ""
+  deployEnabled: true
+  description: ""
+  isMultisource: false
+  locationName: TARGET_DB
+  materializationType: Materialized View
+  metadata:
+    appliedNodeTests: []
+    columns:
+      - appliedColumnTests: {}
+        columnReference:
+          columnCounter: 23d36476-f07c-40ea-9352-6c09b9ce1e63
+          stepCounter: a6328af7-c2b6-43e4-8b7b-24a57d3b7856
+        config: {}
+        dataType: NUMBER(38,0)
+        description: ""
+        name: ORDER_KEY
+        nullable: true
+        sourceColumnReferences:
+          - columnReferences:
+              - columnCounter: 21f75008-1395-4571-9cce-3475048ccec1
+                stepCounter: fe0fd1e9-59a5-4651-9e65-f495e030b7ba
+            transform: ""
+      - appliedColumnTests: {}
+        columnReference:
+          columnCounter: 8486329b-7650-4865-8a2a-1d0791769c96
+          stepCounter: a6328af7-c2b6-43e4-8b7b-24a57d3b7856
+        config: {}
+        dataType: VARCHAR(25)
+        description: ""
+        name: ORDER_NAME
+        nullable: true
+        sourceColumnReferences:
+          - columnReferences:
+              - columnCounter: d278a843-a888-4282-bf32-59a09c5d0f76
+                stepCounter: fe0fd1e9-59a5-4651-9e65-f495e030b7ba
+            transform: ""
+      - appliedColumnTests: {}
+        columnReference:
+          columnCounter: a7b89da9-b649-41e8-a9fd-8a165d1c0bb6
+          stepCounter: a6328af7-c2b6-43e4-8b7b-24a57d3b7856
+        config: {}
+        dataType: DATE
+        description: ""
+        name: ORDER_DATE
+        nullable: true
+        sourceColumnReferences:
+          - columnReferences:
+              - columnCounter: b292a44a-c3b3-4ec4-8d71-5367fb80fc35
+                stepCounter: fe0fd1e9-59a5-4651-9e65-f495e030b7ba
+            transform: ""
+      - appliedColumnTests: {}
+        columnReference:
+          columnCounter: b8ae141b-4c70-4529-9a72-d16d757ebc5c
+          stepCounter: a6328af7-c2b6-43e4-8b7b-24a57d3b7856
+        config: {}
+        dataType: TIMESTAMP_NTZ(9)
+        description: ""
+        name: CREATED_AT
+        nullable: true
+        sourceColumnReferences:
+          - columnReferences:
+              - columnCounter: 6f62583c-ee6d-4c99-9e0c-fb317162c205
+                stepCounter: fe0fd1e9-59a5-4651-9e65-f495e030b7ba
+            transform: ""
+    cteString: ""
+    enabledColumnTestIDs: []
+    sourceMapping:
+      - aliases:
+          ORDERS: fe0fd1e9-59a5-4651-9e65-f495e030b7ba
+        customSQL:
+          customSQL: ""
+        dependencies:
+          - locationName: SOURCE_DATA
+            nodeName: ORDERS
+        join:
+          joinCondition: FROM {{ ref('SOURCE_DATA', 'ORDERS') }} "ORDERS"
+        name: MV_ORDERS
+        noLinkRefs: []
+  name: MV_ORDERS
+  overrideSQL: false
+  schema: ""
+  sqlType: materialized-view:::178
+  type: sql
+  version: 1
+type: Node

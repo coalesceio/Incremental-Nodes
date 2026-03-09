@@ -1,0 +1,110 @@
+fileVersion: 1
+id: c787df20-3cd5-4d47-a337-bc46d1173871
+name: INTTBL_ORDERS
+operation:
+  config:
+    autoRefresh: false
+    clusterKey: true
+    clusterKeyConfig:
+      items:
+        - columnName:
+            columnCounter: 05e662df-6a00-4518-9ec5-b21076ee273d
+            stepCounter: c787df20-3cd5-4d47-a337-bc46d1173871
+    clusterKeyConfigExpressions:
+      items:
+        - {}
+    clusterKeyExpressions: false
+    groupByAll: false
+    insertStrategy: UNION ALL
+    lagSpecification:
+      items:
+        - {}
+    selectDistinct: false
+    testsEnabled: false
+    warehouseName: dev_wh_xs
+  database: ""
+  deployEnabled: true
+  description: ""
+  isMultisource: false
+  locationName: TARGET_DB
+  materializationType: interactive table
+  metadata:
+    appliedNodeTests: []
+    columns:
+      - appliedColumnTests: {}
+        columnReference:
+          columnCounter: 05e662df-6a00-4518-9ec5-b21076ee273d
+          stepCounter: c787df20-3cd5-4d47-a337-bc46d1173871
+        config: {}
+        dataType: NUMBER(38,0)
+        description: ""
+        name: ORDER_KEY
+        nullable: true
+        sourceColumnReferences:
+          - columnReferences:
+              - columnCounter: 21f75008-1395-4571-9cce-3475048ccec1
+                stepCounter: fe0fd1e9-59a5-4651-9e65-f495e030b7ba
+            transform: ""
+      - appliedColumnTests: {}
+        columnReference:
+          columnCounter: aae169d5-f8e3-45f8-9f5b-10c489a44573
+          stepCounter: c787df20-3cd5-4d47-a337-bc46d1173871
+        config: {}
+        dataType: VARCHAR(25)
+        description: ""
+        name: ORDER_NAME
+        nullable: true
+        sourceColumnReferences:
+          - columnReferences:
+              - columnCounter: d278a843-a888-4282-bf32-59a09c5d0f76
+                stepCounter: fe0fd1e9-59a5-4651-9e65-f495e030b7ba
+            transform: ""
+      - appliedColumnTests: {}
+        columnReference:
+          columnCounter: 51f1f581-03a0-4e6a-ada0-e098f3412475
+          stepCounter: c787df20-3cd5-4d47-a337-bc46d1173871
+        config: {}
+        dataType: DATE
+        description: ""
+        name: ORDER_DATE
+        nullable: true
+        sourceColumnReferences:
+          - columnReferences:
+              - columnCounter: b292a44a-c3b3-4ec4-8d71-5367fb80fc35
+                stepCounter: fe0fd1e9-59a5-4651-9e65-f495e030b7ba
+            transform: ""
+      - appliedColumnTests: {}
+        columnReference:
+          columnCounter: 0a90e9aa-4145-4ea0-a957-40fc4adfe1b5
+          stepCounter: c787df20-3cd5-4d47-a337-bc46d1173871
+        config: {}
+        dataType: TIMESTAMP_NTZ(9)
+        description: ""
+        name: CREATED_AT
+        nullable: true
+        sourceColumnReferences:
+          - columnReferences:
+              - columnCounter: 6f62583c-ee6d-4c99-9e0c-fb317162c205
+                stepCounter: fe0fd1e9-59a5-4651-9e65-f495e030b7ba
+            transform: ""
+    cteString: ""
+    enabledColumnTestIDs: []
+    sourceMapping:
+      - aliases:
+          ORDERS: fe0fd1e9-59a5-4651-9e65-f495e030b7ba
+        customSQL:
+          customSQL: ""
+        dependencies:
+          - locationName: SOURCE_DATA
+            nodeName: ORDERS
+        join:
+          joinCondition: FROM {{ ref('SOURCE_DATA', 'ORDERS') }} "ORDERS"
+        name: INTTBL_ORDERS
+        noLinkRefs: []
+  name: INTTBL_ORDERS
+  overrideSQL: false
+  schema: ""
+  sqlType: interactive-table:::602
+  type: sql
+  version: 1
+type: Node

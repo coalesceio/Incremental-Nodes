@@ -1,0 +1,146 @@
+fileVersion: 1
+id: 4c1a0f27-3896-44f9-b7c2-e440594825e4
+name: STREAM_ORDERS
+operation:
+  config:
+    appendOnly: false
+    initialRows: true
+    redeploymentBehavior: Create or Replace
+    sourceType: Table
+  database: ""
+  deployEnabled: true
+  description: ""
+  isMultisource: false
+  locationName: TARGET_DB
+  materializationType: stream
+  metadata:
+    appliedNodeTests: []
+    columns:
+      - appliedColumnTests: {}
+        columnReference:
+          columnCounter: 50fc8817-77fb-496d-844e-08b6881c6e7f
+          stepCounter: 4c1a0f27-3896-44f9-b7c2-e440594825e4
+        config: {}
+        dataType: NUMBER(38,0)
+        description: ""
+        name: ORDER_KEY
+        nullable: true
+        sourceColumnReferences:
+          - columnReferences:
+              - columnCounter: 21f75008-1395-4571-9cce-3475048ccec1
+                stepCounter: fe0fd1e9-59a5-4651-9e65-f495e030b7ba
+            transform: ""
+      - appliedColumnTests: {}
+        columnReference:
+          columnCounter: a2033983-0c19-4ed7-8cdb-3ef2c1836b87
+          stepCounter: 4c1a0f27-3896-44f9-b7c2-e440594825e4
+        config: {}
+        dataType: VARCHAR(25)
+        description: ""
+        name: ORDER_NAME
+        nullable: true
+        sourceColumnReferences:
+          - columnReferences:
+              - columnCounter: d278a843-a888-4282-bf32-59a09c5d0f76
+                stepCounter: fe0fd1e9-59a5-4651-9e65-f495e030b7ba
+            transform: ""
+      - appliedColumnTests: {}
+        columnReference:
+          columnCounter: ae860f4c-36b0-40d8-8b27-cc1ccf86390a
+          stepCounter: 4c1a0f27-3896-44f9-b7c2-e440594825e4
+        config: {}
+        dataType: DATE
+        description: ""
+        name: ORDER_DATE
+        nullable: true
+        sourceColumnReferences:
+          - columnReferences:
+              - columnCounter: b292a44a-c3b3-4ec4-8d71-5367fb80fc35
+                stepCounter: fe0fd1e9-59a5-4651-9e65-f495e030b7ba
+            transform: ""
+      - appliedColumnTests: {}
+        columnReference:
+          columnCounter: 8d7fb6e3-85a9-419a-9436-fdc7c021c3ca
+          stepCounter: 4c1a0f27-3896-44f9-b7c2-e440594825e4
+        config: {}
+        dataType: TIMESTAMP_NTZ(9)
+        description: ""
+        name: CREATED_AT
+        nullable: true
+        sourceColumnReferences:
+          - columnReferences:
+              - columnCounter: 6f62583c-ee6d-4c99-9e0c-fb317162c205
+                stepCounter: fe0fd1e9-59a5-4651-9e65-f495e030b7ba
+            transform: ""
+      - acceptedValues:
+          strictMatch: true
+          values: []
+        appliedColumnTests: {}
+        columnReference:
+          columnCounter: bc052b6e-3e89-434c-ab41-a7050021825b
+          stepCounter: 4c1a0f27-3896-44f9-b7c2-e440594825e4
+        config: {}
+        dataType: STRING
+        defaultValue: ""
+        description: ""
+        metadataAction: true
+        name: METADATA$ACTION
+        nullable: true
+        sourceColumnReferences:
+          - columnReferences: []
+            transform: ""
+      - acceptedValues:
+          strictMatch: true
+          values: []
+        appliedColumnTests: {}
+        columnReference:
+          columnCounter: cdaa47cf-006a-452d-ba0f-b36c8c24d112
+          stepCounter: 4c1a0f27-3896-44f9-b7c2-e440594825e4
+        config: {}
+        dataType: boolean
+        defaultValue: ""
+        description: ""
+        metadataIsUpdate: true
+        name: METADATA$ISUPDATE
+        nullable: true
+        sourceColumnReferences:
+          - columnReferences: []
+            transform: ""
+      - acceptedValues:
+          strictMatch: true
+          values: []
+        appliedColumnTests: {}
+        columnReference:
+          columnCounter: 15e3272b-945c-41b6-af0b-b87f84e66e2e
+          stepCounter: 4c1a0f27-3896-44f9-b7c2-e440594825e4
+        config: {}
+        dataType: STRING
+        defaultValue: ""
+        description: ""
+        metadataRowID: true
+        name: METADATA$ROW_ID
+        nullable: true
+        sourceColumnReferences:
+          - columnReferences: []
+            transform: ""
+    cteString: ""
+    enabledColumnTestIDs: []
+    sourceMapping:
+      - aliases:
+          ORDERS: fe0fd1e9-59a5-4651-9e65-f495e030b7ba
+        customSQL:
+          customSQL: ""
+        dependencies:
+          - locationName: SOURCE_DATA
+            nodeName: ORDERS
+        join:
+          joinCondition: FROM {{ ref('SOURCE_DATA', 'ORDERS') }} "ORDERS"
+        name: STREAM_ORDERS
+        noLinkRefs: []
+  name: STREAM_ORDERS
+  overrideSQL: false
+  schema: ""
+  sqlType: streams-and-tasks:::153
+  type: sql
+  version: 1
+type: Node
