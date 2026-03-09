@@ -8,19 +8,21 @@ operation:
         - dcolumnName:
             columnCounter: 995f1376-54aa-47f8-bd04-48760561ce7b
             stepCounter: ebb94b33-2e3e-4400-ad7a-3402d94e0982
-    dqdup: true
+        - dcolumnName:
+            columnCounter: 7ccf8767-beab-4462-b776-5a80a0fdf5b3
+            stepCounter: ebb94b33-2e3e-4400-ad7a-3402d94e0982
+    dqdup: false
     dqhandle: true
     dqnull: true
+    incColumn: ""
     ndqcolumns:
       items:
-        - ncolumnName:
-            columnCounter: 995f1376-54aa-47f8-bd04-48760561ce7b
-            stepCounter: ebb94b33-2e3e-4400-ad7a-3402d94e0982
+        - ncolumnName: null
     persistTableLocation: "ex: TARGET"
     persistTableName: "ex: DIM_ORDERS"
     postSQL: ""
     preSQL: ""
-    refTable: false
+    refTable: true
   database: ""
   deployEnabled: true
   description: ""
