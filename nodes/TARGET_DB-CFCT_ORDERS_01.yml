@@ -3,50 +3,19 @@ id: 114f9882-46c0-41eb-b290-c58357879291
 name: CFCT_ORDERS_01
 operation:
   config:
-    changetracking: true
-    clusterKey: false
-    clusterKeyConfig:
-      items:
-        - {}
-    clusterKeyConfigExpressions:
-      items:
-        - {}
-    clusterKeyExpressions: false
-    constraintsspec:
-      items:
-        - {}
-    datretention: ""
-    defaultcoallation: ""
-    eschemaevol: false
-    foreignk: false
-    foreignkeycon:
-      items:
-        - {}
-    groupByAll: false
-    inlineconst: false
     insertStrategy: UNION
-    lastModifiedComparison: false
-    maxdataretention: ""
-    orderby: false
-    orderbycolumn:
-      items:
-        - {}
-    outlineconst: false
-    primary: false
-    primarykeycon:
-      items:
-        - {}
-    primarykeyname: ""
-    selectDistinct: false
+    persistTableLocation: "ex: TARGET"
+    persistTableName: "ex: DIM_ORDERS"
+    refTable: false
+    srcTable: false
+    suffixlength: ex:1
     testsEnabled: false
-    treatNullAsCurrentTimestamp: false
-    truncateBefore: true
   database: ""
   deployEnabled: true
   description: ""
   isMultisource: false
   locationName: TARGET_DB
-  materializationType: table
+  materializationType: run view
   metadata:
     appliedNodeTests: []
     columns:
@@ -112,7 +81,16 @@ operation:
       - aliases:
           ORDERS: fe0fd1e9-59a5-4651-9e65-f495e030b7ba
         customSQL:
-          customSQL: ""
+          customSQL: |-
+            {{ stage('Override Create SQL', deploy_phase_override="create") }}
+            	CREATE OR REPLACE VIEW {{ ref('TARGET_DB', 'CFCT_ORDERS_01')}} AS (
+            		SELECT 
+             "ORDER_KEY" AS "ORDER_KEY",
+             "ORDER_NAME" AS "ORDER_NAME",
+             "ORDER_DATE" AS "ORDER_DATE",
+             "CREATED_AT" AS "CREATED_AT"
+             FROM {{ ref('SOURCE_DATA', 'ORDERS') }}
+            	)
         dependencies:
           - locationName: SOURCE_DATA
             nodeName: ORDERS
@@ -121,9 +99,9 @@ operation:
         name: CFCT_ORDERS_01
         noLinkRefs: []
   name: CFCT_ORDERS_01
-  overrideSQL: false
+  overrideSQL: true
   schema: ""
-  sqlType: create-or-alter-package:::534
+  sqlType: "281"
   type: sql
   version: 1
 type: Node
