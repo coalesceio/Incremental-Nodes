@@ -3,32 +3,16 @@ id: 871e5131-7f64-40d4-8dc3-a2c26994dfa4
 name: WRK_ORDERS_001
 operation:
   config:
-    asofColumn:
-      items:
-        - {}
-    asofJoin: true
-    asofJoinMain: false
-    asofJoinON: false
-    asofJoinUSING: false
-    clusterKey: false
-    clusterKeyConfig:
-      items:
-        - {}
-    clusterKeyConfigExpressions:
-      items:
-        - {}
-    clusterKeyExpressions: false
-    groupByAll: false
-    insertStrategy: INSERT
-    orderby: false
-    orderbycolumn:
-      items:
-        - {}
-    postSQL: ""
-    preSQL: ""
-    selectDistinct: false
-    testsEnabled: false
-    truncateBefore: true
+    batchLoad: false
+    batchSize: 0
+    incColumn:
+      columnCounter: d05d633e-6275-4257-a45f-b080c768462e
+      stepCounter: 871e5131-7f64-40d4-8dc3-a2c26994dfa4
+    joinKeyColumnName: ORDER_KEY
+    mappingID: SOURCE_DATA
+    persistColumnName: ORDER_NAME
+    persistTableLocation: TARGET_DB
+    persistTableName: PSTG_ORDERS_NEW
   database: ""
   deployEnabled: true
   description: ""
@@ -111,7 +95,7 @@ operation:
   name: WRK_ORDERS_001
   overrideSQL: false
   schema: ""
-  sqlType: base-node-types-advanced-deploy:::179
+  sqlType: "394"
   type: sql
   version: 1
 type: Node
