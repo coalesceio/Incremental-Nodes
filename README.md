@@ -1,4 +1,41 @@
-# Incremental Package
+## Snowflake - Incremental Package - Brief Summary
+
+- **Incremental Load:** Serves as the core engine for efficient data updates by processing only new or modified records rather than entire datasets. By leveraging high-water mark logic and `MERGE` statements, these nodes significantly reduce Snowflake compute costs and processing time.
+
+- **Grouped Incremental Load:** Optimized for handling data that requires aggregation or grouping before being merged into a persistent target. This node ensures that incremental deltas are correctly summarized at the business grain, maintaining data accuracy while processing only the most recent changes.
+
+- **Looped Load:** Designed for handling massive datasets by breaking them into smaller, manageable batches (loops). This prevents memory exhaustion and optimizes performance by processing data in "chunks" based on a specific dimension, such as a date range or ID range.
+
+- **Run View:** Acts as the orchestration metadata layer. It tracks the "state" of the pipeline by identifying the most recent records successfully loaded, providing the necessary reference points to ensure no data is missed or duplicated during subsequent runs.
+
+- **Test Passed Records:** Functions as a data quality gatekeeper. This node filters and surfaces only the records that meet predefined business rules and validation criteria, ensuring that downstream persistent tables remain clean and reliable.
+
+- **Test Failed Records:** Provides a native error-handling and auditing framework. By capturing records that fail validation, these nodes allow for seamless data quality monitoring and remediation without interrupting the flow of the primary data pipeline.
+
+**Summary:** 
+Together, these node types provide a robust, automated framework for managing delta-processing within Snowflake. By combining high-performance incremental loading with integrated data quality testing and batch orchestration, this package ensures that your data platform remains scalable, cost-effective, and accurate.
+
+----
+## Nodetypes Config Matrix
+
+| Category | Feature | Incremental Load | Test Passed Records | Test Failed Records | Looped Load | Run View | Grouped Incr. Load |
+| :--- | :--- | :---: | :---: | :---: | :---: | :---: | :---: |
+| **Create** | Create As (Table/View/Transient) | ✅ | ✅ | ✅ | ⬜ | ✅ | ✅ |
+| **Create** | Persistent Table Location/Name | ✅ | ⬜ | ⬜ | ⬜ | ✅ | ✅ |
+| **Create** | Storage Mapping ID | ⬜ | ⬜ | ⬜ | ⬜ | ⬜  | ✅ |
+| **Logic** | Filter based on Persistent Table | ✅ | ⬜ | ⬜ | ⬜ | ✅ | ⬜ |
+| **Logic** | Incremental Load Column (Date) | ✅ | ⬜ | ⬜ | ✅ | ✅ | ✅ |
+| **Logic** | Batch / Group / Loop Loading | ⬜ | ⬜ | ⬜ | ✅ | ⬜ | ✅ |
+| **Logic** | Multi-Source / Source Filtering | ⬜ | ⬜ | ⬜ | ⬜ | ✅ | ⬜ |
+| **Tests** | Enable Tests / Handle DQ | ✅ | ⬜ | ⬜ | ✅ | ⬜ | ⬜ |
+| **Tests** | Nullability / Duplicate Checks | ✅ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ |
+| **Tests** | First/Last Occurrence Logic | ⬜ | ✅ | ✅ | ⬜ | ⬜ | ⬜ |
+| **SQL** | Pre-SQL / Post-SQL | ✅ | ⬜ | ⬜ | ✅ | ⬜ | ⬜ |
+| **SQL** | Override Create SQL | ⬜ | ⬜ | ⬜ | ⬜ | ✅ | ⬜ |
+| **Metadata**| Dedicated Load History Table | ⬜ | ⬜ | ⬜ | ✅ | ⬜ | ⬜ |
+| **Metadata**| Joining Table Column Name | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ✅ |
+
+---
 
 The Coalesce Incremental Package includes:
 
@@ -38,7 +75,7 @@ The Coalesce Incremental load node is a versatile node that allows you to develo
 | **Persistent table name(required)** | The table name of the persistent table. |
 | **Incremental load column(date)** | A date column based on which incremental data is loaded. |
 | **Handle Data Quality**|When enabled you can add new columns to handle nullability and duplicate test.|
-| **Nullanility test**| When enabled,you can choose columns based on which nullability checks needs to be done|
+| **Nullability test**| When enabled,you can choose columns based on which nullability checks needs to be done|
 | **Duplicate test**|When enabled,you can choose columns based on which duplicate checks can be done|
 | **Pre-SQL**|SQL to execute before data insert operation|
 | **Post-SQL**|SQL to execute after data insert operation|
@@ -111,6 +148,14 @@ The following stages are executed:
 |----------|-----------------|
 | **Delete View** | Delete the view |
 | **Create View**| Create a new view |
+
+#### Node Type Switching
+
+Node Type switching is supported starting from Coalesce version **7.28+**.
+
+From this version onward, a node’s materialization type can be switched from one supported type to another, subject to certain limitations.
+
+For more info click here - [Node Type Switching Logic and Limitations](#node-type-switching-logic)
 
 ### Incremental Load Undeployment
 
@@ -331,6 +376,14 @@ The following stages are executed:
 | **Swap cloned Table** | Upon successful completion of all updates, the clone replaces the main table ensuring that no data is lost |
 | **Delete Table** | Drops the internal table |
 
+#### Node Type Switching
+
+Node Type switching is supported starting from Coalesce version **7.28+**.
+
+From this version onward, a node’s materialization type can be switched from one supported type to another, subject to certain limitations.
+
+For more info click here - [Node Type Switching Logic and Limitations](#node-type-switching-logic)
+
 ### Looped Load Undeployment
 
 If a Incremental load node of materialization type table is deleted from a Workspace, that Workspace is committed to Git and that commit deployed to a higher level environment then the stage table in the target environment will be dropped.
@@ -487,6 +540,14 @@ The subsequent deployment of a View node with changes in view definition, adding
 |---|---|
 | **Create View** | This will execute a CREATE OR REPLACE statement and create a view in the target environment. |
 
+#### Node Type Switching
+
+Node Type switching is supported starting from Coalesce version **7.28+**.
+
+From this version onward, a node’s materialization type can be switched from one supported type to another, subject to certain limitations.
+
+For more info click here - [Node Type Switching Logic and Limitations](#node-type-switching-logic)
+
 ### Run View Undeployment
 
 If a View Node is deleted from a Workspace, that Workspace is committed to Git and that commit deployed to a higher level environment then the View in the target environment will be dropped.
@@ -596,6 +657,14 @@ The following stages are executed:
 
 If the nodes are redeployed with no changes compared to previous deployment,then no stages are executed
 
+#### Node Type Switching
+
+Node Type switching is supported starting from Coalesce version **7.28+**.
+
+From this version onward, a node’s materialization type can be switched from one supported type to another, subject to certain limitations.
+
+For more info click here - [Node Type Switching Logic and Limitations](#node-type-switching-logic)
+
 ### Grouped Incremental Load Undeployment
 
 If a Grouped Incremental load node of materialization type table is deleted from a Workspace, that Workspace is committed to Git and that commit deployed to a higher level environment then the stage table in the target environment will be dropped.
@@ -609,6 +678,33 @@ This is executed in two stages:
 
 If a Grouped Incremental load node of materialization type view is deleted from a Workspace, that Workspace is committed to Git and that commit deployed to a higher level environment then the StageView in the target environment will be dropped.
 
+-----------------
+
+#### Node Type Switching Logic
+| Current MaterializationType | Desired MaterializationType | Stage |
+|------------|--------|-------|
+| Grouped Incremental Load | Grouped Incremental Load | Follows existing redeployment stages |
+| Run View |Run View | Follows existing redeployment stages |
+| Any Other | Grouped Incremental Load | 1. Warning (if applicable)<br/>2. Drop <br/> 3. Create |
+| Any Other | Run View | 1. Warning (if applicable)<br/>2. Drop <br/> 3. Create |
+
+
+#### ⚠ Limitations of Node Type Switching (Current)
+
+| # | Current Materialization | Desired Materialization | Limitation |
+|---|--------------------------|--------------------------|------------|
+| 1 | Older Version Iceberg Table | Table | Results in `ALTER` failure. Iceberg tables require `ALTER ICEBERG TABLE`. Works only if latest package (with switching support) is already used. |
+| 2 | Older Version<br/>Create or Alter-View<br/>Data Quality-DMF | Any(except View) | Switch fails unless current node uses latest package supporting node type switching. |
+| 3 | First Node in Pipeline | Any | Not supported. First node is foundational and switching may disrupt the pipeline. |
+| 4 | External Packages | Any | Not supported as they typically act as first nodes in the pipeline. |
+| 5 | Functional Packages | Any | Not supported due to column re-sync behavior which may cause schema inconsistencies. |
+| 6 | Dynamic Dimension / LRV | Any | System columns must be manually dropped before redeployment. |
+| 7 | Any | Any Other | After performing node switching, the `Create/Run` in Workspace browser may not work as expected due to changes in the node’s materialization type. |
+| 8 | Table(Data Profiling) | Table | This may result in ALTER failure unless latest package is used(with system column removal support)**(Pending Release)** |
+| 9 | Any | Any Stream-based Node (Stream, Stream & I/M, Delta Merge, or Directory Stream) | When switching to a Stream-based node, do not select **'Create At Existing Stream'** from the Redeployment Behavior; this causes deployment errors. Use **'Create or Replace'** or **'Create If Not Exists'**. |
+| 10 | Stream | Any Other (and vice versa) | Snowflake CDC metadata columns (`METADATA$ACTION`, `METADATA$ISUPDATE`, `METADATA$ROW_ID`) are not automatically managed. They are neither removed nor added when there's a node type switch |
+
+--------------
 
 ### Code
 
