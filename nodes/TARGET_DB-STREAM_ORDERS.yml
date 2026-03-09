@@ -3,16 +3,22 @@ id: 4c1a0f27-3896-44f9-b7c2-e440594825e4
 name: STREAM_ORDERS
 operation:
   config:
-    appendOnly: false
-    initialRows: true
-    redeploymentBehavior: Create or Replace
-    sourceType: Table
+    batchLoad: false
+    batchSize: 0
+    incColumn:
+      columnCounter: ae860f4c-36b0-40d8-8b27-cc1ccf86390a
+      stepCounter: 4c1a0f27-3896-44f9-b7c2-e440594825e4
+    joinKeyColumnName: ORDER_KEY
+    mappingID: SOURCE_DATA
+    persistColumnName: ORDER_NAME
+    persistTableLocation: TARGET_DB
+    persistTableName: PSTG_ORDERS
   database: ""
   deployEnabled: true
   description: ""
   isMultisource: false
   locationName: TARGET_DB
-  materializationType: stream
+  materializationType: table
   metadata:
     appliedNodeTests: []
     columns:
@@ -72,57 +78,6 @@ operation:
               - columnCounter: 6f62583c-ee6d-4c99-9e0c-fb317162c205
                 stepCounter: fe0fd1e9-59a5-4651-9e65-f495e030b7ba
             transform: ""
-      - acceptedValues:
-          strictMatch: true
-          values: []
-        appliedColumnTests: {}
-        columnReference:
-          columnCounter: bc052b6e-3e89-434c-ab41-a7050021825b
-          stepCounter: 4c1a0f27-3896-44f9-b7c2-e440594825e4
-        config: {}
-        dataType: STRING
-        defaultValue: ""
-        description: ""
-        metadataAction: true
-        name: METADATA$ACTION
-        nullable: true
-        sourceColumnReferences:
-          - columnReferences: []
-            transform: ""
-      - acceptedValues:
-          strictMatch: true
-          values: []
-        appliedColumnTests: {}
-        columnReference:
-          columnCounter: cdaa47cf-006a-452d-ba0f-b36c8c24d112
-          stepCounter: 4c1a0f27-3896-44f9-b7c2-e440594825e4
-        config: {}
-        dataType: boolean
-        defaultValue: ""
-        description: ""
-        metadataIsUpdate: true
-        name: METADATA$ISUPDATE
-        nullable: true
-        sourceColumnReferences:
-          - columnReferences: []
-            transform: ""
-      - acceptedValues:
-          strictMatch: true
-          values: []
-        appliedColumnTests: {}
-        columnReference:
-          columnCounter: 15e3272b-945c-41b6-af0b-b87f84e66e2e
-          stepCounter: 4c1a0f27-3896-44f9-b7c2-e440594825e4
-        config: {}
-        dataType: STRING
-        defaultValue: ""
-        description: ""
-        metadataRowID: true
-        name: METADATA$ROW_ID
-        nullable: true
-        sourceColumnReferences:
-          - columnReferences: []
-            transform: ""
     cteString: ""
     enabledColumnTestIDs: []
     sourceMapping:
@@ -140,7 +95,7 @@ operation:
   name: STREAM_ORDERS
   overrideSQL: false
   schema: ""
-  sqlType: streams-and-tasks:::153
+  sqlType: "394"
   type: sql
   version: 1
 type: Node

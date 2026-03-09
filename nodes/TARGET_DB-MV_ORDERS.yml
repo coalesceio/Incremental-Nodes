@@ -3,22 +3,22 @@ id: a6328af7-c2b6-43e4-8b7b-24a57d3b7856
 name: MV_ORDERS
 operation:
   config:
-    clusterKey: false
-    clusterKeyConfig:
-      items:
-        - {}
-    clusterKeyConfigExpressions:
-      items:
-        - {}
-    clusterKeyExpressions: false
-    secureOption: false
-    selectDistinct: true
+    batchLoad: false
+    batchSize: 0
+    incColumn:
+      columnCounter: a7b89da9-b649-41e8-a9fd-8a165d1c0bb6
+      stepCounter: a6328af7-c2b6-43e4-8b7b-24a57d3b7856
+    joinKeyColumnName: ORDER_KEY
+    mappingID: SOURCE_DATA
+    persistColumnName: ORDER_NAME
+    persistTableLocation: TARGET_DB
+    persistTableName: PSTG_ORDERS
   database: ""
   deployEnabled: true
   description: ""
   isMultisource: false
   locationName: TARGET_DB
-  materializationType: Materialized View
+  materializationType: transient table
   metadata:
     appliedNodeTests: []
     columns:
@@ -95,7 +95,7 @@ operation:
   name: MV_ORDERS
   overrideSQL: false
   schema: ""
-  sqlType: materialized-view:::178
+  sqlType: "394"
   type: sql
   version: 1
 type: Node

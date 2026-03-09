@@ -3,46 +3,16 @@ id: eab02243-fbf9-43af-bf53-8a722f673d13
 name: CFCT_ORDERS
 operation:
   config:
-    changetracking: true
-    clusterKey: true
-    clusterKeyConfig:
-      items:
-        - columnName:
-            columnCounter: 00b32701-d1ce-40e2-aedb-c90a07c031cf
-            stepCounter: eab02243-fbf9-43af-bf53-8a722f673d13
-    clusterKeyConfigExpressions:
-      items:
-        - {}
-    clusterKeyExpressions: false
-    constraintsspec:
-      items:
-        - {}
-    datretention: ""
-    defaultcoallation: ""
-    eschemaevol: false
-    foreignk: false
-    foreignkeycon:
-      items:
-        - {}
-    groupByAll: false
-    inlineconst: false
-    insertStrategy: UNION
-    lastModifiedComparison: false
-    maxdataretention: ""
-    orderby: false
-    orderbycolumn:
-      items:
-        - {}
-    outlineconst: false
-    primary: false
-    primarykeycon:
-      items:
-        - {}
-    primarykeyname: ""
-    selectDistinct: false
-    testsEnabled: false
-    treatNullAsCurrentTimestamp: false
-    truncateBefore: true
+    batchLoad: false
+    batchSize: 0
+    incColumn:
+      columnCounter: d9a0a713-9ecb-42a9-b14f-af768eadf70f
+      stepCounter: eab02243-fbf9-43af-bf53-8a722f673d13
+    joinKeyColumnName: ORDER_KEY
+    mappingID: SOURCE_DATA
+    persistColumnName: ORDER_NAME
+    persistTableLocation: TARGET_DB
+    persistTableName: PSTG_ORDERS
   database: ""
   deployEnabled: true
   description: ""
@@ -125,7 +95,7 @@ operation:
   name: CFCT_ORDERS
   overrideSQL: false
   schema: ""
-  sqlType: create-or-alter-package:::534
+  sqlType: "394"
   type: sql
   version: 1
 type: Node

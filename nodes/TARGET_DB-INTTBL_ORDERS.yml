@@ -3,31 +3,22 @@ id: c787df20-3cd5-4d47-a337-bc46d1173871
 name: INTTBL_ORDERS
 operation:
   config:
-    autoRefresh: false
-    clusterKey: true
-    clusterKeyConfig:
-      items:
-        - columnName:
-            columnCounter: 05e662df-6a00-4518-9ec5-b21076ee273d
-            stepCounter: c787df20-3cd5-4d47-a337-bc46d1173871
-    clusterKeyConfigExpressions:
-      items:
-        - {}
-    clusterKeyExpressions: false
-    groupByAll: false
-    insertStrategy: UNION ALL
-    lagSpecification:
-      items:
-        - {}
-    selectDistinct: false
-    testsEnabled: false
-    warehouseName: dev_wh_xs
+    batchLoad: false
+    batchSize: 0
+    incColumn:
+      columnCounter: 51f1f581-03a0-4e6a-ada0-e098f3412475
+      stepCounter: c787df20-3cd5-4d47-a337-bc46d1173871
+    joinKeyColumnName: ORDER_KEY
+    mappingID: SOURCE_DATA
+    persistColumnName: ORDER_NAME
+    persistTableLocation: TARGET_DB
+    persistTableName: PSTG_ORDERS
   database: ""
   deployEnabled: true
   description: ""
   isMultisource: false
   locationName: TARGET_DB
-  materializationType: interactive table
+  materializationType: table
   metadata:
     appliedNodeTests: []
     columns:
@@ -104,7 +95,7 @@ operation:
   name: INTTBL_ORDERS
   overrideSQL: false
   schema: ""
-  sqlType: interactive-table:::602
+  sqlType: "394"
   type: sql
   version: 1
 type: Node

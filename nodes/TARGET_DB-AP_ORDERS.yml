@@ -3,53 +3,16 @@ id: ab589e20-7a36-4006-8a66-13b8d7c0048b
 name: AP_ORDERS
 operation:
   config:
-    capUpdate: false
-    clusterKey: false
-    clusterKeyConfig:
-      items:
-        - {}
-    clusterKeyConfigExpressions:
-      items:
-        - {}
-    clusterKeyExpressions: false
-    createas: table
-    devMode: false
-    dmlCol:
-      columnCounter: 644614b8-cd79-40c9-9926-fd0c31f9c4ed
+    batchLoad: false
+    batchSize: 0
+    incColumn:
+      columnCounter: d515f44d-f431-4fdd-8865-47e8ddfbe065
       stepCounter: ab589e20-7a36-4006-8a66-13b8d7c0048b
-    dmlDelete: D
-    dmlInsert: I
-    dmlUpdate: U
-    flagSrcStream: false
-    initialRows: true
-    insertOnly: false
-    orderBy:
-      items:
-        - colName:
-            columnCounter: e2c93e0b-ff56-4fe8-aaf7-650d0291d899
-            stepCounter: ab589e20-7a36-4006-8a66-13b8d7c0048b
-          sortOrd: desc
-    orderByDateTime:
-      items:
-        - {}
-    partitionBy:
-      items:
-        - partColName:
-            columnCounter: 4b76f0c7-99a8-47de-a953-d38c7bc09f78
-            stepCounter: ab589e20-7a36-4006-8a66-13b8d7c0048b
-    predTask: ""
-    recordVersioning: Datetime Column
-    redeploymentBehavior: Create or Replace
-    retainLastNonDeleteFlag: false
-    rootTask: ""
-    scheduleCRON: 5 0-23 * * * America/Los_Angeles
-    schedulePeriod: "60"
-    schedulePeriodOption: Minutes
-    schedulingMode: Warehouse Task
-    serverlessSize: MEDIUM
-    softDeleteFlag: false
-    sourceType: Table
-    whName: COMPUTE_WH
+    joinKeyColumnName: ORDER_KEY
+    mappingID: SOURCE_DATA
+    persistColumnName: ORDER_NAME
+    persistTableLocation: TARGET_DB
+    persistTableName: PSTG_ORDERS
   database: ""
   deployEnabled: true
   description: ""
@@ -115,23 +78,6 @@ operation:
               - columnCounter: 6f62583c-ee6d-4c99-9e0c-fb317162c205
                 stepCounter: fe0fd1e9-59a5-4651-9e65-f495e030b7ba
             transform: ""
-      - acceptedValues:
-          strictMatch: true
-          values: []
-        appliedColumnTests: {}
-        columnReference:
-          columnCounter: 080903c5-04b4-4db0-b756-eba068fe492a
-          stepCounter: ab589e20-7a36-4006-8a66-13b8d7c0048b
-        config: {}
-        dataType: timestamp
-        defaultValue: ""
-        description: ""
-        hmUpdTs: true
-        name: DM_UPDATE_TIMESTAMP
-        nullable: true
-        sourceColumnReferences:
-          - columnReferences: []
-            transform: current_timestamp::timestamp_ntz
     cteString: ""
     enabledColumnTestIDs: []
     sourceMapping:
@@ -149,7 +95,7 @@ operation:
   name: AP_ORDERS
   overrideSQL: false
   schema: ""
-  sqlType: deferred-merge:::300
+  sqlType: "394"
   type: sql
   version: 1
 type: Node

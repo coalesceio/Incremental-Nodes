@@ -3,51 +3,22 @@ id: 407b056a-27e1-4889-acf0-0b9169beb5da
 name: CSS_ORDERS
 operation:
   config:
-    allcol: false
-    attrcol:
-      items:
-        - acolname:
-            columnCounter: 7fef5a4e-2a47-49d0-83cd-b8c05aa72ef3
-            stepCounter: 407b056a-27e1-4889-acf0-0b9169beb5da
-    colpreview:
-      items:
-        - {}
-    createcortex: true
-    embmodel: ""
-    excss: false
-    filcrit:
-      items:
-        - {}
-    filtoggle: false
-    initialize: ON_CREATE
-    lagSpecification:
-      items:
-        - lagPeriod: Minutes
-          lagValue: "60"
-    locCSS: ""
-    lopt: and
-    mulfilcon: false
-    namCSS: ""
-    numboost: false
-    numericboost:
-      items:
-        - {}
-    query1: ""
-    querycortex: false
-    searchcol:
-      columnCounter: 7fef5a4e-2a47-49d0-83cd-b8c05aa72ef3
+    batchLoad: false
+    batchSize: 0
+    incColumn:
+      columnCounter: 70de1ebc-08f5-4131-90f3-8b774e4a251e
       stepCounter: 407b056a-27e1-4889-acf0-0b9169beb5da
-    timdec: false
-    timedecay:
-      items:
-        - {}
-    warehouseName: COMPUTE_WH
+    joinKeyColumnName: ORDER_KEY
+    mappingID: SOURCE_DATA
+    persistColumnName: ORDER_NAME
+    persistTableLocation: TARGET_DB
+    persistTableName: PSTG_ORDERS
   database: ""
   deployEnabled: true
   description: ""
   isMultisource: false
   locationName: TARGET_DB
-  materializationType: cortex search service
+  materializationType: table
   metadata:
     appliedNodeTests: []
     columns:
@@ -124,7 +95,7 @@ operation:
   name: CSS_ORDERS
   overrideSQL: false
   schema: ""
-  sqlType: cortex:::499
+  sqlType: "394"
   type: sql
   version: 1
 type: Node

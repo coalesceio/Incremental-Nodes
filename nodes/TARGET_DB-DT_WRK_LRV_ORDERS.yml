@@ -3,61 +3,22 @@ id: b29c97d0-04ba-4788-922b-0cbe4d708091
 name: DT_WRK_LRV_ORDERS
 operation:
   config:
-    advanceWarehouse: false
-    backfill: false
-    backfillSource: ""
-    backfillSourceSchema: ""
-    clusterKey: false
-    clusterKeyConfig:
-      items:
-        - {}
-    clusterKeyConfigExpressions:
-      items:
-        - {}
-    clusterKeyExpressions: false
-    cpygrants: false
-    downstreamOption: false
-    immutabilityConstraint: false
-    immutableExpression: ""
-    initialize: ON_CREATE
-    initializeWarehouseSize: ""
-    lagSpecification:
-      items:
-        - lagPeriod: Minutes
-          lagValue: "60"
-    orderBy:
-      items:
-        - colName:
-            columnCounter: 6878abb3-817e-4bbb-9b44-65fb01782488
-            stepCounter: b29c97d0-04ba-4788-922b-0cbe4d708091
-    orderByDateTime:
-      items:
-        - {}
-    orderseq:
-      items:
-        - {}
-    partitionBy:
-      items:
-        - partColName:
-            columnCounter: aa375f5f-3744-4ef2-bb66-0d1de5b7f0f6
-            stepCounter: b29c97d0-04ba-4788-922b-0cbe4d708091
-    recordVersioning: Datetime Column
-    recordorderBy:
-      items:
-        - {}
-    refreshWarehouseSize: ""
-    refresh_mode: AUTO
-    timeTravel: false
-    timeTravelreference: ""
-    timeTraveltype: ""
-    timeTravelvalue: ""
-    warehouseName: COMPUTE_WH
+    batchLoad: false
+    batchSize: 0
+    incColumn:
+      columnCounter: 88e37a73-0346-4b1b-ae31-155baf85dfac
+      stepCounter: b29c97d0-04ba-4788-922b-0cbe4d708091
+    joinKeyColumnName: ORDER_KEY
+    mappingID: SOURCE_DATA
+    persistColumnName: ORDER_NAME
+    persistTableLocation: TARGET_DB
+    persistTableName: PSTG_ORDERS
   database: ""
   deployEnabled: true
   description: ""
   isMultisource: false
   locationName: TARGET_DB
-  materializationType: dynamic table
+  materializationType: table
   metadata:
     appliedNodeTests: []
     columns:
@@ -117,23 +78,6 @@ operation:
               - columnCounter: 6f62583c-ee6d-4c99-9e0c-fb317162c205
                 stepCounter: fe0fd1e9-59a5-4651-9e65-f495e030b7ba
             transform: ""
-      - acceptedValues:
-          strictMatch: true
-          values: []
-        appliedColumnTests: {}
-        columnReference:
-          columnCounter: c18d594a-2337-49f2-a8fb-949ef3e44036
-          stepCounter: b29c97d0-04ba-4788-922b-0cbe4d708091
-        config: {}
-        dataType: TIMESTAMP
-        defaultValue: ""
-        description: ""
-        name: RECORD_CREATED_DATE
-        nullable: true
-        recordCreated: true
-        sourceColumnReferences:
-          - columnReferences: []
-            transform: FIRST_VALUE({%if config.recordVersioning not in ('Integer Column')%}{{order_by_col()}}{%else%} {{order_by_col_int()}}{%endif%}) OVER (PARTITION BY {{ partition_by() }} ORDER BY {{ order_by_col() }} asc)
     cteString: ""
     enabledColumnTestIDs: []
     sourceMapping:
@@ -151,7 +95,7 @@ operation:
   name: DT_WRK_LRV_ORDERS
   overrideSQL: false
   schema: ""
-  sqlType: dynamic-tables:::351
+  sqlType: "394"
   type: sql
   version: 1
 type: Node
