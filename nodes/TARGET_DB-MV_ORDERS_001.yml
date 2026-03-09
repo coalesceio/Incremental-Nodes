@@ -1,28 +1,31 @@
 fileVersion: 1
-id: 114f9882-46c0-41eb-b290-c58357879291
-name: CFCT_ORDERS_01
+id: b11ade61-d374-45e9-b638-d7c3f3f2681e
+name: MV_ORDERS_001
 operation:
   config:
-    insertStrategy: UNION
-    persistTableLocation: "ex: TARGET"
-    persistTableName: "ex: DIM_ORDERS"
-    refTable: false
-    srcTable: false
-    suffixlength: ex:1
-    testsEnabled: false
+    clusterKey: false
+    clusterKeyConfig:
+      items:
+        - {}
+    clusterKeyConfigExpressions:
+      items:
+        - {}
+    clusterKeyExpressions: false
+    secureOption: false
+    selectDistinct: true
   database: ""
   deployEnabled: true
   description: ""
   isMultisource: false
   locationName: TARGET_DB
-  materializationType: run view
+  materializationType: Materialized View
   metadata:
     appliedNodeTests: []
     columns:
       - appliedColumnTests: {}
         columnReference:
-          columnCounter: 121b11fe-5a0c-48da-8d10-f0710fb3d928
-          stepCounter: 114f9882-46c0-41eb-b290-c58357879291
+          columnCounter: 0d3a4cbc-b22a-45b4-8f2f-75b8a8212e3a
+          stepCounter: b11ade61-d374-45e9-b638-d7c3f3f2681e
         config: {}
         dataType: NUMBER(38,0)
         description: ""
@@ -35,8 +38,8 @@ operation:
             transform: ""
       - appliedColumnTests: {}
         columnReference:
-          columnCounter: c557e04d-6689-4834-848f-80cb9e97d996
-          stepCounter: 114f9882-46c0-41eb-b290-c58357879291
+          columnCounter: 7e1a6953-b5c3-419f-80bf-c0883df717c0
+          stepCounter: b11ade61-d374-45e9-b638-d7c3f3f2681e
         config: {}
         dataType: VARCHAR(25)
         description: ""
@@ -49,8 +52,8 @@ operation:
             transform: ""
       - appliedColumnTests: {}
         columnReference:
-          columnCounter: ee8aa723-559a-4b42-b3d4-d5144718e780
-          stepCounter: 114f9882-46c0-41eb-b290-c58357879291
+          columnCounter: 571aad89-8913-4f21-a3cd-c37345a70063
+          stepCounter: b11ade61-d374-45e9-b638-d7c3f3f2681e
         config: {}
         dataType: DATE
         description: ""
@@ -63,8 +66,8 @@ operation:
             transform: ""
       - appliedColumnTests: {}
         columnReference:
-          columnCounter: 131dac85-2443-4842-8844-067ed4576b87
-          stepCounter: 114f9882-46c0-41eb-b290-c58357879291
+          columnCounter: 59045c35-be08-4459-a15c-c3134d859e3d
+          stepCounter: b11ade61-d374-45e9-b638-d7c3f3f2681e
         config: {}
         dataType: TIMESTAMP_NTZ(9)
         description: ""
@@ -81,27 +84,18 @@ operation:
       - aliases:
           ORDERS: fe0fd1e9-59a5-4651-9e65-f495e030b7ba
         customSQL:
-          customSQL: |-
-            {{ stage('Override Create SQL', deploy_phase_override="create") }}
-            	CREATE OR REPLACE VIEW {{ ref('TARGET_DB', 'CFCT_ORDERS_01')}} AS (
-            		SELECT 
-             "ORDER_KEY" AS "ORDER_KEY",
-             "ORDER_NAME" AS "ORDER_NAME",
-             "ORDER_DATE" AS "ORDER_DATE",
-             "CREATED_AT" AS "CREATED_AT"
-             FROM {{ ref('SOURCE_DATA', 'ORDERS') }}
-            	)
+          customSQL: ""
         dependencies:
           - locationName: SOURCE_DATA
             nodeName: ORDERS
         join:
           joinCondition: FROM {{ ref('SOURCE_DATA', 'ORDERS') }} "ORDERS"
-        name: CFCT_ORDERS_01
+        name: MV_ORDERS_001
         noLinkRefs: []
-  name: CFCT_ORDERS_01
-  overrideSQL: true
+  name: MV_ORDERS_001
+  overrideSQL: false
   schema: ""
-  sqlType: "281"
+  sqlType: materialized-view:::178
   type: sql
   version: 1
 type: Node
