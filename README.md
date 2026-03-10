@@ -683,9 +683,11 @@ If a Grouped Incremental load node of materialization type view is deleted from 
 #### Node Type Switching Logic
 | Current MaterializationType | Desired MaterializationType | Stage |
 |------------|--------|-------|
-| Grouped Incremental Load | Grouped Incremental Load | Follows existing redeployment stages |
+| Table | Table | Follows existing redeployment stages |
+| Transient Table | Transient Table | Follows existing redeployment stages |
 | Run View |Run View | Follows existing redeployment stages |
-| Any Other | Grouped Incremental Load | 1. Warning (if applicable)<br/>2. Drop <br/> 3. Create |
+| Any Other | Table | 1. Warning (if applicable)<br/>2. Drop <br/> 3. Create |
+| Any Other | Transient Table | 1. Warning (if applicable)<br/>2. Drop <br/> 3. Create |
 | Any Other | Run View | 1. Warning (if applicable)<br/>2. Drop <br/> 3. Create |
 
 
