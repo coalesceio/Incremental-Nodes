@@ -62,8 +62,8 @@ The Coalesce Incremental load node is a versatile node that allows you to develo
 |-------------|-----------------|
 | **Storage Location** | Storage Location where the Incremental node will be created. |
 | **Node Type** | Name of template used to create node objects. |
-| **Description** | A description of the node's purpose. |
-| **Deploy Enabled** | - If TRUE the node will be deployed / redeployed when changes are detected.<br/>- If FALSE the node will not be deployed or will be dropped during redeployment. |
+| **Description** | A description of the Node's purpose. |
+| **Deploy Enabled** | - If TRUE the node will be deployed or redeployed when changes are detected.<br/>- If FALSE the node will not be deployed or will be dropped during redeployment. |
 
 #### Incremental Load Options
 
@@ -155,7 +155,7 @@ Node Type switching is supported starting from Coalesce version **7.28+**.
 
 From this version onward, a node’s materialization type can be switched from one supported type to another, subject to certain limitations.
 
-For more info click here - [Node Type Switching Logic and Limitations](#node-type-switching-logic)
+For more information, see [Node Type Switching Logic and Limitations](#node-type-switching-logic)
 
 ### Incremental Load Undeployment
 
@@ -210,8 +210,8 @@ The Coalesce "Test Passed Records" (GR) node is a specialized filtering node typ
 |-------------|-----------------|
 | **Storage Location** | Storage Location where the test passed records node will be created. |
 | **Node Type** | Name of template used to create node objects. |
-| **Description** | A description of the node's purpose. |
-| **Deploy Enabled** | - If TRUE the node will be deployed / redeployed when changes are detected.<br/>- If FALSE the node will not be deployed or will be dropped during redeployment. |
+| **Description** | A description of the Node's purpose. |
+| **Deploy Enabled** | - If TRUE the node will be deployed or redeployed when changes are detected.<br/>- If FALSE the node will not be deployed or will be dropped during redeployment. |
 
 #### Test Passed records Options
 
@@ -256,8 +256,8 @@ The Coalesce "Test Failed Records" node acts as a Quarantine and Error-Capture c
 |-------------|-----------------|
 | **Storage Location** | Storage Location where the test passed records node will be created. |
 | **Node Type** | Name of template used to create node objects. |
-| **Description** | A description of the node's purpose. |
-| **Deploy Enabled** | - If TRUE the node will be deployed / redeployed when changes are detected.<br/>- If FALSE the node will not be deployed or will be dropped during redeployment. |
+| **Description** | A description of the Node's purpose. |
+| **Deploy Enabled** | - If TRUE the node will be deployed or redeployed when changes are detected.<br/>- If FALSE the node will not be deployed or will be dropped during redeployment. |
 
 #### Test Failed records Options
 
@@ -286,8 +286,8 @@ It creates "load buckets" dynamically based on a selection of table keys and the
 |-------------|-----------------|
 | **Storage Location** | Storage Location where the WORK will be created. |
 | **Node Type** | Name of template used to create node objects. |
-| **Description** | A description of the node's purpose. |
-| **Deploy Enabled** | - If TRUE the node will be deployed / redeployed when changes are detected.<br/>- If FALSE the node will not be deployed or will be dropped during redeployment. |
+| **Description** | A description of the Node's purpose. |
+| **Deploy Enabled** | - If TRUE the node will be deployed or redeployed when changes are detected.<br/>- If FALSE the node will not be deployed or will be dropped during redeployment. |
 
 #### Looped Load Options
 
@@ -382,7 +382,7 @@ Node Type switching is supported starting from Coalesce version **7.28+**.
 
 From this version onward, a node’s materialization type can be switched from one supported type to another, subject to certain limitations.
 
-For more info click here - [Node Type Switching Logic and Limitations](#node-type-switching-logic)
+For more information, see [Node Type Switching Logic and Limitations](#node-type-switching-logic)
 
 ### Looped Load Undeployment
 
@@ -419,8 +419,8 @@ The Coalesce Run View is a variant of the basic View node type. In contrast to t
 |-------------|-----------------|
 | **Storage Location** | Storage Location where the WORK will be created. |
 | **Node Type** | Name of template used to create node objects. |
-| **Description** | A description of the node's purpose. |
-| **Deploy Enabled** | - If TRUE the node will be deployed / redeployed when changes are detected.<br/>- If FALSE the node will not be deployed or will be dropped during redeployment. |
+| **Description** | A description of the Node's purpose. |
+| **Deploy Enabled** | - If TRUE the node will be deployed or redeployed when changes are detected.<br/>- If FALSE the node will not be deployed or will be dropped during redeployment. |
 
 #### Run View Options
 
@@ -546,7 +546,7 @@ Node Type switching is supported starting from Coalesce version **7.28+**.
 
 From this version onward, a node’s materialization type can be switched from one supported type to another, subject to certain limitations.
 
-For more info click here - [Node Type Switching Logic and Limitations](#node-type-switching-logic)
+For more information, see [Node Type Switching Logic and Limitations](#node-type-switching-logic)
 
 ### Run View Undeployment
 
@@ -571,8 +571,8 @@ The Coalesce Grouped Incremental load node is a versatile node that allows you t
 |-------------|-----------------|
 | **Storage Location** | Storage Location where the WORK will be created. |
 | **Node Type** | Name of template used to create node objects. |
-| **Description** | A description of the node's purpose. |
-| **Deploy Enabled** | - If TRUE the node will be deployed / redeployed when changes are detected.<br/>- If FALSE the node will not be deployed or will be dropped during redeployment. |
+| **Description** | A description of the Node's purpose. |
+| **Deploy Enabled** | - If TRUE the node will be deployed or redeployed when changes are detected.<br/>- If FALSE the node will not be deployed or will be dropped during redeployment. |
 
 #### Grouped Incremental Load Options
 
@@ -655,7 +655,7 @@ The following stages are executed:
 
 ### Redeployment with no changes 
 
-If the nodes are redeployed with no changes compared to previous deployment,then no stages are executed
+If the nodes are redeployed with no changes compared to previous deployment, then no stages are executed
 
 #### Node Type Switching
 
@@ -663,7 +663,7 @@ Node Type switching is supported starting from Coalesce version **7.28+**.
 
 From this version onward, a node’s materialization type can be switched from one supported type to another, subject to certain limitations.
 
-For more info click here - [Node Type Switching Logic and Limitations](#node-type-switching-logic)
+For more information, see [Node Type Switching Logic and Limitations](#node-type-switching-logic)
 
 ### Grouped Incremental Load Undeployment
 
