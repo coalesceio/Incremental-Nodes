@@ -93,7 +93,7 @@ The Coalesce Incremental load node is a versatile node that allows you to develo
 9. Remove the existing (basic) join and use the 'Copy To Editor' to add the new join, including sub-select.
 10. Re-run the Incremental UDN.
 
-## Incremental Load-With data quality Example Workflow
+## Incremental Load-With Data Quality Example WORkflow
 
 1. Add a source node.
 2. Add the Incremental UDN.
@@ -176,17 +176,17 @@ The stage executed:
 |----------|-----------------|
 | **Delete View** | Drops the existing stage view from target environment. |
 
-## Test Passed records
+## Test Passed RecORds
 
 The Coalesce "Test Passed Records" (GR) node is a specialized filtering node type designed to extract "clean" data from a source that has already undergone Data Quality (DQ) processing in Incremental node. It serves as a gatekeeper, ensuring only records that meet your business standards move further downstream.
 
-## Key-functions
+## Key-Functions
 
 * **Quality Filtering:** By default, it acts as a simple filter that only selects records where the QUALITY_FLAG is set to 'G' (Good/Passed).
 * **Duplicate Salvaging:** Unlike a standard filter, it provides logic to "salvage" duplicated records. If a record is flagged as a duplicate, you can configure the node to keep either the First Occurrence or the Last Occurrence based on a chosen timestamp column (timcol).
 * **Always use on an incremental node with data quality handled**
 
-## Test passed records Example Workflow
+## Test Passed RecORds Example WORkflow
 
 1. Add a source node.
 2. Add the Incremental UDN.
@@ -204,7 +204,7 @@ The Coalesce "Test Passed Records" (GR) node is a specialized filtering node typ
 * [Node Properties](#test-passed-records-properties)
 * [Options](#test-passed-records-options)
 
-#### Test Passed records Properties
+#### Test Passed RecORds Properties
 
 | **Property** | **Description** |
 |-------------|-----------------|
@@ -213,7 +213,7 @@ The Coalesce "Test Passed Records" (GR) node is a specialized filtering node typ
 | **Description** | A description of the Node's purpose. |
 | **Deploy Enabled** | - If TRUE the node will be deployed or redeployed when changes are detected.<br/>- If FALSE the node will not be deployed or will be dropped during redeployment. |
 
-#### Test Passed records Options
+#### Test Passed RecORds Options
 
 | **Options** | **Description** |
 |-----------|-----------------|
@@ -221,18 +221,18 @@ The Coalesce "Test Passed Records" (GR) node is a specialized filtering node typ
 | **First Occurence of Duplicate considered as valid**|When enabled,timestamp column should be provided to add the first occurence of duplicate as valid record based on timestamp column|
 | **Last Occurence of Duplicate considered as valid**|When enabled,timestamp column should be provided to add the last occurence of duplicate as valid record based on timestamp column|
 
-## Test Failed records
+## Test Failed RecORds
 
 The Coalesce "Test Failed Records" node acts as a Quarantine and Error-Capture component. This node isolates all records that failed your Data Quality (DQ) tests for auditing and remediation.
 
-## Key-functions
+## Key-Functions
 
 * **Error Isolation:** It filters the source to extract only records where the QUALITY_FLAG is 'B', ensuring that any record failing your Data Quality (DQ) standards is captured for auditing. This ensures that bad quality data is kept separate from your production analytics.
 * **2.Duplicate Capture:** If deduplication logic is enabled (First or Last Occurrence), this node specifically captures the rejected duplicates, and remediation.
 
 * **Always use on an incremental node with data quality handled**
   
-## Test failed records Example Workflow
+## Test Failed RecORds Example WORkflow
 
 1. Add a source node.
 2. Add the Incremental UDN.
@@ -250,7 +250,7 @@ The Coalesce "Test Failed Records" node acts as a Quarantine and Error-Capture c
 * [Node Properties](#test-failed-records-properties)
 * [Options](#test-failed-records-options)
 
-#### Test Failed records Properties
+#### Test Failed RecORds Properties
 
 | **Property** | **Description** |
 |-------------|-----------------|
@@ -259,7 +259,7 @@ The Coalesce "Test Failed Records" node acts as a Quarantine and Error-Capture c
 | **Description** | A description of the Node's purpose. |
 | **Deploy Enabled** | - If TRUE the node will be deployed or redeployed when changes are detected.<br/>- If FALSE the node will not be deployed or will be dropped during redeployment. |
 
-#### Test Failed records Options
+#### Test Failed RecORds Options
 
 | **Options** | **Description** |
 |-----------|-----------------|
@@ -653,7 +653,7 @@ The following stages are executed:
 | **Swap cloned Table** | Upon successful completion of all updates, the clone replaces the main table ensuring that no data is lost. |
 | **Delete Table** | Drops the internal table. |
 
-### Redeployment with no changes 
+### Redeployment With No Changes 
 
 If the nodes are redeployed with no changes compared to previous deployment, then no stages are executed
 
