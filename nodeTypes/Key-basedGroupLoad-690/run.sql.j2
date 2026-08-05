@@ -111,8 +111,13 @@ Coalesce permits you to copy and modify this script for the purposes of using wi
                 %}
                 {%- if not ns.first %} UNION {% endif %}
                 SELECT DISTINCT
-                {%- for col in bk.columns if col not in targetGrainDetails %}
-                    "{{ dep.name }}"."{{ col }}" AS BUSINESS_KEYS
+                {%- for col in bk.columns %}
+                    {%- if col not in targetGrainDetails %}
+                        "{{ dep.name }}"."{{ col }}" AS BUSINESS_KEYS
+                    {%- else %}
+                    {%- if not ns.first %}, {% endif %}
+                        "{{ dep.name }}"."{{ col }}" AS "{{ col }}"
+                    {% endif %}
                     {%- if not loop.last %}, {% endif %}
                 {%- endfor %}
                 FROM {{ ref(dep.location.name, dep.name) }} "{{ dep.name }}"
@@ -183,14 +188,16 @@ Coalesce permits you to copy and modify this script for the purposes of using wi
                     SELECT 1
                     FROM TARGETGRAIN_SPINE TS
                     WHERE
-                    {%- for col in bk.columns if col in businessKeyList %}
-                        TS.BUSINESS_KEYS = "{{ dep.name }}"."{{ col }}"
+                    {%- for col in bk.columns %}
+                        {%- if col in businessKeyList %}
+                            TS.BUSINESS_KEYS = "{{ dep.name }}"."{{ col }}"
+                        {%- else %}
+                            TS."{{ col }}" = "{{ dep.name }}"."{{ col }}"
+                        {%- endif %}
+                        {%- if not loop.last %} AND {% endif %}
                     {%- endfor %}
                 )
             {%- endif %}
-            {%- for col in bk.columns if col in targetGrainDetails %}
-                AND "{{ dep.name }}"."{{ col }}" IS NOT NULL
-            {%- endfor %}
             {%- if not loop.last %} UNION {% endif %}
         {%- endfor %}
     ),
@@ -253,6 +260,8 @@ WHERE
         {%- endif %}
     {%- endif %}
 {%- endfor %}
+AND TARGET."{{ get_value_by_column_attribute("isSpineBusinessKeys") }}"
+IN ( SELECT BUSINESS_KEYS FROM BUSINESSKEY_SPINE )
 
 {{ stage('Load ' + node.materializationType + ' Using SCD1') }}
 MERGE INTO {{ ref_no_link(node.location.name, node.name) }} TARGET
