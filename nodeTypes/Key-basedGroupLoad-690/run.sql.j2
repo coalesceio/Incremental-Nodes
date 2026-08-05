@@ -236,6 +236,23 @@ Coalesce permits you to copy and modify this script for the purposes of using wi
     )
 {%- endset %}
 
+{{ stage('Purge Incomplete Grain Rows') }}
+-- Deletes incomplete target-grain records once a fully populated
+-- target-grain record exists for the same business key.
+DELETE FROM {{ ref_no_link(node.location.name, node.name) }} TARGET
+WHERE
+{%- set ns = namespace(first = true) %}
+{%- for col in sources[0].columns if not col.isSurrogateKey %}
+    {%- set transform = get_source_transform(col) %}
+    {%- if transform %}
+        {%- set parts = transform.split('.') %}
+        {%- if parts|length > 1 and parts[1].replace('"', '') in targetGrainDetails %}
+            {%- if not ns.first %} OR {% endif %}
+            TARGET."{{ col.name }}" IS NULL
+            {%- set ns.first = false %}
+        {%- endif %}
+    {%- endif %}
+{%- endfor %}
 
 {{ stage('Load ' + node.materializationType + ' Using SCD1') }}
 MERGE INTO {{ ref_no_link(node.location.name, node.name) }} TARGET
@@ -348,63 +365,9 @@ INSERT
 VALUES
 (
 {%- for col in sources[0].columns if not col.isSurrogateKey %}
-    {%- if col.isSystemCurrentFlag %}
-        CASE
-            WHEN
-            {%- set ns = namespace(first = true) %}
-            {%- for col in sources[0].columns if not col.isSurrogateKey %}
-                {%- set transform = get_source_transform(col) %}
-                {%- if transform %}
-                    {%- set parts = transform.split('.') %}
-                    {%- if parts|length > 1 and parts[1].replace('"', '') in targetGrainDetails %}
-                        {%- if not ns.first %} AND {% endif %}
-                        SRC."{{ col.name }}" IS NOT NULL
-                        {%- set ns.first = false %}
-                    {%- endif %}
-                {%- endif %}
-            {%- endfor %}
-            THEN 'Y'
-            ELSE 'N'
-        END
-    {%- else %}
-        SRC."{{ col.name }}"
-    {%- endif %}
+    SRC."{{ col.name }}"
     {%- if not loop.last %}, {% endif %}
 {%- endfor %}
-)
-
-{{ stage('Purge Incomplete Grain Rows') }}
--- Deletes incomplete target-grain records once a fully populated
--- target-grain record exists for the same business key.
-DELETE FROM {{ ref_no_link(node.location.name, node.name) }} TARGET
-WHERE EXISTS (
-    SELECT 1
-    FROM {{ ref_no_link(node.location.name, node.name) }} X
-    WHERE X."{{ get_value_by_column_attribute('isSpineBusinessKeys') }}" =
-          TARGET."{{ get_value_by_column_attribute('isSpineBusinessKeys') }}"
-    {%- for col in sources[0].columns if not col.isSurrogateKey %}
-        {%- set transform = get_source_transform(col) %}
-        {%- if transform %}
-            {%- set parts = transform.split('.') %}
-            {%- if parts|length > 1 and parts[1].replace('"', '') in targetGrainDetails %}
-                AND X."{{ col.name }}" IS NOT NULL
-            {%- endif %}
-        {%- endif %}
-    {%- endfor %}
-)
-AND (
-    {%- set ns = namespace(first = true) %}
-    {%- for col in sources[0].columns if not col.isSurrogateKey %}
-        {%- set transform = get_source_transform(col) %}
-        {%- if transform %}
-            {%- set parts = transform.split('.') %}
-            {%- if parts|length > 1 and parts[1].replace('"', '') in targetGrainDetails %}
-                {%- if not ns.first %} OR {% endif %}
-                TARGET."{{ col.name }}" IS NULL
-                {%- set ns.first = false %}
-            {%- endif %}
-        {%- endif %}
-    {%- endfor %}
 )
 
 {# ================Loading Log Table================== #}
