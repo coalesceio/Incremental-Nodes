@@ -59,7 +59,7 @@ Coalesce permits you to copy and modify this script for the purposes of using wi
                                         | list
 -%}
 
-{%- set cteString %}
+{%- set businesSpineCteString %}
     {{
         "-- BUSINESSKEY_SPINE:
         -- Builds a consolidated list of business keys impacted since the last load by
@@ -91,7 +91,12 @@ Coalesce permits you to copy and modify this script for the purposes of using wi
             {%- set ns.first = false %}
             {%- endif %}
         {%- endfor %}
-    ),
+    )
+{%- endset %}
+
+{%- set mergeCteString %}
+
+    {{ businesSpineCteString }},
     {{
     "-- TARGETGRAIN_SPINE:
     -- Retrieves target-grain records corresponding to the changed business keys.
@@ -255,19 +260,25 @@ WHERE
         {%- set parts = transform.split('.') %}
         {%- if parts|length > 1 and parts[1].replace('"', '') in targetGrainDetails %}
             {%- if not ns.first %} OR {% endif %}
+            {%- if ns.first %} ( {% endif %}
             TARGET."{{ col.name }}" IS NULL
             {%- set ns.first = false %}
         {%- endif %}
     {%- endif %}
 {%- endfor %}
+{%- if not ns.first %} ) {% endif %}
 AND TARGET."{{ get_value_by_column_attribute("isSpineBusinessKeys") }}"
-IN ( SELECT BUSINESS_KEYS FROM BUSINESSKEY_SPINE )
+IN 
+( 
+    {{ businesSpineCteString }}
+    SELECT BUSINESS_KEYS FROM BUSINESSKEY_SPINE
+)
 
 {{ stage('Load ' + node.materializationType + ' Using SCD1') }}
 MERGE INTO {{ ref_no_link(node.location.name, node.name) }} TARGET
 USING
 (
-    {{ cteString }}
+    {{ mergeCteString }}
     (
         SELECT
         {%- for col in columns if not col.isSurrogateKey %}
