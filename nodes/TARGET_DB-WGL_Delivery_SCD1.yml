@@ -1,0 +1,352 @@
+fileVersion: 1
+id: 723554c9-db9a-44ac-b656-f3e99b1ff319
+name: WGL_Delivery_SCD1
+operation:
+  config:
+    businessKeyDetails:
+      items:
+        - columnName: VBELN
+    deleteColumn:
+      columnCounter: 718afaa7-dd0c-41c1-a827-2e5e873bc8b0
+      stepCounter: 723554c9-db9a-44ac-b656-f3e99b1ff319
+    deleteStrategy: HARD DELETE
+    deleteValue: "1"
+    lastModifiedColumn:
+      columnCounter: 8405dc23-0ce5-41f9-9b5b-f94c57570add
+      stepCounter: 723554c9-db9a-44ac-b656-f3e99b1ff319
+    logStorageLocation: TARGET_DB
+    logTable: LOG_SAP_DETAILS_HISTORY
+    logWaterMarkColumn: MAX_CHANGE_TIME
+    type2Dimension: false
+  database: ""
+  deployEnabled: true
+  description: ""
+  isMultisource: false
+  locationName: TARGET_DB
+  materializationType: table
+  metadata:
+    appliedNodeTests: []
+    columns:
+      - acceptedValues:
+          strictMatch: true
+          values: []
+        appliedColumnTests: {}
+        columnReference:
+          columnCounter: a88c1aca-1f82-4d4a-81a1-74a1ba598c7a
+          stepCounter: 723554c9-db9a-44ac-b656-f3e99b1ff319
+        config: {}
+        dataType: NUMBER
+        defaultValue: ""
+        description: ""
+        isSurrogateKey: true
+        name: WGL_LIPS_LIKP_VBUP_VBUK_KEY
+        nullable: true
+        sourceColumnReferences:
+          - columnReferences: []
+            transform: ""
+      - acceptedValues:
+          strictMatch: true
+          values: []
+        appliedColumnTests: {}
+        columnReference:
+          columnCounter: 9c1d9f63-3858-425e-a2fb-ff92c0deaf1f
+          stepCounter: 723554c9-db9a-44ac-b656-f3e99b1ff319
+        config: {}
+        dataType: VARCHAR(10)
+        defaultValue: ""
+        description: ""
+        isSpineBusinessKeys: true
+        name: BUSINESS_KEYS
+        nullable: true
+        sourceColumnReferences:
+          - columnReferences: []
+            transform: ""
+      - appliedColumnTests: {}
+        columnReference:
+          columnCounter: 18a80035-405b-46ad-b820-dbb6964c17bc
+          stepCounter: 723554c9-db9a-44ac-b656-f3e99b1ff319
+        config:
+          targetGrainDetails: true
+        dataType: NUMBER(38,0)
+        description: ""
+        name: POSNR
+        nullable: true
+        sourceColumnReferences:
+          - columnReferences:
+              - columnCounter: 43a4e3cd-7edc-464d-91e5-867039abba88
+                stepCounter: 1e5a9357-87b8-4296-9e26-4915e1c7249f
+            transform: ""
+      - appliedColumnTests: {}
+        columnReference:
+          columnCounter: 2c288f5a-b402-4d5a-a4a1-eed768351e2e
+          stepCounter: 723554c9-db9a-44ac-b656-f3e99b1ff319
+        config: {}
+        dataType: VARCHAR(4)
+        description: ""
+        name: PSTYV
+        nullable: true
+        sourceColumnReferences:
+          - columnReferences:
+              - columnCounter: 9b6595f8-26dd-404e-b7cd-782cd0b3390b
+                stepCounter: 1e5a9357-87b8-4296-9e26-4915e1c7249f
+            transform: ""
+      - appliedColumnTests: {}
+        columnReference:
+          columnCounter: b54db918-252c-4ef0-873f-7b2e6efd2f7d
+          stepCounter: 723554c9-db9a-44ac-b656-f3e99b1ff319
+        config: {}
+        dataType: VARCHAR(12)
+        description: ""
+        name: ERNAM
+        nullable: true
+        sourceColumnReferences:
+          - columnReferences:
+              - columnCounter: c5b3d0ad-55a1-4d71-b30e-33171dcb1ffd
+                stepCounter: 1e5a9357-87b8-4296-9e26-4915e1c7249f
+            transform: ""
+      - appliedColumnTests: {}
+        columnReference:
+          columnCounter: 45ba473b-ec74-48c4-8c49-dd9e2efe5741
+          stepCounter: 723554c9-db9a-44ac-b656-f3e99b1ff319
+        config: {}
+        dataType: VARCHAR(3)
+        description: ""
+        name: MANDT
+        nullable: true
+        sourceColumnReferences:
+          - columnReferences:
+              - columnCounter: 29395a6a-9dbe-4f5b-9d4e-dd65109bc875
+                stepCounter: a8f33135-9bef-45f1-8eae-a446e69ffc9c
+            transform: ""
+      - appliedColumnTests: {}
+        columnReference:
+          columnCounter: 051e8eb1-75c2-4561-b40e-25ab673f4b70
+          stepCounter: 723554c9-db9a-44ac-b656-f3e99b1ff319
+        config: {}
+        dataType: VARCHAR(6)
+        description: ""
+        name: BZIRK
+        nullable: true
+        sourceColumnReferences:
+          - columnReferences:
+              - columnCounter: 0844a07d-8149-4159-8f25-085817ab8ee8
+                stepCounter: a8f33135-9bef-45f1-8eae-a446e69ffc9c
+            transform: ""
+      - appliedColumnTests: {}
+        columnReference:
+          columnCounter: 71621241-1c5e-4283-8739-3cf97ef85838
+          stepCounter: 723554c9-db9a-44ac-b656-f3e99b1ff319
+        config: {}
+        dataType: VARCHAR(4)
+        description: ""
+        name: VKORG
+        nullable: true
+        sourceColumnReferences:
+          - columnReferences:
+              - columnCounter: 8cdb9570-b0d9-42db-a3b2-e2b1cee1adbc
+                stepCounter: a8f33135-9bef-45f1-8eae-a446e69ffc9c
+            transform: ""
+      - appliedColumnTests: {}
+        columnReference:
+          columnCounter: 718afaa7-dd0c-41c1-a827-2e5e873bc8b0
+          stepCounter: 723554c9-db9a-44ac-b656-f3e99b1ff319
+        config: {}
+        dataType: VARCHAR(1)
+        description: ""
+        name: ARCHIVE_FLAG$
+        nullable: true
+        sourceColumnReferences:
+          - columnReferences:
+              - columnCounter: 0224d551-3fe3-4579-9f0f-8007424b5dc7
+                stepCounter: a8f33135-9bef-45f1-8eae-a446e69ffc9c
+            transform: ""
+      - appliedColumnTests: {}
+        columnReference:
+          columnCounter: 8405dc23-0ce5-41f9-9b5b-f94c57570add
+          stepCounter: 723554c9-db9a-44ac-b656-f3e99b1ff319
+        config: {}
+        dataType: TIMESTAMP_NTZ(9)
+        description: ""
+        name: HVR_CHANGE_TIME
+        nullable: true
+        sourceColumnReferences:
+          - columnReferences:
+              - columnCounter: 71542b1c-ef5a-4986-9a36-13c68e9858c5
+                stepCounter: a8f33135-9bef-45f1-8eae-a446e69ffc9c
+            transform: ""
+      - appliedColumnTests: {}
+        columnReference:
+          columnCounter: 9ec3986c-ef4f-405b-ad2d-856f9a7c3a3e
+          stepCounter: 723554c9-db9a-44ac-b656-f3e99b1ff319
+        config: {}
+        dataType: VARCHAR(1)
+        description: ""
+        name: RFSTA
+        nullable: true
+        sourceColumnReferences:
+          - columnReferences:
+              - columnCounter: eaef8846-44dc-4027-a0e5-22f1d688e10d
+                stepCounter: a17b5c39-ca89-4957-a859-31b0310b6597
+            transform: ""
+      - appliedColumnTests: {}
+        columnReference:
+          columnCounter: 36bb538b-a3c1-44df-9346-a15af3864015
+          stepCounter: 723554c9-db9a-44ac-b656-f3e99b1ff319
+        config: {}
+        dataType: VARCHAR(1)
+        description: ""
+        name: RFGSA
+        nullable: true
+        sourceColumnReferences:
+          - columnReferences:
+              - columnCounter: 7e1753ca-4d51-4f16-a094-cae1bcdf2d86
+                stepCounter: a17b5c39-ca89-4957-a859-31b0310b6597
+            transform: ""
+      - appliedColumnTests: {}
+        columnReference:
+          columnCounter: 4c530577-3de5-4232-8f07-135cfb810f3f
+          stepCounter: 723554c9-db9a-44ac-b656-f3e99b1ff319
+        config: {}
+        dataType: VARCHAR(1)
+        description: ""
+        name: RFSTK
+        nullable: true
+        sourceColumnReferences:
+          - columnReferences:
+              - columnCounter: 64cd6639-6d34-4184-9502-41b3dccc9dfd
+                stepCounter: 6f650ee8-c7b7-42b2-bf1a-09e59d3dcd11
+            transform: ""
+      - appliedColumnTests: {}
+        columnReference:
+          columnCounter: e61a3cf6-c7bf-4dde-8084-8c84a8bb1b89
+          stepCounter: 723554c9-db9a-44ac-b656-f3e99b1ff319
+        config: {}
+        dataType: VARCHAR(1)
+        description: ""
+        name: RFGSK
+        nullable: true
+        sourceColumnReferences:
+          - columnReferences:
+              - columnCounter: 68ae0f60-7d8b-4904-97bc-c135e3e7583f
+                stepCounter: 6f650ee8-c7b7-42b2-bf1a-09e59d3dcd11
+            transform: ""
+      - acceptedValues:
+          strictMatch: true
+          values: []
+        appliedColumnTests: {}
+        columnReference:
+          columnCounter: 52678d30-681e-4f3c-bfa0-14b4f38a0ce4
+          stepCounter: 723554c9-db9a-44ac-b656-f3e99b1ff319
+        config: {}
+        dataType: NUMBER
+        defaultValue: ""
+        description: ""
+        isSystemVersion: true
+        name: SYSTEM_VERSION
+        nullable: true
+        sourceColumnReferences:
+          - columnReferences: []
+            transform: ""
+      - acceptedValues:
+          strictMatch: true
+          values: []
+        appliedColumnTests: {}
+        columnReference:
+          columnCounter: ba4f2bde-88bb-45bb-a0aa-c066972ec23f
+          stepCounter: 723554c9-db9a-44ac-b656-f3e99b1ff319
+        config: {}
+        dataType: VARCHAR
+        defaultValue: ""
+        description: ""
+        isSystemCurrentFlag: true
+        name: SYSTEM_CURRENT_FLAG
+        nullable: true
+        sourceColumnReferences:
+          - columnReferences: []
+            transform: ""
+      - acceptedValues:
+          strictMatch: true
+          values: []
+        appliedColumnTests: {}
+        columnReference:
+          columnCounter: 699fdf4e-b62e-49b5-8429-12ad77efbc65
+          stepCounter: 723554c9-db9a-44ac-b656-f3e99b1ff319
+        config: {}
+        dataType: TIMESTAMP
+        defaultValue: ""
+        description: ""
+        isSystemCreateDate: true
+        name: SYSTEM_CREATE_DATE
+        nullable: true
+        sourceColumnReferences:
+          - columnReferences: []
+            transform: CAST(CURRENT_TIMESTAMP AS TIMESTAMP)
+      - acceptedValues:
+          strictMatch: true
+          values: []
+        appliedColumnTests: {}
+        columnReference:
+          columnCounter: f7194d03-18e2-473d-9b3c-02fae8f6ab66
+          stepCounter: 723554c9-db9a-44ac-b656-f3e99b1ff319
+        config: {}
+        dataType: TIMESTAMP
+        defaultValue: ""
+        description: ""
+        isSystemUpdateDate: true
+        name: SYSTEM_UPDATE_DATE
+        nullable: true
+        sourceColumnReferences:
+          - columnReferences: []
+            transform: CAST(CURRENT_TIMESTAMP AS TIMESTAMP)
+      - acceptedValues:
+          strictMatch: true
+          values: []
+        appliedColumnTests: {}
+        columnReference:
+          columnCounter: 3d21ba4c-581e-4dc4-b95f-fb3f187623d0
+          stepCounter: 723554c9-db9a-44ac-b656-f3e99b1ff319
+        config: {}
+        dataType: TIMESTAMP
+        defaultValue: ""
+        description: ""
+        isSystemEndDate: true
+        name: SYSTEM_END_DATE
+        nullable: true
+        sourceColumnReferences:
+          - columnReferences: []
+            transform: CAST('2999-12-31 00:00:00' AS TIMESTAMP)
+    cteString: ""
+    enabledColumnTestIDs: []
+    sourceMapping:
+      - aliases:
+          LIKP: a8f33135-9bef-45f1-8eae-a446e69ffc9c
+          LIPS: 1e5a9357-87b8-4296-9e26-4915e1c7249f
+        customSQL:
+          customSQL: ""
+        dependencies:
+          - locationName: SOURCE_DATA
+            nodeName: LIKP
+          - locationName: SOURCE_DATA
+            nodeName: LIPS
+          - locationName: SOURCE_DATA
+            nodeName: VBUK
+          - locationName: SOURCE_DATA
+            nodeName: VBUP
+        join:
+          joinCondition: |-
+            FROM {{ ref('SOURCE_DATA', 'LIPS') }} "LIPS"
+            INNER JOIN {{ ref('SOURCE_DATA', 'LIKP') }} "LIKP"
+            ON "LIPS"./*COLUMN*/ = "LIKP"./*COLUMN*/
+            INNER JOIN {{ ref('SOURCE_DATA', 'VBUP') }} "VBUP"
+            ON "LIPS"./*COLUMN*/ = "VBUP"./*COLUMN*/
+            INNER JOIN {{ ref('SOURCE_DATA', 'VBUK') }} "VBUK"
+            ON "LIPS"./*COLUMN*/ = "VBUK"./*COLUMN*/
+        name: WGL_Delivery_SCD1
+        noLinkRefs: []
+  name: WGL_Delivery_SCD1
+  overrideSQL: false
+  schema: ""
+  sqlType: "690"
+  type: sql
+  version: 1
+type: Node

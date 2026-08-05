@@ -1,44 +1,132 @@
 fileVersion: 1
 id: "1"
 macroString: |-
-
   {%- macro ref_raw(location_name, node_name) -%}
       {%- raw -%}{{ ref('{% endraw %}{{- location_name }}{% raw %}', '{% endraw %}{{ node_name }}{% raw %}') }}{% endraw %}
   {%- endmacro -%}
 
+  {####################################################################################################################################
+  Purpose:
+      Returns the SQL expression to be used for a column transformation.
 
-  {%- macro ref_no_link_raw(location_name, node_name) -%}
-      {% raw %}{{ ref_no_link('{% endraw %}{{ location_name }}{% raw %}', '{% endraw %}{{ node_name }}{% raw %}') }}{% endraw %}
+  Input:
+      col
+          - transform: Column transform expression.
+          - sourceColumns[0].node.name: Source table name.
+          - sourceColumns[0].column.name: Source column name.
+
+  Logic:
+      1. If transform is not empty and matches the source column name
+         (ignoring double quotes), return a fully qualified source
+         column reference:
+             "SOURCE_TABLE"."SOURCE_COLUMN"
+
+      2. If transform is not empty and does not match the source column
+         name, return the transform expression as-is.
+
+      3. If transform is empty, return NULL.
+
+  Examples:
+      transform = '"N_NAME"'      -> "NATION_TEST"."N_NAME"
+      transform = 'N_NAME'        -> "NATION_TEST"."N_NAME"
+      transform = 'UPPER(N_NAME)' -> UPPER(N_NAME)
+      transform = ''              -> NULL
+  ####################################################################################################################################}
+  {%- macro get_source_transform_v2(col) -%}
+      {%- set transform = col.transform | trim -%}
+      {%- if transform != '' -%}
+          {%- if col.sourceColumns
+                  and col.sourceColumns[0].node
+                  and transform | replace('"', '')
+                      == col.sourceColumns[0].column.name -%}
+
+                "{{ col.sourceColumns[0].node.name }}"."{{ col.sourceColumns[0].column.name }}"
+          {%- else -%}
+              {{ transform }}
+          {%- endif -%}
+      {%- else -%}
+          NULL
+      {%- endif -%}
   {%- endmacro -%}
 
 
-  {%- macro generate_null_checks(column_list, ns) -%}
-      {% for item in column_list -%}
-          {# 1. Define the name #}
-          {%- set col_name = '"' ~ item.ncolumnName.name ~ '_null"' -%}
-          
-          {# 2. Update the shared list in the namespace #}
-          {%- set _ = ns.failed_tests.append(col_name) -%}
-          
-          {# 3. Generate the SQL snippet #}
-          ,CASE WHEN "{{item.ncolumnName.name}}" IS NULL THEN 1 ELSE 0 END AS {{col_name}}
+  {#-- This macro will split the join clause into from and rest of the clauses like where,groupby,orderby ,qualify  #}
+  {#-- Input parmeters   - joinclause #}
+  {#-- Return            - from clause and other clauses #}
+
+
+  {%- macro get_clause( joinclause , ret_clause ) -%}
+
+      {#  STEP 1: Remove Block Comments /* ... */ --#}
+      {#  We split by the start of the comment and only keep the part after the end of the comment #}
+      {%- set ns_block = namespace(text="") -%}
+      {%- set block_parts = joinclause.split('/*') -%}
+      {%- set ns_block.text = block_parts[0] -%} {# The text before the very first /* #}
+      
+      {%- for part in block_parts[1:] -%}
+          {%- if '*/' in part -%}
+              {# Split by the first occurrence of */ and take everything after it #}
+              {%- set after_comment = part.split('*/', 1)[1]  -%}
+              {%- set ns_block.text = ns_block.text ~ ' ' ~ after_comment  -%}
+          {%- endif -%}
       {%- endfor -%}
-  {%- endmacro -%}
 
+      {# STEP 2: Remove Line Comments #}
+      {%- set ns_line = namespace(clean_lines=[]) -%}
+      {%- for line in ns_block.text.split('\n') -%}
+          {%- set active_part = line.split('--')[0] -%}
+          {%- set ns_line.clean_lines = ns_line.clean_lines + [active_part] -%}
+      {%- endfor  -%}
+      
+      {# Rejoin everything and normalize whitespace for searching #}
+      {%- set cleaned_join_clause = ns_line.clean_lines | join(' ')  -%}
+      {%- set search_string = ' ' ~ cleaned_join_clause.lower().replace('\t', ' ').replace('\r', ' ') ~ ' '  -%}
 
-  {%- macro generate_duplicate_checks(column_list, ns) -%}
-      {% for item in column_list -%}
-          {# 1. Define the name #}
-          {%- set col_name = '"' ~ item.dcolumnName.name ~ '_dup"' -%}
+      {# STEP 3: Identify Keyword Split Point (Priority: WHERE > GROUP > QUALIFY > ORDER) #}
+      {%- set found_keyword = '' -%}
+      {%- set split_index = -1 -%}
+
+      {%- if ' where ' in search_string -%}
+          {%- set found_keyword = 'where'  -%}
+          {%- set split_index = search_string.find(' where ') -%}
+      {%- elif ' group by ' in search_string -%}
+          {%- set found_keyword = 'group by' -%}
+          {%- set split_index = search_string.find(' group by ') -%}
+      {%- elif ' qualify ' in search_string -%}
+          {%- set found_keyword = 'qualify' -%}
+          {%- set split_index = search_string.find(' qualify ') -%}
+      {%- elif ' order by ' in search_string -%}
+          {%- set found_keyword = 'order by' -%}
+          {%- set split_index = search_string.find(' order by ') -%}
+      {%- endif -%}
+
+      {# STEP 4: Perform the Split #}
+      {%- if split_index >= 0 -%}
+          {# split_index maps directly to cleaned_join_clause because we replaced chars 1-to-1 #}
+          {%- set from_part = cleaned_join_clause[:split_index] -%}
           
-          {# 2. Update the shared list in the namespace #}
-          {%- set _ = ns.failed_tests.append(col_name) -%}
-          
-          {# 3. Generate the SQL snippet #}
-           ,CASE WHEN COUNT(*) OVER (PARTITION BY "{{item.dcolumnName.name}}") > 1 THEN 1 ELSE 0 END AS {{col_name}}
-      {%- endfor -%}
-  {%- endmacro -%}
+          {# offset = keyword length + 1 space #}
+          {%- set offset = found_keyword|length + 1 -%}
+          {%- set remainder = cleaned_join_clause[split_index + offset:] -%}
 
+          {%- if found_keyword == 'where' -%}
+              {%- set add_part = 'AND ' ~ remainder -%}
+          {%- else -%}
+              {%- set add_part = found_keyword ~ ' ' ~ remainder -%}
+          {%- endif -%}
+      {%- else -%}
+          {%- set from_part = cleaned_join_clause -%}
+          {%- set add_part = '' -%}
+      {%- endif -%}
+
+      {# STEP 5: Return Result #}
+      {%- if ret_clause == 'from' -%}
+          {{ from_part | trim }}
+      {%- else -%}
+          {{ add_part | trim }}
+      {%- endif  -%}
+
+  {%- endmacro -%}
 
   {###########################################################################################
   Purpose: Determines the correct Snowflake DROP object syntax based on the materialization type.
@@ -71,6 +159,20 @@ macroString: |-
       {%- endif %}
   {% endmacro %}
 
+  {#-- The below block of code initializes metadata changes variables for the display #}
+  {#-- ===============================================================================#}
+  {% macro update_metadata(tag, diff, label) %}
+      {% set nsMetaVariables.metadataUpdate = nsMetaVariables.metadataUpdate + '-' + tag %}
+
+      {# Handle metaDataChanges #}
+      {% if nsMetaVariables.metaDataChanges %}
+          {% set nsMetaVariables.metaDataChanges = nsMetaVariables.metaDataChanges ~ "\n\n" ~ label ~ " Changes:\n" ~ diff %}
+      {% else %}
+          {% set nsMetaVariables.metaDataChanges = label ~ " Changes:\n" ~ diff %}
+      {% endif %}
+
+  {% endmacro %}
+
   {###########################################################################################
   Purpose: Generates SQL-commented warnings or UI notifications when a user attempts to 
   change the Node Type or Materialization Type of a node. It identifies 
@@ -89,6 +191,9 @@ macroString: |-
       {%- elif currentState.node.nodeType.split(':::')[-1] in ['549', '550', '154', '155'] -%}
           {# Current Node Type: Root and Resume Tasks Nodes #}
           -- ⚠️ Warning: These node types are not ideal for switching, as they may act as root or resume tasks. Changing them may disrupt related tasks, cause inconsistencies, or result in data loss. Any required updates/drops must be handled manually.
+      {%- elif currentState.node.nodeType.split(':::')[-1] in ['416', '448'] -%}
+          {# Current Node Type: Data Quality related statis table/view #}
+          -- ⚠️ Warning: This node is used for data quality checks and may not represent the final static schema. Deployment or execution could fail or interrupt email notifications and task failures.
       {%- elif currentState.node.materializationType | lower in ['task'] or currentState.node.nodeType.split(':::')[-1] in ['429', '567'] -%}
           {# Current Node Type: Tasks Related, Insert or Merge with Task, Document AI Nodes#}
           -- ⚠️ Warning: Tasks or streams are attached to this node. Changing its type may cause task failures, stream inconsistencies, or data loss. Any required updates/drops must be handled manually.
@@ -98,10 +203,216 @@ macroString: |-
       {%- elif currentState.node.materializationType | lower in ['cortex search service'] -%}
           {# Current Node Type: Cortex Nodes #}
           -- ⚠️ Warning: Cortex search service is attached to this node. Changing its type may cause service failures, inconsistencies, or data loss. Any required updates/drops must be handled manually.
-      {%- elif currentState.node.nodeType.split(':::')[-1] in ['416', '448'] -%}
-          {# Current Node Type: Data Quality related statis table/view #}
-          -- ⚠️ Warning: This node is used for data quality checks and may not represent the final static schema. Deployment or execution could fail or interrupt email notifications.
       {%- endif %}
+  {% endmacro %}
+  {# ----------------------------------------------------------------------
+    Macro: safe_metadata
+
+    Purpose: Handles failures during Advanced Deploy metadata updates when dynamic
+    Jinja logic is present in node configurations.
+
+    Specifically addresses cases where:
+      - PreSQL or PostSQL contains embedded Jinja expressions (e.g., {{ ... }})
+      - Join clauses include conditional Jinja logic (e.g., {% if ... %})
+  ---------------------------------------------------------------------- #}
+  {% macro safe_metadata(value) %}
+      {% if value is not none %}
+          {{ value
+              | replace("{%", "{ %")
+              | replace("%}", "% }")
+              | replace("{{", "{ {")
+              | replace("}}", "} }")
+              | replace("{#", "{ #")
+              | replace("#}", "# }")
+              | replace("/*", "/ *")
+              | replace("*/", "* /")
+              | replace("--", "- -")
+          }}
+      {% else %}
+          {{ value }}
+      {% endif %}
+  {% endmacro %}
+
+  {#====================================================================================================
+  Description:
+  Generates a datatype-aware comparison to detect differences between a source and
+  target expression. Typically used in MERGE statements or change tracking logic
+  to identify when a column value has changed.
+
+  Inputs:
+  - src_expr (string):
+      Source column or expression (e.g., SRC."COL1")
+
+  - tgt_expr (string):
+      Target column or expression (e.g., "DIM"."COL1")
+
+  - data_type (string):
+      Datatype of the column (e.g., VARCHAR, NUMBER, GEOGRAPHY, GEOMETRY)
+
+  Output:
+  - Returns a SQL boolean condition that evaluates to TRUE when source and target values are different
+  ====================================================================================================#}
+  {%- macro safe_compare(src_expr, tgt_expr, data_type) -%}
+      {%- set dt = data_type | upper -%}
+      {%- if 'GEOGRAPHY' in dt -%}
+          (
+              ST_DISTANCE(
+                  COALESCE({{ src_expr }}, TO_GEOGRAPHY('POINT(0 0)')),
+                  COALESCE({{ tgt_expr }}, TO_GEOGRAPHY('POINT(0 0)'))
+              ) > 0
+          )
+      {%- elif 'GEOMETRY' in dt -%}
+          (
+              ST_DISTANCE(
+                  COALESCE({{ src_expr }}, TO_GEOMETRY('POINT(0 0)')),
+                  COALESCE({{ tgt_expr }}, TO_GEOMETRY('POINT(0 0)'))
+              ) > 0
+          )
+      {%- else -%}
+          {{ src_expr }} IS DISTINCT FROM {{ tgt_expr }}
+      {%- endif -%}
+  {%- endmacro -%}
+
+  {#-----------------------------------------------------------------------------
+  Macro Name : targetgrain_join
+
+  Description:
+  Generates the join condition between two table aliases using only the
+  configured target grain columns. The macro inspects the source column
+  metadata and returns a series of equality conditions joined by AND.
+
+  Input:
+      leftAlias  - Alias of the left table (e.g., TGT, SRC)
+      rightAlias - Alias of the right table (e.g., BD, TARGET)
+
+  Output:
+      SQL join predicate.
+
+  Example:
+      {{ targetgrain_join("TGT", "BD") }}
+
+  Generates:
+      TGT."ORDER_ID" = BD."ORDER_ID"
+      AND TGT."LINE_NO" = BD."LINE_NO"
+  -----------------------------------------------------------------------------#}
+  {% macro targetgrain_join(leftAlias, rightAlias) %}
+      {%- set ns = namespace(first = true) %}
+      {%- for col in sources[0].columns if not col.isSurrogateKey %}
+          {%- set transform = get_source_transform(col) %}
+          {%- if transform %}
+              {%- set parts = transform.split('.') %}
+              {%- if parts|length > 1 and parts[1].replace('"', '') in targetGrainDetails %}
+                  {%- if not ns.first %} AND {% endif %}
+                  {{ leftAlias }}."{{ col.name }}" = {{ rightAlias }}."{{ col.name }}"
+                  {%- set ns.first = false %}
+              {%- endif %}
+          {%- endif %}
+      {%- endfor %}
+  {% endmacro %}
+
+  {# ----------------------------------------------------------------------
+    Macro: safe_metadata
+
+    Purpose: Handles failures during Advanced Deploy metadata updates when dynamic
+    Jinja logic is present in node configurations.
+
+    Specifically addresses cases where:
+      - PreSQL or PostSQL contains embedded Jinja expressions (e.g., {{ ... }})
+      - Join clauses include conditional Jinja logic (e.g., {% if ... %})
+  ---------------------------------------------------------------------- #}
+  {% macro safe_metadata(value) %}
+      {% if value is not none %}
+          {{ value
+              | replace("{%", "{ %")
+              | replace("%}", "% }")
+              | replace("{{", "{ {")
+              | replace("}}", "} }")
+              | replace("{#", "{ #")
+              | replace("#}", "# }")
+              | replace("/*", "/ *")
+              | replace("*/", "* /")
+              | replace("--", "- -")
+          }}
+      {% else %}
+          {{ value }}
+      {% endif %}
+  {% endmacro %}
+
+  {#====================================================================================================
+  Description:
+  Generates a datatype-aware comparison to detect differences between a source and
+  target expression. Typically used in MERGE statements or change tracking logic
+  to identify when a column value has changed.
+
+  Inputs:
+  - src_expr (string):
+      Source column or expression (e.g., SRC."COL1")
+
+  - tgt_expr (string):
+      Target column or expression (e.g., "DIM"."COL1")
+
+  - data_type (string):
+      Datatype of the column (e.g., VARCHAR, NUMBER, GEOGRAPHY, GEOMETRY)
+
+  Output:
+  - Returns a SQL boolean condition that evaluates to TRUE when source and target values are different
+  ====================================================================================================#}
+  {%- macro safe_compare(src_expr, tgt_expr, data_type) -%}
+      {%- set dt = data_type | upper -%}
+      {%- if 'GEOGRAPHY' in dt -%}
+          (
+              ST_DISTANCE(
+                  COALESCE({{ src_expr }}, TO_GEOGRAPHY('POINT(0 0)')),
+                  COALESCE({{ tgt_expr }}, TO_GEOGRAPHY('POINT(0 0)'))
+              ) > 0
+          )
+      {%- elif 'GEOMETRY' in dt -%}
+          (
+              ST_DISTANCE(
+                  COALESCE({{ src_expr }}, TO_GEOMETRY('POINT(0 0)')),
+                  COALESCE({{ tgt_expr }}, TO_GEOMETRY('POINT(0 0)'))
+              ) > 0
+          )
+      {%- else -%}
+          {{ src_expr }} IS DISTINCT FROM {{ tgt_expr }}
+      {%- endif -%}
+  {%- endmacro -%}
+
+  {#-----------------------------------------------------------------------------
+  Macro Name : targetgrain_join
+
+  Description:
+  Generates the join condition between two table aliases using only the
+  configured target grain columns. The macro inspects the source column
+  metadata and returns a series of equality conditions joined by AND.
+
+  Input:
+      leftAlias  - Alias of the left table (e.g., TGT, SRC)
+      rightAlias - Alias of the right table (e.g., BD, TARGET)
+
+  Output:
+      SQL join predicate.
+
+  Example:
+      {{ targetgrain_join("TGT", "BD") }}
+
+  Generates:
+      TGT."ORDER_ID" = BD."ORDER_ID"
+      AND TGT."LINE_NO" = BD."LINE_NO"
+  -----------------------------------------------------------------------------#}
+  {% macro targetgrain_join(leftAlias, rightAlias) %}
+      {%- set ns = namespace(first = true) %}
+      {%- for col in sources[0].columns if not col.isSurrogateKey %}
+          {%- set transform = get_source_transform(col) %}
+          {%- if transform %}
+              {%- set parts = transform.split('.') %}
+              {%- if parts|length > 1 and parts[1].replace('"', '') in targetGrainDetails %}
+                  {%- if not ns.first %} AND {% endif %}
+                  {{ leftAlias }}."{{ col.name }}" = {{ rightAlias }}."{{ col.name }}"
+                  {%- set ns.first = false %}
+              {%- endif %}
+          {%- endif %}
+      {%- endfor %}
   {% endmacro %}
 name: macro
 type: Macro

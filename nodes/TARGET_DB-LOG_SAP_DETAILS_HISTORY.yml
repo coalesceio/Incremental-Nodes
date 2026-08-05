@@ -1,0 +1,134 @@
+fileVersion: 1
+id: acefaef5-b626-4867-b1a2-d51dec43c71b
+name: LOG_SAP_DETAILS_HISTORY
+operation:
+  config: {}
+  database: ""
+  deployEnabled: true
+  description: ""
+  isMultisource: false
+  locationName: TARGET_DB
+  materializationType: table
+  metadata:
+    appliedNodeTests: []
+    columns:
+      - acceptedValues:
+          strictMatch: true
+          values: []
+        appliedColumnTests: {}
+        columnReference:
+          columnCounter: d9739900-b2c0-4ffa-9e9d-4af1d207826a
+          stepCounter: acefaef5-b626-4867-b1a2-d51dec43c71b
+        config: {}
+        dataType: NUMBER
+        defaultValue: ""
+        description: ""
+        isSurrogateKey: true
+        name: LOG_NODE_KEY
+        nullable: true
+        sourceColumnReferences:
+          - columnReferences: []
+            transform: ""
+      - acceptedValues:
+          strictMatch: true
+          values: []
+        appliedColumnTests: {}
+        columnReference:
+          columnCounter: 2d8b4702-ac9f-422b-a1b3-b0bbf57b2644
+          stepCounter: acefaef5-b626-4867-b1a2-d51dec43c71b
+        config: {}
+        dataType: VARCHAR
+        defaultValue: ""
+        description: ""
+        name: SOURCE_TABLE
+        nullable: true
+        sourceColumnReferences:
+          - columnReferences: []
+            transform: ""
+        sourceTable: true
+      - acceptedValues:
+          strictMatch: true
+          values: []
+        appliedColumnTests: {}
+        columnReference:
+          columnCounter: ac17aca7-2b21-46d3-8da1-7358e8b8bdfe
+          stepCounter: acefaef5-b626-4867-b1a2-d51dec43c71b
+        config: {}
+        dataType: VARCHAR
+        defaultValue: ""
+        description: ""
+        name: TARGET_TABLE
+        nullable: true
+        sourceColumnReferences:
+          - columnReferences: []
+            transform: ""
+        targetTable: true
+      - acceptedValues:
+          strictMatch: true
+          values: []
+        appliedColumnTests: {}
+        columnReference:
+          columnCounter: 81875c79-f90b-4e05-b5b2-3ee1a89c1653
+          stepCounter: acefaef5-b626-4867-b1a2-d51dec43c71b
+        config: {}
+        dataType: TIMESTAMP
+        defaultValue: CURRENT_TIMESTAMP()
+        description: ""
+        maxChangeTime: true
+        name: MAX_CHANGE_TIME
+        nullable: true
+        sourceColumnReferences:
+          - columnReferences: []
+            transform: ""
+      - acceptedValues:
+          strictMatch: true
+          values: []
+        appliedColumnTests: {}
+        columnReference:
+          columnCounter: 6c3c8847-2d7a-4e73-a80b-097a1c232ae2
+          stepCounter: acefaef5-b626-4867-b1a2-d51dec43c71b
+        config: {}
+        dataType: NUMBER
+        defaultValue: ""
+        description: ""
+        name: ROW_COUNT
+        nullable: true
+        rowCount: true
+        sourceColumnReferences:
+          - columnReferences: []
+            transform: ""
+      - acceptedValues:
+          strictMatch: true
+          values: []
+        appliedColumnTests: {}
+        columnReference:
+          columnCounter: 4a4bde4d-dbbb-4311-a0a5-04cb63172955
+          stepCounter: acefaef5-b626-4867-b1a2-d51dec43c71b
+        config: {}
+        dataType: TIMESTAMP
+        defaultValue: ""
+        description: ""
+        lastMaxChangeTime: true
+        name: LAST_MAX_CHANGE_TIME
+        nullable: true
+        sourceColumnReferences:
+          - columnReferences: []
+            transform: ""
+    cteString: ""
+    enabledColumnTestIDs: []
+    sourceMapping:
+      - aliases: {}
+        customSQL:
+          customSQL: ""
+        dependencies: []
+        join:
+          joinCondition: ""
+        name: LOG_SAP_DETAILS_HISTORY
+        noLinkRefs: []
+  name: LOG_SAP_DETAILS_HISTORY
+  overrideSQL: false
+  schema: ""
+  sqlType: "676"
+  type: sql
+  version: 1
+type: Node

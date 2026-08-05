@@ -1,0 +1,439 @@
+{#
+    Copyright (c) 2026 Coalesce. All rights reserved.
+This script and its associated documentation are confidential and proprietary to Coalesce.
+Unauthorized reproduction, distribution, or disclosure of this material is strictly prohibited.
+Coalesce permits you to copy and modify this script for the purposes of using with Coalesce but does not permit copying or modification for any other purpose.  
+#}
+{# == Node Type Name           : Key-based Group Load  == #}
+{# == Node Type Description    : This node loads full data into table from different storage locations == #}
+
+{# Log Details #}
+{%- set logStorageLocation = config.logStorageLocation | trim | default('') %}
+{%- set logTable = config.logTable | trim | default('') %}
+{%- set logWaterMarkColumn = config.logWaterMarkColumn | trim | default('') %}
+{%- set lastModifiedColName = config.lastModifiedColumn.name if config.lastModifiedColumn != '' else '' %}
+{%- set sourceLastModifiedColName = sources[0].columns
+                                    | selectattr('name', 'equalto', lastModifiedColName)
+                                    | map(attribute='sourceColumns')
+                                    | map('first')
+                                    | map(attribute='column.name')
+                                    | first
+%}
+{%- set deleteStrategy = config.deleteStrategy|default('NO DELETE') %}
+{%- set deleteColumn = config.deleteColumn.name | default('') if deleteStrategy != 'NO DELETE' %}
+{%- set deleteValue = config.deleteValue | default('') if deleteStrategy != 'NO DELETE' %}
+{%- set businessKeyList = config.businessKeyDetails.get('items')
+                            | map(attribute='columnName')
+                            | list
+-%}
+{%- set targetGrainDetails = sources[0].columns
+                            | selectattr('targetGrainDetails')
+                            | map(attribute='sourceColumns')
+                            | map('first')
+                            | map(attribute='column.name')
+                            | list
+-%}
+
+{% set type2Dimension = config.type2Dimension | default(false) %}
+{%- set allBusinessKeys = businessKeyList + targetGrainDetails %}
+
+{%- set ns = namespace(businessKeyTabColList = []) %}
+{%- for dep in sources[0].dependencies %}
+    {%- set bkCols = dep.columns
+                    | selectattr('name', 'in', allBusinessKeys)
+                    | map(attribute='name')
+                    | list
+    %}
+    {%- if bkCols %}
+        {%- set ns.businessKeyTabColList = ns.businessKeyTabColList + [{
+            'tableName': dep.node.name,
+            'columns': bkCols
+        }] %}
+    {%- endif %}
+{%- endfor %}
+{%- set businessKeyTabColList = ns.businessKeyTabColList %}
+
+{%- set businessKeyDependencyDetails = (sources[0].dependencies | default([]))
+                                        | selectattr('node')
+                                        | map(attribute='node')
+                                        | list
+-%}
+
+{%- set cteString %}
+    {{
+        "-- BUSINESSKEY_SPINE:
+        -- Builds a consolidated list of business keys impacted since the last load by
+        -- comparing each source table's change timestamp against its stored watermark."
+    }}
+    WITH BUSINESSKEY_SPINE AS
+    (
+        {%- set ns = namespace(first = true) %}
+        {%- for bk in businessKeyTabColList %}
+            {%- set businessCols = bk.columns | select('in', businessKeyList) | list %}
+            {%- if businessCols %}
+                {%- set dep = businessKeyDependencyDetails
+                                | selectattr('name', 'equalto', bk.tableName)
+                                | first
+                %}
+                {%- if not ns.first %} UNION {% endif %}
+                SELECT DISTINCT
+                {%- for col in businessCols %}
+                    "{{ dep.name }}"."{{ col }}" AS BUSINESS_KEYS
+                    {%- if not loop.last %}, {% endif %}
+                {%- endfor %}
+                FROM {{ ref(dep.location.name, dep.name) }} "{{ dep.name }}"
+                WHERE {{ sourceLastModifiedColName }} > (
+                    SELECT COALESCE(MAX({{ logWaterMarkColumn }}), TO_TIMESTAMP('1900-01-01'))
+                    FROM {{ ref_no_link(logStorageLocation, logTable) }}
+                    WHERE SOURCE_TABLE = '{{ ref_no_link(dep.location.name, dep.name) }}'
+                    AND TARGET_TABLE = '{{ ref_no_link(node.location.name, node.name) }}'
+            )
+            {%- set ns.first = false %}
+            {%- endif %}
+        {%- endfor %}
+    ),
+    {{
+    "-- TARGETGRAIN_SPINE:
+    -- Retrieves target-grain records corresponding to the changed business keys.
+    -- This CTE is used to determine whether a business key already has records
+    -- at the target grain, allowing downstream logic to avoid generating
+    -- redundant higher-level rows."
+    }}
+    TARGETGRAIN_SPINE AS
+    (
+        {%- set ns = namespace(first = true) %}
+        {%- for bk in businessKeyTabColList %}
+            {%- set targetCols = targetGrainDetails | reject('in', bk.columns) | list | length %}
+            {%- if targetCols == 0 %}
+                {%- set dep = businessKeyDependencyDetails
+                                | selectattr('name', 'equalto', bk.tableName)
+                                | first
+                %}
+                {%- if not ns.first %} UNION {% endif %}
+                SELECT DISTINCT
+                {%- for col in bk.columns if col not in targetGrainDetails %}
+                    "{{ dep.name }}"."{{ col }}" AS BUSINESS_KEYS
+                    {%- if not loop.last %}, {% endif %}
+                {%- endfor %}
+                FROM {{ ref(dep.location.name, dep.name) }} "{{ dep.name }}"
+                {%- set ns.first = false %}
+                WHERE EXISTS
+                (
+                    SELECT 1
+                    FROM BUSINESSKEY_SPINE BK
+                    WHERE
+                    {%- set ns = namespace(first=true) %}
+                    {%- for col in bk.columns if col not in targetGrainDetails %}
+                        {%- if not ns.first %} AND {% endif %}
+                        BK.BUSINESS_KEYS = "{{ dep.name }}"."{{ col }}"
+                        {%- set ns.first = false %}
+                    {%- endfor %}
+                )
+            {%- endif %}
+        {%- endfor %}
+    ),
+    {{
+    "-- CHANGED_ROWS:
+    -- Builds the list of impacted rows by combining changed business keys with
+    -- the target grain. Higher-level changes are filtered when target-grain
+    -- records exist to avoid duplicate processing."
+    }}
+    CHANGED_ROWS AS
+    (
+        {%- for bk in businessKeyTabColList %}
+            {%- set dep = businessKeyDependencyDetails
+                            | selectattr('name', 'equalto', bk.tableName)
+                            | first
+            %}
+            {%- set targetCols = targetGrainDetails | reject('in', bk.columns) | list | length %}
+
+            {#---------------- Detail Tables ----------------#}
+            SELECT DISTINCT
+            {%- set ns = namespace(column_first = true) %}
+            {%- set ns = namespace(first = true) %}
+            {%- for col in allBusinessKeys %}
+                {%- if col in bk.columns and col in businessKeyList %}
+                    {%- if not ns.first %}, {% endif %}
+                    "{{ bk.tableName }}"."{{ col }}" AS "{{ get_value_by_column_attribute("isSpineBusinessKeys") }}"
+                    {%- set ns.first = false %}
+                {%- elif col in bk.columns and col in targetGrainDetails %}
+                    {%- if not ns.first %}, {% endif %}
+                    "{{ bk.tableName }}"."{{ col }}" AS "{{ col }}"
+                    {%- set ns.first = false %}
+                {%- elif col not in bk.columns and col in targetGrainDetails %}
+                    {%- if not ns.first %}, {% endif %}
+                    NULL AS "{{ col }}"
+                    {%- set ns.first = false %}
+                {%- endif %}
+            {%- endfor %}
+            FROM {{ ref(dep.location.name, dep.name) }} "{{ dep.name }}"
+            WHERE EXISTS
+            (
+                SELECT 1
+                FROM BUSINESSKEY_SPINE D
+                WHERE
+                {%- for col in bk.columns if col in businessKeyList %} 
+                    D.BUSINESS_KEYS = "{{ dep.name }}"."{{ col }}"
+                    {%- if not loop.last %} AND {% endif %}
+                {%- endfor %}
+            )
+            {%- if targetCols != 0 %}
+                AND NOT EXISTS
+                (
+                    SELECT 1
+                    FROM TARGETGRAIN_SPINE TS
+                    WHERE
+                    {%- for col in bk.columns if col in businessKeyList %}
+                        TS.BUSINESS_KEYS = "{{ dep.name }}"."{{ col }}"
+                    {%- endfor %}
+                )
+            {%- endif %}
+            {%- for col in bk.columns if col in targetGrainDetails %}
+                AND "{{ dep.name }}"."{{ col }}" IS NOT NULL
+            {%- endfor %}
+            {%- if not loop.last %} UNION {% endif %}
+        {%- endfor %}
+    ),
+    {{
+    "-- BUSINESS_DATA:
+    -- Builds the final dataset for loading by joining the impacted target-grain
+    -- rows back to the source tables and applying the required transformations
+    -- and system column values."
+    }}
+    BUSINESS_DATA AS
+    (
+        SELECT
+        {%- for col in sources[0].columns if not col.isSurrogateKey %}
+            {%- if col.isSpineBusinessKeys or (col.name in allBusinessKeys) %}
+                CR."{{ col.name }}" 
+            {%- elif col.isSystemVersion %}
+                1 
+            {%- elif col.isSystemCurrentFlag %}
+                'Y' 
+            {%- else %}
+                {{ get_source_transform(col) }} 
+            {%- endif %}
+            AS "{{ col.name }}"
+            {%- if not loop.last %} , {% endif %}
+        {%- endfor %}
+        FROM CHANGED_ROWS CR
+        {%- for bk in businessKeyTabColList %}
+            {%- set dep = businessKeyDependencyDetails
+                            | selectattr('name', 'equalto', bk.tableName)
+                            | first
+            %}
+            LEFT JOIN {{ ref(dep.location.name, dep.name) }} "{{ dep.name }}"
+            ON
+            {%- for col in bk.columns %}
+                {%- if col in businessKeyList %}
+                    CR."{{ get_value_by_column_attribute("isSpineBusinessKeys") }}" = "{{ dep.name }}"."{{ col }}"
+                {%- elif col in targetGrainDetails %}
+                    CR."{{ col }}" = "{{ dep.name }}"."{{ col }}"
+                {%- endif %}
+                {%- if not loop.last %} AND {% endif %}
+            {%- endfor %}
+        {%- endfor %}
+    )
+{%- endset %}
+
+
+{{ stage('Load ' + node.materializationType + ' Using SCD1') }}
+MERGE INTO {{ ref_no_link(node.location.name, node.name) }} TARGET
+USING
+(
+    {{ cteString }}
+    (
+        SELECT
+        {%- for col in columns if not col.isSurrogateKey %}
+            {%- if col.isSystemVersion %}
+                1
+            {%- elif col.isSystemCurrentFlag %}
+                'Y'
+            {%- else %}
+                "{{ col.name }}"
+            {%- endif %}
+            {%- if not loop.last %} AS "{{ col.name }}", {% endif %}
+        {%- endfor %}
+        FROM BUSINESS_DATA BD
+    )
+) SRC
+ON
+TARGET."{{ get_value_by_column_attribute("isSpineBusinessKeys") }}" = SRC."{{ get_value_by_column_attribute("isSpineBusinessKeys") }}"
+AND
+{%- set ns = namespace(first = true) %}
+{%- for col in sources[0].columns if not col.isSurrogateKey %}
+    {%- set transform = get_source_transform(col) %}
+    {%- if transform %}
+        {%- set parts = transform.split('.') %}
+        {%- if parts|length > 1 and parts[1].replace('"', '') in targetGrainDetails %}
+            {%- if not ns.first %} AND {%- endif %}
+            SRC."{{ col.name }}" = TARGET."{{ col.name }}"
+            {%- set ns.first = false %}
+        {%- endif %}
+    {%- endif %}
+{%- endfor %}
+
+{%- if deleteStrategy == 'HARD DELETE' %}
+    -- DELETE HANDLING:
+    -- Processes matched records flagged as deleted in the source.
+    -- Hard Delete removes the target record
+    WHEN MATCHED
+    AND NVL(CAST(SRC."{{ deleteColumn }}" AS STRING), '') = '{{ deleteValue }}'
+    THEN DELETE
+{%- elif deleteStrategy == 'SOFT DELETE' %}
+    -- DELETE HANDLING:
+    -- Processes matched records flagged as deleted in the source. 
+    -- Soft Delete marks the record as inactive by updating the configured system metadata
+    WHEN MATCHED
+    AND NVL(CAST(SRC."{{ deleteColumn }}" AS STRING), '') = '{{ deleteValue }}'
+    AND TARGET."{{ get_value_by_column_attribute("isSystemCurrentFlag") }}" = 'Y'
+    THEN
+    UPDATE SET
+    TARGET."{{ get_value_by_column_attribute("isSystemVersion") }}" = 0,
+    TARGET."{{ get_value_by_column_attribute("isSystemCurrentFlag") }}" = 'N',
+    TARGET."{{ get_value_by_column_attribute("isSystemEndDate") }}" = CURRENT_TIMESTAMP(),
+    TARGET."{{ deleteColumn }}" = '{{ deleteValue }}'
+{%- endif %}
+
+-- MATCHED UPDATE:
+-- Compares source and target business attributes and performs an update only
+-- when differences are detected. Business keys, target-grain columns, and
+-- system-managed columns are excluded from change detection.
+WHEN MATCHED
+{%- if deleteStrategy == 'SOFT DELETE' %}
+    AND NVL(CAST(SRC."{{ deleteColumn }}" AS STRING), '') <> '{{ deleteValue }}'
+{%- endif %}
+AND
+(
+    {%- set ns = namespace(first = true) %}
+    {%- for col in sources[0].columns if not col.isSurrogateKey 
+                                    and not col.isSpineBusinessKeys
+                                    and not col.targetGrainDetails
+                                    and not col.isSystemVersion
+                                    and not col.isSystemCurrentFlag
+                                    and not col.isSystemCreateDate
+                                    and not col.isSystemUpdateDate
+                                    and not col.isSystemEndDate 
+                                    and not col.name == lastModifiedColName
+    %}
+        {{ safe_compare('"TARGET"."' ~ col.name ~ '"', '"SRC"."' ~ col.name ~ '"', col.dataType) }}
+        {%- if not loop.last %} OR {% endif %}
+    {%- endfor %}
+    OR TARGET."{{ get_value_by_column_attribute("isSystemCurrentFlag") }}" = 'N'
+)
+THEN
+UPDATE SET
+{%- set ns = namespace(first = true) %}
+{%- for col in sources[0].columns if not col.isSurrogateKey 
+                                and not col.isSpineBusinessKeys
+                                and not col.isSystemCreateDate
+                                and not col.targetGrainDetails
+%}
+    TARGET."{{ col.name }}" = SRC."{{ col.name }}"
+    {%- if not loop.last %} , {% endif %}
+{%- endfor %}
+
+WHEN NOT MATCHED 
+{%- if deleteStrategy != 'NO DELETE' %}
+    AND NVL(CAST(SRC."{{ deleteColumn }}" AS STRING), '') <> '{{ deleteValue }}'
+{%- endif %}
+THEN
+INSERT 
+(
+{%- for col in sources[0].columns if not col.isSurrogateKey %}
+    "{{ col.name }}"
+    {%- if not loop.last %}, {% endif %}
+{%- endfor %}
+)
+VALUES
+(
+{%- for col in sources[0].columns if not col.isSurrogateKey %}
+    {%- if col.isSystemCurrentFlag %}
+        CASE
+            WHEN
+            {%- set ns = namespace(first = true) %}
+            {%- for col in sources[0].columns if not col.isSurrogateKey %}
+                {%- set transform = get_source_transform(col) %}
+                {%- if transform %}
+                    {%- set parts = transform.split('.') %}
+                    {%- if parts|length > 1 and parts[1].replace('"', '') in targetGrainDetails %}
+                        {%- if not ns.first %} AND {% endif %}
+                        SRC."{{ col.name }}" IS NOT NULL
+                        {%- set ns.first = false %}
+                    {%- endif %}
+                {%- endif %}
+            {%- endfor %}
+            THEN 'Y'
+            ELSE 'N'
+        END
+    {%- else %}
+        SRC."{{ col.name }}"
+    {%- endif %}
+    {%- if not loop.last %}, {% endif %}
+{%- endfor %}
+)
+
+{{ stage('Purge Incomplete Grain Rows') }}
+-- Deletes incomplete target-grain records once a fully populated
+-- target-grain record exists for the same business key.
+DELETE FROM {{ ref_no_link(node.location.name, node.name) }} TARGET
+WHERE EXISTS (
+    SELECT 1
+    FROM {{ ref_no_link(node.location.name, node.name) }} X
+    WHERE X."{{ get_value_by_column_attribute('isSpineBusinessKeys') }}" =
+          TARGET."{{ get_value_by_column_attribute('isSpineBusinessKeys') }}"
+    {%- for col in sources[0].columns if not col.isSurrogateKey %}
+        {%- set transform = get_source_transform(col) %}
+        {%- if transform %}
+            {%- set parts = transform.split('.') %}
+            {%- if parts|length > 1 and parts[1].replace('"', '') in targetGrainDetails %}
+                AND X."{{ col.name }}" IS NOT NULL
+            {%- endif %}
+        {%- endif %}
+    {%- endfor %}
+)
+AND (
+    {%- set ns = namespace(first = true) %}
+    {%- for col in sources[0].columns if not col.isSurrogateKey %}
+        {%- set transform = get_source_transform(col) %}
+        {%- if transform %}
+            {%- set parts = transform.split('.') %}
+            {%- if parts|length > 1 and parts[1].replace('"', '') in targetGrainDetails %}
+                {%- if not ns.first %} OR {% endif %}
+                TARGET."{{ col.name }}" IS NULL
+                {%- set ns.first = false %}
+            {%- endif %}
+        {%- endif %}
+    {%- endfor %}
+)
+
+{# ================Loading Log Table================== #}
+{{ stage('Load Log Details') }}
+INSERT INTO {{ ref_no_link(logStorageLocation, logTable) }}
+(
+    ROW_COUNT,
+    SOURCE_TABLE,
+    TARGET_TABLE,
+    LAST_MAX_CHANGE_TIME
+)
+{%- for dep in businessKeyDependencyDetails %}
+    SELECT
+    (
+        SELECT COUNT(*) FROM {{ ref(dep.location.name, dep.name) }}
+        WHERE {{ sourceLastModifiedColName }} > (
+        SELECT COALESCE(MAX({{ logWaterMarkColumn }}), TO_TIMESTAMP('1900-01-01'))
+        FROM {{ ref_no_link(logStorageLocation, logTable) }}
+        WHERE SOURCE_TABLE = '{{ ref_no_link(dep.location.name, dep.name) }}'
+        AND TARGET_TABLE = '{{ ref_no_link(node.location.name, node.name) }}'
+        )
+    ) AS ROW_COUNT,
+    '{{ ref_no_link(dep.location.name, dep.name) }}' AS SOURCE_TABLE,
+    '{{ ref_no_link(node.location.name, node.name) }}' AS TARGET_TABLE,
+    (
+        SELECT COALESCE(MAX(MAX_CHANGE_TIME), TO_TIMESTAMP('1900-01-01'))
+        FROM {{ ref_no_link(logStorageLocation, logTable) }}
+        WHERE SOURCE_TABLE = '{{ ref_no_link(dep.location.name, dep.name) }}'
+        AND TARGET_TABLE = '{{ ref_no_link(node.location.name, node.name) }}'
+    ) AS LAST_MAX_CHANGE_TIME
+    {%- if not loop.last %} UNION ALL {%- endif %}
+{%- endfor %}

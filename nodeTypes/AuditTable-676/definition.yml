@@ -1,0 +1,63 @@
+fileVersion: 1
+id: "676"
+isDisabled: false
+metadata:
+  defaultStorageLocation: null
+  error: null
+  nodeMetadataSpec: |-
+    capitalized: Audit Table
+    short: LOG
+    plural: Logs
+    tagColor: '#e1ff00'
+
+    deployStrategy: advanced
+
+    config:
+    - groupName: Options
+      items:
+      - type: materializationSelector
+        default: table
+        options:
+        - table
+        isRequired: true
+
+    systemColumns:
+
+    - displayName: '{{NODE_NAME}}_KEY'
+      transform: ''
+      dataType: NUMBER
+      placement: beginning
+      attributeName: isSurrogateKey
+
+    - displayName: SOURCE_TABLE
+      transform: ""
+      dataType: VARCHAR
+      placement: end
+      attributeName: sourceTable
+
+    - displayName: TARGET_TABLE
+      transform: ""
+      dataType: VARCHAR
+      placement: end
+      attributeName: targetTable
+
+    - displayName: MAX_CHANGE_TIME
+      transform: ""
+      dataType: TIMESTAMP
+      placement: end
+      defaultValue: CURRENT_TIMESTAMP()
+      attributeName: maxChangeTime
+
+    - displayName: ROW_COUNT
+      transform: ""
+      dataType: NUMBER
+      placement: end
+      attributeName: rowCount
+
+    - displayName: LAST_MAX_CHANGE_TIME
+      transform: ""
+      dataType: TIMESTAMP
+      placement: end
+      attributeName: lastMaxChangeTime
+name: Audit Table
+type: NodeType

@@ -1,0 +1,6 @@
+excludeSelector: ""
+fileVersion: 1
+id: "101"
+includeSelector: "{ location: \"SOURCE_1\" name: \"VBAK\" } OR { location: \"SOURCE_1\" name: \"VBAP\" } OR { location: \"SOURCE_1\" name: \"VBUK\" } OR { location: \"SOURCE_1\" name: \"VBUP\" } OR { location: \"TARGET\" name: \"FCT_DIFFERENT_V1\" }"
+name: Test_Job
+type: Job

@@ -1,0 +1,144 @@
+fileVersion: 1
+id: "690"
+isDisabled: false
+metadata:
+  defaultStorageLocation: null
+  error: null
+  nodeMetadataSpec: |-
+    capitalized: Key-based Group Load
+    short: KGL
+    plural: Key-based Group Loads
+    tagColor: '#00ff00'
+
+    enableCTESupport: true
+    deployStrategy: advanced
+
+    config:
+    - groupName: General Options
+      items:
+      - type: materializationSelector
+        default: table
+        options:
+        - table
+        isRequired: false
+
+      - type: tabular
+        displayName: Business Key Details (ℹ️ Specify one key per source table. If key names are identical, list them only once.)
+        attributeName: businessKeyDetails
+        columns:
+
+        -  type: textBox
+           displayName: 💡These columns are combined to form the unified business key
+           attributeName: columnName
+           default: ""
+           isRequired: false
+      
+        isRequired: true
+        enableIf: ""
+
+      - type: columnSelector
+        displayName: Grain Extension Keys
+        attributeName: targetGrainDetails
+        isRequired: true
+        enableIf: 'true'
+
+      - type: note
+        attributeName: noteLastModColumn
+        displayName: ⚠️ Unsupported column data type
+        enableIf:  "{% if not (
+                      ((config.lastModifiedColumn).dataType | upper).startswith('TIME')
+                    ) %} true {% else %} false {% endif %}"
+
+      - type: columnDropdownSelector
+        attributeName: lastModifiedColumn
+        displayName: |
+          Incremental Timestamp Column [ℹ️Datatype: TIMESTAMP related]
+        enableIf: ""
+        isRequired: true
+
+      - displayName: Target Delete Strategy 
+        attributeName: deleteStrategy
+        type: dropdownSelector
+        default: "NO DELETE"
+        options:
+        - "NO DELETE"
+        - "SOFT DELETE"
+        - "HARD DELETE"
+        isRequired: false
+        enableIf: ""
+
+      - displayName: Source Column that Identifies Delete Operation
+        attributeName: deleteColumn
+        type: columnDropdownSelector
+        enableIf: "{% if config.deleteStrategy != 'NO DELETE' %} true {% else %} false {% endif %}"
+
+      - displayName: Delete Value*
+        attributeName: deleteValue
+        type: textBox
+        default: D
+        enableIf: "{% if config.deleteStrategy != 'NO DELETE' %} true {% else %} false {% endif %}"
+
+    - groupName: Logging Options
+      items:
+      - type: textBox
+        displayName: Storage Location
+        attributeName: logStorageLocation
+        default: ""
+        isRequired: true
+
+      - type: textBox
+        displayName: Table Name
+        attributeName: logTable
+        default: ""
+        isRequired: true
+
+      - type: textBox
+        displayName: Water Mark Time Column
+        attributeName: logWaterMarkColumn
+        default: ""
+        isRequired: true
+
+    systemColumns:
+    - displayName: '{{NODE_NAME}}_KEY'
+      transform: ''
+      dataType: NUMBER
+      placement: beginning
+      attributeName: isSurrogateKey
+
+    - displayName: 'BUSINESS_KEYS'
+      transform: ""
+      dataType: VARCHAR(10)
+      placement: beginning
+      attributeName: isSpineBusinessKeys
+
+    - displayName: SYSTEM_VERSION
+      transform: ''
+      dataType: NUMBER
+      placement: end
+      attributeName: isSystemVersion
+
+    - displayName: SYSTEM_CURRENT_FLAG
+      transform: ''
+      dataType: VARCHAR
+      placement: end
+      attributeName: isSystemCurrentFlag
+
+    - displayName: SYSTEM_CREATE_DATE
+      transform: CAST(CURRENT_TIMESTAMP AS TIMESTAMP)
+      dataType: TIMESTAMP
+      placement: end
+      attributeName: isSystemCreateDate
+
+    - displayName: SYSTEM_UPDATE_DATE
+      transform: CAST(CURRENT_TIMESTAMP AS TIMESTAMP)
+      dataType: TIMESTAMP
+      placement: end
+      attributeName: isSystemUpdateDate
+
+    - displayName: SYSTEM_END_DATE
+      transform: CAST('2999-12-31 00:00:00' AS TIMESTAMP)
+      dataType: TIMESTAMP
+      placement: end
+      attributeName: isSystemEndDate
+name: Key-based Group Load
+type: NodeType
