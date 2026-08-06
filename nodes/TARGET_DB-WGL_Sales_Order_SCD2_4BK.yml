@@ -84,8 +84,8 @@ operation:
         nullable: true
         sourceColumnReferences:
           - columnReferences:
-              - columnCounter: a67f78c6-118b-4cf6-8208-1a628e832725
-                stepCounter: e280863b-b240-4298-8004-ecabcb12b330
+              - columnCounter: de990cbb-24d5-4eb3-a15f-504811d4f568
+                stepCounter: 042e2c18-7e4f-4722-8bfb-3babbc00ba12
             transform: ""
       - acceptedValues:
           strictMatch: true
