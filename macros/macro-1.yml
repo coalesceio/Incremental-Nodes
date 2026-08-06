@@ -5,50 +5,6 @@ macroString: |-
       {%- raw -%}{{ ref('{% endraw %}{{- location_name }}{% raw %}', '{% endraw %}{{ node_name }}{% raw %}') }}{% endraw %}
   {%- endmacro -%}
 
-  {####################################################################################################################################
-  Purpose:
-      Returns the SQL expression to be used for a column transformation.
-
-  Input:
-      col
-          - transform: Column transform expression.
-          - sourceColumns[0].node.name: Source table name.
-          - sourceColumns[0].column.name: Source column name.
-
-  Logic:
-      1. If transform is not empty and matches the source column name
-         (ignoring double quotes), return a fully qualified source
-         column reference:
-             "SOURCE_TABLE"."SOURCE_COLUMN"
-
-      2. If transform is not empty and does not match the source column
-         name, return the transform expression as-is.
-
-      3. If transform is empty, return NULL.
-
-  Examples:
-      transform = '"N_NAME"'      -> "NATION_TEST"."N_NAME"
-      transform = 'N_NAME'        -> "NATION_TEST"."N_NAME"
-      transform = 'UPPER(N_NAME)' -> UPPER(N_NAME)
-      transform = ''              -> NULL
-  ####################################################################################################################################}
-  {%- macro get_source_transform_v2(col) -%}
-      {%- set transform = col.transform | trim -%}
-      {%- if transform != '' -%}
-          {%- if col.sourceColumns
-                  and col.sourceColumns[0].node
-                  and transform | replace('"', '')
-                      == col.sourceColumns[0].column.name -%}
-
-                "{{ col.sourceColumns[0].node.name }}"."{{ col.sourceColumns[0].column.name }}"
-          {%- else -%}
-              {{ transform }}
-          {%- endif -%}
-      {%- else -%}
-          NULL
-      {%- endif -%}
-  {%- endmacro -%}
-
 
   {#-- This macro will split the join clause into from and rest of the clauses like where,groupby,orderby ,qualify  #}
   {#-- Input parmeters   - joinclause #}
@@ -295,124 +251,26 @@ macroString: |-
       TGT."ORDER_ID" = BD."ORDER_ID"
       AND TGT."LINE_NO" = BD."LINE_NO"
   -----------------------------------------------------------------------------#}
-  {% macro targetgrain_join(leftAlias, rightAlias) %}
-      {%- set ns = namespace(first = true) %}
-      {%- for col in sources[0].columns if not col.isSurrogateKey %}
-          {%- set transform = get_source_transform(col) %}
-          {%- if transform %}
-              {%- set parts = transform.split('.') %}
-              {%- if parts|length > 1 and parts[1].replace('"', '') in targetGrainDetails %}
-                  {%- if not ns.first %} AND {% endif %}
-                  {{ leftAlias }}."{{ col.name }}" = {{ rightAlias }}."{{ col.name }}"
-                  {%- set ns.first = false %}
-              {%- endif %}
-          {%- endif %}
-      {%- endfor %}
-  {% endmacro %}
-
-  {# ----------------------------------------------------------------------
-    Macro: safe_metadata
-
-    Purpose: Handles failures during Advanced Deploy metadata updates when dynamic
-    Jinja logic is present in node configurations.
-
-    Specifically addresses cases where:
-      - PreSQL or PostSQL contains embedded Jinja expressions (e.g., {{ ... }})
-      - Join clauses include conditional Jinja logic (e.g., {% if ... %})
-  ---------------------------------------------------------------------- #}
-  {% macro safe_metadata(value) %}
-      {% if value is not none %}
-          {{ value
-              | replace("{%", "{ %")
-              | replace("%}", "% }")
-              | replace("{{", "{ {")
-              | replace("}}", "} }")
-              | replace("{#", "{ #")
-              | replace("#}", "# }")
-              | replace("/*", "/ *")
-              | replace("*/", "* /")
-              | replace("--", "- -")
-          }}
-      {% else %}
-          {{ value }}
-      {% endif %}
-  {% endmacro %}
-
-  {#====================================================================================================
-  Description:
-  Generates a datatype-aware comparison to detect differences between a source and
-  target expression. Typically used in MERGE statements or change tracking logic
-  to identify when a column value has changed.
-
-  Inputs:
-  - src_expr (string):
-      Source column or expression (e.g., SRC."COL1")
-
-  - tgt_expr (string):
-      Target column or expression (e.g., "DIM"."COL1")
-
-  - data_type (string):
-      Datatype of the column (e.g., VARCHAR, NUMBER, GEOGRAPHY, GEOMETRY)
-
-  Output:
-  - Returns a SQL boolean condition that evaluates to TRUE when source and target values are different
-  ====================================================================================================#}
-  {%- macro safe_compare(src_expr, tgt_expr, data_type) -%}
-      {%- set dt = data_type | upper -%}
-      {%- if 'GEOGRAPHY' in dt -%}
-          (
-              ST_DISTANCE(
-                  COALESCE({{ src_expr }}, TO_GEOGRAPHY('POINT(0 0)')),
-                  COALESCE({{ tgt_expr }}, TO_GEOGRAPHY('POINT(0 0)'))
-              ) > 0
-          )
-      {%- elif 'GEOMETRY' in dt -%}
-          (
-              ST_DISTANCE(
-                  COALESCE({{ src_expr }}, TO_GEOMETRY('POINT(0 0)')),
-                  COALESCE({{ tgt_expr }}, TO_GEOMETRY('POINT(0 0)'))
-              ) > 0
-          )
-      {%- else -%}
-          {{ src_expr }} IS DISTINCT FROM {{ tgt_expr }}
-      {%- endif -%}
+  {%- macro targetgrain_join(leftAlias, rightAlias) -%}
+      {%- set ns = namespace(first = true) -%}
+      {%- for col in sources[0].columns if not col.isSurrogateKey -%}
+          {%- set srcCol = extract_source_col_name(col) %}
+          {%- if srcCol in targetGrainDetails -%}
+              {%- if not ns.first %} AND {% endif %}
+              {{ leftAlias }}."{{ col.name }}" = {{ rightAlias }}."{{ col.name }}"
+              {%- set ns.first = false -%}
+          {%- endif -%}
+      {%- endfor -%}
   {%- endmacro -%}
 
-  {#-----------------------------------------------------------------------------
-  Macro Name : targetgrain_join
-
-  Description:
-  Generates the join condition between two table aliases using only the
-  configured target grain columns. The macro inspects the source column
-  metadata and returns a series of equality conditions joined by AND.
-
-  Input:
-      leftAlias  - Alias of the left table (e.g., TGT, SRC)
-      rightAlias - Alias of the right table (e.g., BD, TARGET)
-
-  Output:
-      SQL join predicate.
-
-  Example:
-      {{ targetgrain_join("TGT", "BD") }}
-
-  Generates:
-      TGT."ORDER_ID" = BD."ORDER_ID"
-      AND TGT."LINE_NO" = BD."LINE_NO"
-  -----------------------------------------------------------------------------#}
-  {% macro targetgrain_join(leftAlias, rightAlias) %}
-      {%- set ns = namespace(first = true) %}
-      {%- for col in sources[0].columns if not col.isSurrogateKey %}
-          {%- set transform = get_source_transform(col) %}
-          {%- if transform %}
-              {%- set parts = transform.split('.') %}
-              {%- if parts|length > 1 and parts[1].replace('"', '') in targetGrainDetails %}
-                  {%- if not ns.first %} AND {% endif %}
-                  {{ leftAlias }}."{{ col.name }}" = {{ rightAlias }}."{{ col.name }}"
-                  {%- set ns.first = false %}
-              {%- endif %}
-          {%- endif %}
-      {%- endfor %}
-  {% endmacro %}
+  {%- macro extract_source_col_name(col) -%}
+      {%- set srcCol = '' -%}
+      {%- set transform = get_source_transform(col) -%}
+      {%- if transform -%}
+          {%- set parts = transform.split('.') -%}
+          {%- set srcCol = parts[1].replace('"', '') | trim if parts|length > 1 else '' -%}
+      {%- endif -%}
+      {{ srcCol }}
+  {%- endmacro -%}
 name: macro
 type: Macro

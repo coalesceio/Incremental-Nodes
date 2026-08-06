@@ -216,14 +216,17 @@ Coalesce permits you to copy and modify this script for the purposes of using wi
     (
         SELECT
         {%- for col in sources[0].columns if not col.isSurrogateKey %}
-            {%- if col.isSpineBusinessKeys or (col.name in allBusinessKeys) %}
-                CR."{{ col.name }}" 
+            {%- set srcCol = extract_source_col_name(col) -%}
+            {%- if col.isSpineBusinessKeys %}
+                CR."{{ col.name }}"
+            {%- elif srcCol in allBusinessKeys %}
+                CR."{{ srcCol }}"
             {%- elif col.isSystemVersion %}
                 1 
             {%- elif col.isSystemCurrentFlag %}
                 'Y' 
             {%- else %}
-                {{ get_source_transform(col) }} 
+                {{ get_source_transform(col) }}
             {%- endif %}
             AS "{{ col.name }}"
             {%- if not loop.last %} , {% endif %}
@@ -255,15 +258,12 @@ DELETE FROM {{ ref_no_link(node.location.name, node.name) }} TARGET
 WHERE
 {%- set ns = namespace(first = true) %}
 {%- for col in sources[0].columns if not col.isSurrogateKey %}
-    {%- set transform = get_source_transform(col) %}
-    {%- if transform %}
-        {%- set parts = transform.split('.') %}
-        {%- if parts|length > 1 and parts[1].replace('"', '') in targetGrainDetails %}
-            {%- if not ns.first %} OR {% endif %}
-            {%- if ns.first %} ( {% endif %}
-            TARGET."{{ col.name }}" IS NULL
-            {%- set ns.first = false %}
-        {%- endif %}
+    {%- set srcCol = extract_source_col_name(col) -%}
+    {%- if srcCol in targetGrainDetails %}
+        {%- if not ns.first %} OR {% endif %}
+        {%- if ns.first %} ( {% endif %}
+        TARGET."{{ col.name }}" IS NULL
+        {%- set ns.first = false %}
     {%- endif %}
 {%- endfor %}
 {%- if not ns.first %} ) {% endif %}
@@ -299,14 +299,11 @@ TARGET."{{ get_value_by_column_attribute("isSpineBusinessKeys") }}" = SRC."{{ ge
 AND
 {%- set ns = namespace(first = true) %}
 {%- for col in sources[0].columns if not col.isSurrogateKey %}
-    {%- set transform = get_source_transform(col) %}
-    {%- if transform %}
-        {%- set parts = transform.split('.') %}
-        {%- if parts|length > 1 and parts[1].replace('"', '') in targetGrainDetails %}
-            {%- if not ns.first %} AND {%- endif %}
-            SRC."{{ col.name }}" = TARGET."{{ col.name }}"
-            {%- set ns.first = false %}
-        {%- endif %}
+    {%- set srcCol = extract_source_col_name(col) -%}
+    {%- if srcCol in targetGrainDetails %}
+        {%- if not ns.first %} AND {%- endif %}
+        SRC."{{ col.name }}" = TARGET."{{ col.name }}"
+        {%- set ns.first = false %}
     {%- endif %}
 {%- endfor %}
 
