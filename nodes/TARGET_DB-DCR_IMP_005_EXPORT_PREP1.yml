@@ -1,6 +1,6 @@
 fileVersion: 1
 id: 55695ace-43b1-463a-aec2-d5eb2962ffc9
-name: DCR_IMP_005_EXPORT_PREP
+name: DCR_IMP_005_EXPORT_PREP1
 operation:
   config:
     insertStrategy: UNION ALL
@@ -101,9 +101,9 @@ operation:
             nodeName: DCR_IMP_005_DATA
         join:
           joinCondition: FROM {{ ref('TARGET_DB', 'DCR_IMP_005_DATA') }} "DCR_IMP_005_DATA"
-        name: DCR_IMP_005_EXPORT_PREP
+        name: DCR_IMP_005_EXPORT_PREP1
         noLinkRefs: []
-  name: DCR_IMP_005_EXPORT_PREP
+  name: DCR_IMP_005_EXPORT_PREP1
   overrideSQL: false
   schema: ""
   sqlType: "281"
