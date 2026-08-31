@@ -3,10 +3,14 @@ id: 55695ace-43b1-463a-aec2-d5eb2962ffc9
 name: DCR_IMP_005_EXPORT_PREP1
 operation:
   config:
+    incColumn:
+      columnCounter: 254e9986-34c2-4a60-a623-da2e3f04b437
+      name: UPDATE_TIME
+      stepCounter: 55695ace-43b1-463a-aec2-d5eb2962ffc9
     insertStrategy: UNION ALL
     persistTableLocation: "ex: TARGET"
     persistTableName: "ex: DIM_ORDERS"
-    refTable: false
+    refTable: true
     srcTable: false
     suffixlength: ex:1
     testsEnabled: true
@@ -93,14 +97,14 @@ operation:
     enabledColumnTestIDs: []
     sourceMapping:
       - aliases:
-          DCR_IMP_005_DATA: ff28e36c-06cd-416f-a5a2-55de81c5bcda
+          DCR_IMP_005_DATA1: ff28e36c-06cd-416f-a5a2-55de81c5bcda
         customSQL:
           customSQL: ""
         dependencies:
           - locationName: TARGET_DB
-            nodeName: DCR_IMP_005_DATA
+            nodeName: DCR_IMP_005_DATA1
         join:
-          joinCondition: FROM {{ ref('TARGET_DB', 'DCR_IMP_005_DATA') }} "DCR_IMP_005_DATA"
+          joinCondition: FROM {{ ref('TARGET_DB', 'DCR_IMP_005_DATA1') }} "DCR_IMP_005_DATA1"
         name: DCR_IMP_005_EXPORT_PREP1
         noLinkRefs: []
   name: DCR_IMP_005_EXPORT_PREP1
