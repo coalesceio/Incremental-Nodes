@@ -6,6 +6,6 @@ mappingDefinitions:
     schema: SRC_DEV
   TARGET_DB:
     database: VINITHA_DEV
-    schema: TGT_DEV
+    schema: DEP_DEV
 name: New EnvironmentRunview
 type: Environment
