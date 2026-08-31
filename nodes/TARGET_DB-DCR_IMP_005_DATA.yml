@@ -1,13 +1,14 @@
 fileVersion: 1
-id: ff28e36c-06cd-416f-a5a2-55de81c5bcda
-name: DCR_IMP_005_DATA1
+id: f06317ba-e813-4ad3-b954-774eba2f7ccd
+name: DCR_IMP_005_DATA
 operation:
   config:
-    insertStrategy: INSERT
-    postSQL: ""
-    preSQL: ""
-    testsEnabled: true
-    truncateBefore: true
+    OverrideSQLCreate: false
+    groupByAll: false
+    insertStrategy: UNION
+    secureoption: false
+    selectDistinct: false
+    testsEnabled: false
   database: ""
   deployEnabled: true
   description: ""
@@ -19,8 +20,8 @@ operation:
     columns:
       - appliedColumnTests: {}
         columnReference:
-          columnCounter: 8902b9d3-c6c8-46b4-b1d1-721df98e7c90
-          stepCounter: ff28e36c-06cd-416f-a5a2-55de81c5bcda
+          columnCounter: 9b5d9eac-7559-44dd-be69-a693e1086c07
+          stepCounter: f06317ba-e813-4ad3-b954-774eba2f7ccd
         config: {}
         dataType: NUMBER(38,0)
         description: ""
@@ -33,8 +34,8 @@ operation:
             transform: ""
       - appliedColumnTests: {}
         columnReference:
-          columnCounter: b7ccbc39-f746-4bf7-9630-a7544d62b42f
-          stepCounter: ff28e36c-06cd-416f-a5a2-55de81c5bcda
+          columnCounter: 9aa73b0a-e3ab-4aef-b4f6-cc1313fc92ed
+          stepCounter: f06317ba-e813-4ad3-b954-774eba2f7ccd
         config: {}
         dataType: VARCHAR(16777216)
         description: ""
@@ -47,8 +48,8 @@ operation:
             transform: ""
       - appliedColumnTests: {}
         columnReference:
-          columnCounter: 382326a1-9c92-416c-9dd2-fe2108d7b706
-          stepCounter: ff28e36c-06cd-416f-a5a2-55de81c5bcda
+          columnCounter: e7ce861a-e874-4a93-8b0c-a805ae7cbcf8
+          stepCounter: f06317ba-e813-4ad3-b954-774eba2f7ccd
         config: {}
         dataType: VARCHAR(16777216)
         description: ""
@@ -61,8 +62,8 @@ operation:
             transform: ""
       - appliedColumnTests: {}
         columnReference:
-          columnCounter: 794e02ad-6023-4871-b775-10ba9d56c116
-          stepCounter: ff28e36c-06cd-416f-a5a2-55de81c5bcda
+          columnCounter: 08dbc629-aae4-4fe7-879f-5a611d4309b8
+          stepCounter: f06317ba-e813-4ad3-b954-774eba2f7ccd
         config: {}
         dataType: VARCHAR(16777216)
         description: ""
@@ -75,8 +76,8 @@ operation:
             transform: ""
       - appliedColumnTests: {}
         columnReference:
-          columnCounter: c785939f-f51a-43a3-bd38-da8768973811
-          stepCounter: ff28e36c-06cd-416f-a5a2-55de81c5bcda
+          columnCounter: 7bc2782b-caa9-4f10-baf2-a928d92f8344
+          stepCounter: f06317ba-e813-4ad3-b954-774eba2f7ccd
         config: {}
         dataType: TIMESTAMP_NTZ(9)
         description: ""
@@ -99,12 +100,12 @@ operation:
             nodeName: CLIENTS
         join:
           joinCondition: FROM {{ ref('SOURCE_DATA', 'CLIENTS') }} "CLIENTS"
-        name: DCR_IMP_005_DATA1
+        name: DCR_IMP_005_DATA
         noLinkRefs: []
-  name: DCR_IMP_005_DATA1
+  name: DCR_IMP_005_DATA
   overrideSQL: false
   schema: ""
-  sqlType: Stage
+  sqlType: Basenode:::188
   type: sql
   version: 1
 type: Node
