@@ -1,6 +1,6 @@
 fileVersion: 1
 id: ff28e36c-06cd-416f-a5a2-55de81c5bcda
-name: DCR_IMP_005_DATA
+name: DCR_IMP_005_DATA1
 operation:
   config:
     insertStrategy: INSERT
@@ -99,9 +99,9 @@ operation:
             nodeName: CLIENTS
         join:
           joinCondition: FROM {{ ref('SOURCE_DATA', 'CLIENTS') }} "CLIENTS"
-        name: DCR_IMP_005_DATA
+        name: DCR_IMP_005_DATA1
         noLinkRefs: []
-  name: DCR_IMP_005_DATA
+  name: DCR_IMP_005_DATA1
   overrideSQL: false
   schema: ""
   sqlType: Stage
