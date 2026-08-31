@@ -1,0 +1,112 @@
+fileVersion: 1
+id: 38e8a75c-c5ef-4727-9df2-1a1b6b4d05a1
+name: RV_DCR_IMP_005_DATA1
+operation:
+  config:
+    insertStrategy: UNION ALL
+    persistTableLocation: "ex: TARGET"
+    persistTableName: "ex: DIM_ORDERS"
+    refTable: false
+    srcTable: false
+    suffixlength: ex:1
+    testsEnabled: true
+  database: ""
+  deployEnabled: true
+  description: ""
+  isMultisource: false
+  locationName: TARGET_DB
+  materializationType: run view
+  metadata:
+    appliedNodeTests: []
+    columns:
+      - appliedColumnTests: {}
+        columnReference:
+          columnCounter: 2ecce2dd-2046-4c7b-80e9-cf278b5cca8d
+          stepCounter: 38e8a75c-c5ef-4727-9df2-1a1b6b4d05a1
+        config: {}
+        dataType: NUMBER(38,0)
+        description: ""
+        name: CLIENT_ID
+        nullable: true
+        sourceColumnReferences:
+          - columnReferences:
+              - columnCounter: 2e586843-0ace-4b30-831e-bdca62b04bfc
+                stepCounter: fc3acfb7-2391-40f5-afc9-16a7b198835a
+            transform: ""
+      - appliedColumnTests: {}
+        columnReference:
+          columnCounter: 7751a85d-abf1-48df-8265-5330b705c082
+          stepCounter: 38e8a75c-c5ef-4727-9df2-1a1b6b4d05a1
+        config: {}
+        dataType: VARCHAR(16777216)
+        description: ""
+        name: CLIENT_NAME
+        nullable: true
+        sourceColumnReferences:
+          - columnReferences:
+              - columnCounter: 7ecdc06b-be3a-4b0c-b406-e2cc1668ab4e
+                stepCounter: fc3acfb7-2391-40f5-afc9-16a7b198835a
+            transform: ""
+      - appliedColumnTests: {}
+        columnReference:
+          columnCounter: 66995177-07bd-4b6d-8067-833962f74bf2
+          stepCounter: 38e8a75c-c5ef-4727-9df2-1a1b6b4d05a1
+        config: {}
+        dataType: VARCHAR(16777216)
+        description: ""
+        name: EMAIL
+        nullable: true
+        sourceColumnReferences:
+          - columnReferences:
+              - columnCounter: 44a7c3a0-b064-404e-a6ce-c782aa91baa8
+                stepCounter: fc3acfb7-2391-40f5-afc9-16a7b198835a
+            transform: ""
+      - appliedColumnTests: {}
+        columnReference:
+          columnCounter: abc6793e-e3b0-413d-a5a4-29f9c4cb94f7
+          stepCounter: 38e8a75c-c5ef-4727-9df2-1a1b6b4d05a1
+        config: {}
+        dataType: VARCHAR(16777216)
+        description: ""
+        name: REGION
+        nullable: true
+        sourceColumnReferences:
+          - columnReferences:
+              - columnCounter: 671bec25-41f3-467f-9fba-71e76fd549da
+                stepCounter: fc3acfb7-2391-40f5-afc9-16a7b198835a
+            transform: ""
+      - appliedColumnTests: {}
+        columnReference:
+          columnCounter: f01aedcf-5890-461c-aab0-59cdcbb7a2b3
+          stepCounter: 38e8a75c-c5ef-4727-9df2-1a1b6b4d05a1
+        config: {}
+        dataType: TIMESTAMP_NTZ(9)
+        description: ""
+        name: UPDATE_TIME
+        nullable: true
+        sourceColumnReferences:
+          - columnReferences:
+              - columnCounter: 68eb6304-eeb0-454a-a8bc-6e956da5a5b3
+                stepCounter: fc3acfb7-2391-40f5-afc9-16a7b198835a
+            transform: ""
+    cteString: ""
+    enabledColumnTestIDs: []
+    sourceMapping:
+      - aliases:
+          DCR_IMP_005_DATA1: fc3acfb7-2391-40f5-afc9-16a7b198835a
+        customSQL:
+          customSQL: ""
+        dependencies:
+          - locationName: TARGET_DB
+            nodeName: DCR_IMP_005_DATA1
+        join:
+          joinCondition: FROM {{ ref('TARGET_DB', 'DCR_IMP_005_DATA1') }} "DCR_IMP_005_DATA1"
+        name: RV_DCR_IMP_005_DATA1
+        noLinkRefs: []
+  name: RV_DCR_IMP_005_DATA1
+  overrideSQL: false
+  schema: ""
+  sqlType: "281"
+  type: sql
+  version: 1
+type: Node
