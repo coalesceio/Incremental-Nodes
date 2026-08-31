@@ -67,7 +67,7 @@ operation:
         config: {}
         dataType: VARCHAR(16777216)
         description: ""
-        name: REGION
+        name: REGION_1
         nullable: true
         sourceColumnReferences:
           - columnReferences:
