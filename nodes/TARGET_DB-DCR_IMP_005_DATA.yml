@@ -1,0 +1,110 @@
+fileVersion: 1
+id: ff28e36c-06cd-416f-a5a2-55de81c5bcda
+name: DCR_IMP_005_DATA
+operation:
+  config:
+    insertStrategy: INSERT
+    postSQL: ""
+    preSQL: ""
+    testsEnabled: true
+    truncateBefore: true
+  database: ""
+  deployEnabled: true
+  description: ""
+  isMultisource: false
+  locationName: TARGET_DB
+  materializationType: view
+  metadata:
+    appliedNodeTests: []
+    columns:
+      - appliedColumnTests: {}
+        columnReference:
+          columnCounter: 8902b9d3-c6c8-46b4-b1d1-721df98e7c90
+          stepCounter: ff28e36c-06cd-416f-a5a2-55de81c5bcda
+        config: {}
+        dataType: NUMBER(38,0)
+        description: ""
+        name: CLIENT_ID
+        nullable: true
+        sourceColumnReferences:
+          - columnReferences:
+              - columnCounter: b239f792-2259-4d1c-9ca7-9fa1fd9f960c
+                stepCounter: d46e4ec7-c5a7-4df1-8e77-a417987a946e
+            transform: ""
+      - appliedColumnTests: {}
+        columnReference:
+          columnCounter: b7ccbc39-f746-4bf7-9630-a7544d62b42f
+          stepCounter: ff28e36c-06cd-416f-a5a2-55de81c5bcda
+        config: {}
+        dataType: VARCHAR(16777216)
+        description: ""
+        name: CLIENT_NAME
+        nullable: true
+        sourceColumnReferences:
+          - columnReferences:
+              - columnCounter: ad605701-4683-4141-ad96-af7344068cbe
+                stepCounter: d46e4ec7-c5a7-4df1-8e77-a417987a946e
+            transform: ""
+      - appliedColumnTests: {}
+        columnReference:
+          columnCounter: 382326a1-9c92-416c-9dd2-fe2108d7b706
+          stepCounter: ff28e36c-06cd-416f-a5a2-55de81c5bcda
+        config: {}
+        dataType: VARCHAR(16777216)
+        description: ""
+        name: EMAIL
+        nullable: true
+        sourceColumnReferences:
+          - columnReferences:
+              - columnCounter: 9754ba6f-d607-4478-83f2-e8a590ed9445
+                stepCounter: d46e4ec7-c5a7-4df1-8e77-a417987a946e
+            transform: ""
+      - appliedColumnTests: {}
+        columnReference:
+          columnCounter: 794e02ad-6023-4871-b775-10ba9d56c116
+          stepCounter: ff28e36c-06cd-416f-a5a2-55de81c5bcda
+        config: {}
+        dataType: VARCHAR(16777216)
+        description: ""
+        name: REGION
+        nullable: true
+        sourceColumnReferences:
+          - columnReferences:
+              - columnCounter: 66f887d3-6687-431a-82d0-c25943fe38d2
+                stepCounter: d46e4ec7-c5a7-4df1-8e77-a417987a946e
+            transform: ""
+      - appliedColumnTests: {}
+        columnReference:
+          columnCounter: c785939f-f51a-43a3-bd38-da8768973811
+          stepCounter: ff28e36c-06cd-416f-a5a2-55de81c5bcda
+        config: {}
+        dataType: TIMESTAMP_NTZ(9)
+        description: ""
+        name: UPDATE_TIME
+        nullable: true
+        sourceColumnReferences:
+          - columnReferences:
+              - columnCounter: 7d575ead-8a5e-4ad9-a12a-685abd1a076b
+                stepCounter: d46e4ec7-c5a7-4df1-8e77-a417987a946e
+            transform: ""
+    cteString: ""
+    enabledColumnTestIDs: []
+    sourceMapping:
+      - aliases:
+          CLIENTS: d46e4ec7-c5a7-4df1-8e77-a417987a946e
+        customSQL:
+          customSQL: ""
+        dependencies:
+          - locationName: SOURCE_DATA
+            nodeName: CLIENTS
+        join:
+          joinCondition: FROM {{ ref('SOURCE_DATA', 'CLIENTS') }} "CLIENTS"
+        name: DCR_IMP_005_DATA
+        noLinkRefs: []
+  name: DCR_IMP_005_DATA
+  overrideSQL: false
+  schema: ""
+  sqlType: Stage
+  type: sql
+  version: 1
+type: Node
