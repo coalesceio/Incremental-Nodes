@@ -1,0 +1,11 @@
+fileVersion: 1
+id: "882"
+mappingDefinitions:
+  SOURCE_DATA:
+    database: VINITHA_DEV
+    schema: SRC_DEV
+  TARGET_DB:
+    database: VINITHA_DEV
+    schema: TGT_DEV
+name: New EnvironmentRunview
+type: Environment
