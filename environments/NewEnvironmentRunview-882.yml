@@ -1,5 +1,14 @@
 fileVersion: 1
 id: "882"
-mappingDefinitions: {}
+mappingDefinitions:
+  SOURCE2:
+    database: VINITHA_DEV
+    schema: SRC_DEV
+  SOURCE_DATA:
+    database: VINITHA_DEV
+    schema: PUBLIC
+  TARGET_DB:
+    database: VINITHA_DEV
+    schema: DEP_DEV
 name: New EnvironmentRunview
 type: Environment

@@ -1,28 +1,27 @@
 fileVersion: 1
-id: 02b5c76a-67ce-49ae-a6d9-b7283c19adea
+id: 9062699b-b415-44a3-be07-5dfd58e42d27
 name: DCR_IMP_005_DATA
 operation:
   config:
-    insertStrategy: UNION ALL
-    persistTableLocation: "ex: TARGET"
-    persistTableName: "ex: DIM_ORDERS"
-    refTable: false
-    srcTable: false
-    suffixlength: ex:1
-    testsEnabled: true
+    OverrideSQLCreate: false
+    groupByAll: false
+    insertStrategy: UNION
+    secureoption: false
+    selectDistinct: false
+    testsEnabled: false
   database: ""
   deployEnabled: true
   description: ""
   isMultisource: false
   locationName: TARGET_DB
-  materializationType: run view
+  materializationType: view
   metadata:
     appliedNodeTests: []
     columns:
       - appliedColumnTests: {}
         columnReference:
-          columnCounter: 3a1e446e-46df-428b-b9a0-980336add167
-          stepCounter: 02b5c76a-67ce-49ae-a6d9-b7283c19adea
+          columnCounter: 02ae6846-1533-48af-a3a5-4661a58db8a3
+          stepCounter: 9062699b-b415-44a3-be07-5dfd58e42d27
         config: {}
         dataType: NUMBER(38,0)
         description: ""
@@ -35,8 +34,8 @@ operation:
             transform: ""
       - appliedColumnTests: {}
         columnReference:
-          columnCounter: e8031f66-1a49-4806-a2af-9b3876a52480
-          stepCounter: 02b5c76a-67ce-49ae-a6d9-b7283c19adea
+          columnCounter: ae0e481f-905a-4a00-a948-29138dfc7cf0
+          stepCounter: 9062699b-b415-44a3-be07-5dfd58e42d27
         config: {}
         dataType: VARCHAR(16777216)
         description: ""
@@ -49,8 +48,8 @@ operation:
             transform: ""
       - appliedColumnTests: {}
         columnReference:
-          columnCounter: 7eb60e96-cfce-48db-a623-7e9b236da920
-          stepCounter: 02b5c76a-67ce-49ae-a6d9-b7283c19adea
+          columnCounter: c2cd697e-3025-4024-b3fc-d66846bf4508
+          stepCounter: 9062699b-b415-44a3-be07-5dfd58e42d27
         config: {}
         dataType: VARCHAR(16777216)
         description: ""
@@ -63,8 +62,8 @@ operation:
             transform: ""
       - appliedColumnTests: {}
         columnReference:
-          columnCounter: e2048644-3484-4702-b3e5-a763a7722b1b
-          stepCounter: 02b5c76a-67ce-49ae-a6d9-b7283c19adea
+          columnCounter: b8d2a9fc-109f-4110-a6f7-3dc87745c626
+          stepCounter: 9062699b-b415-44a3-be07-5dfd58e42d27
         config: {}
         dataType: VARCHAR(16777216)
         description: ""
@@ -77,8 +76,8 @@ operation:
             transform: ""
       - appliedColumnTests: {}
         columnReference:
-          columnCounter: a3851b64-cd50-4080-8810-3dbba0d565af
-          stepCounter: 02b5c76a-67ce-49ae-a6d9-b7283c19adea
+          columnCounter: 3cf0a1ae-5337-4dcc-96ae-ee2dfad269f2
+          stepCounter: 9062699b-b415-44a3-be07-5dfd58e42d27
         config: {}
         dataType: TIMESTAMP_NTZ(9)
         description: ""
@@ -106,7 +105,7 @@ operation:
   name: DCR_IMP_005_DATA
   overrideSQL: false
   schema: ""
-  sqlType: "281"
+  sqlType: Basenode:::188
   type: sql
   version: 1
 type: Node
