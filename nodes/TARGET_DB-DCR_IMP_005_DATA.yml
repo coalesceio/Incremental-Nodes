@@ -67,7 +67,7 @@ operation:
         config: {}
         dataType: VARCHAR(16777216)
         description: ""
-        name: REGION
+        name: REGION_1
         nullable: true
         sourceColumnReferences:
           - columnReferences:
@@ -88,6 +88,26 @@ operation:
               - columnCounter: 058b43c7-13be-4e64-9abc-52f46559d0bf
                 stepCounter: bfcc55a5-7fb6-4daf-960b-1e54275c9de1
             transform: ""
+      - acceptedValues:
+          strictMatch: true
+          values: []
+        appliedColumnTests: {}
+        columnReference:
+          columnCounter: 01e68d0b-ebc1-491b-8bef-e05254b9c806
+          stepCounter: 9062699b-b415-44a3-be07-5dfd58e42d27
+        config: {}
+        dataType: VARCHAR(16777216)
+        defaultValue: ""
+        description: ""
+        keyColumnType: None
+        name: TEST_COLUMN
+        nullable: true
+        sourceColumnReferences:
+          - columnReferences:
+              - columnCounter: "0"
+                stepCounter: "0"
+            transform: "NULL"
+        systemColumnType: None
     cteString: ""
     enabledColumnTestIDs: []
     sourceMapping:
