@@ -3,13 +3,13 @@ id: 0cf2fc22-f97a-4249-a722-950793341166
 name: GIL_ORDER_DETAILS_SITE_MAPPING
 operation:
   config:
-    batchLoad: true
+    batchLoad: false
     batchSize: "2"
     incColumn:
       columnCounter: 1f911c65-f711-436d-87d7-ee00b9ac9e77
       stepCounter: 0cf2fc22-f97a-4249-a722-950793341166
     joinKeyColumnName: SITEID
-    mappingID: 1000,2000,3000,4000,TARGET
+    mappingID: SOURCE2,SOURCE_DATA
     persistColumnName: SITEID
     persistTableLocation: TARGET
     persistTableName: PSTG_ORDER_DETAILS_SITE_MAPPING

@@ -77,7 +77,7 @@ does not permit copying or modification for any other purpose.
         
         {# CreateSQL for view #}
 
-        {{ stage('Create View') }}
+        {{ stage('Create View', true, "sql", "create") }}
         CREATE OR REPLACE VIEW {{ ref_no_link(desiredState.node.location.name, desiredState.node.name) }}
         (
             {% for col in desiredState.columns %}

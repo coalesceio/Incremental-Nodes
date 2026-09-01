@@ -11,6 +11,7 @@ does not permit copying or modification for any other purpose.
 
 {% set batchsize =  config.batchSize|int %}  {# Convert batchsize to integer #}
 {% set batchvalue_list = config.mappingID.split(',') %}
+
 {% set sourceTable = sources[0].dependencies[0].node.name %}
 {% set orgSourceLocation = sources[0].dependencies[0].node.location.name %}
 {% set orgFullyQualifiedSourceTableName = ref_raw(orgSourceLocation, sourceTable) %}
